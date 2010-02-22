@@ -173,7 +173,7 @@ def macro_PackageHeader(macro, arg1):
   try:
     repo_li = ''
     if repository in repos:
-      repo_li =  li(1)+text("Repository: ")+wiki_url(macro,repos[repository])+' (<a href="%s">%s</a>)'%repository+li(0)
+      repo_li =  li(1)+text("Repository: ")+wiki_url(macro,repos[repository])+' (<a href="%s">%s</a>)'%(repository, repository)+li(0)
     package_desc = h(1, 2, id="first")+text('Package Summary')+h(0, 2)+\
       p(1, css_id="package-info")+rawHTML(description)+p(0)+\
       p(1, id="package-info")+\
