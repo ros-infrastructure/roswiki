@@ -2,7 +2,7 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import wiki_url, get_repo_li, load_stack_release, load_stack_manifest, sub_link
+from macroutils import wiki_url, get_repo_li, load_stack_release, load_stack_manifest, sub_link, UtilException
 
 generates_headings = True
 dependencies = []
@@ -10,8 +10,11 @@ dependencies = []
 def macro_StackHeader(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
   if not stack_name:
-    return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name)]]"    
-  data = load_stack_manifest(stack_name)
+    return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name)]]"
+  try:
+      data = load_stack_manifest(stack_name)
+  except UtilException, e:
+      return str(e)
 
   # try to locate stack within any known release
   stack_props = None

@@ -3,7 +3,7 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 from MoinMoin.PageEditor import PageEditor
 
-from macroutils import wiki_url, get_repo_li, load_stack_release, msg_doc_link, load_package_manifest, package_html_link
+from macroutils import wiki_url, get_repo_li, load_stack_release, msg_doc_link, load_package_manifest, package_html_link, UtilException
 
 generates_headings = True
 dependencies = []

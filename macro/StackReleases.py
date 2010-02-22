@@ -2,6 +2,8 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
+from macroutils import load_stack_release, load_stack_manifest, UtilException
+
 url_base = "http://ros.org/doc/api/" 
 generates_headings = True
 dependencies = []
@@ -42,33 +44,12 @@ def expand_rules(props, release_name, stack_name, stack_version):
     props_copy[k] = expand_uri(v, stack_name, stack_version, release_name, '', '')
   return props_copy
     
-def process_distro(stack_name, yaml_str):
-  import yaml
-  distro = yaml.load(yaml_str)
-  return distro, distro['stacks'][stack_name]
-
-def load_stack_release(release_name, stack_name):
-  if stack_name == 'ROS':
-    stack_name = 'ros'
-  try:
-    #load in distro info for stack
-    import urllib2
-    usock = urllib2.urlopen('http://ros.org/distros/%s.rosdistro'%release_name)
-    rosdistro_str = usock.read()
-    usock.close()
-    release, stack_props = process_distro(stack_name, rosdistro_str)
-  except:
-    release = stack_props = {}
-  return release, stack_props
-
 def init_stack_macro(stack_name, macro_name):
   try:
     import yaml
   except:
     raise Exception('python-yaml is not installed on the wiki. Please have an admin install on this machine')
 
-  if not stack_name:
-    raise Exception("ERROR in %s. Usage: [[%s(stack_name)]]"%(macro_name, macro_name))
   
   stack_url = url_base + stack_name + "/html/"
   url = url_base + stack_name + "/stack.yaml"
@@ -88,11 +69,13 @@ def init_stack_macro(stack_name, macro_name):
   
 def macro_StackReleases(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
+  if not stack_name:
+    return "ERROR in StackReleases. Usage: [[StackReleases(stack_name)]]"
   if '/Releases' in stack_name:
     stack_name = stack_name[:-len('/Releases')]
   try:
-    stack_url, data = init_stack_macro(stack_name, 'StackReleases')
-  except Exception, e:
+    data = load_stack_manifest(stack_name)
+  except UtilException, e:
     return str(e)
   
   releases = {}
@@ -119,16 +102,13 @@ def macro_StackReleases(macro, arg1):
 
   # link to license/changelist/roadmap
   license = "License: %s"%data.get('license', 'unknown')
-  changelist = Page(macro.request, '%s/ChangeList'%stack_name).link_to(macro.request, text='Change List')
-  roadmap = Page(macro.request, '%s/Roadmap'%stack_name).link_to(macro.request, text='Roadmap')
-  review_status = Page(macro.request, "Review Status").link_to(macro.request, text='Review status')+\
-      ": %s"%data.get('review_status', 'unreviewed')
+  review_status = sub_link(macro, stack_name, "Review Status")+": %s"%data.get('review_status', 'unreviewed')
   
   body += ul(1)+\
       li(1)+license+li(0)+\
       li(1)+review_status+li(0)+\
-      li(1)+changelist+li(0)+\
-      li(1)+roadmap+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'Changelist', 'Change List')+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
       ul(0)
   
 
