@@ -23,50 +23,24 @@ def stack_link(stack):
 def stack_html_link(stack):
   return url_base + stack + "/html/"
 
-# copied from create_release.py
-def expand_uri(rule, stack_name, stack_ver, distro_name, os_name, os_ver):
-  s = rule.replace('$STACK_NAME', stack_name)
-  s =    s.replace('$STACK_VERSION', stack_ver)
-  s =    s.replace('$DISTRO_NAME', distro_name)
-  s =    s.replace('$OS_NAME', os_name)
-  s =    s.replace('$OS_VERSION', os_ver)
-  return s
-
-def get_rules(distro, distro_name, stack_name):
-  """@param distro: rosdistro document"""
-  # there are three tiers of dictionaries that we look in for uri rules
-  rules_d = [distro.get('stacks', {}),
-             distro.get('stacks', {}).get(stack_name, {}),
-             distro.get('stacks', {}).get(stack_name, {}).get(distro_name, {})]
-  rules_d = [d for d in rules_d if d]
-  # load the '_uri_rules' from the dictionaries, in order
-  props = {}
-  for d in rules_d:
-    if type(d) == dict:
-      props.update(d.get('_uri_rules', {}))
-
-  if not props:
-    raise ("cannot load _uri_rules")
-  return props
-    
 def process_distro(stack_name, yaml_str):
   import yaml
   distro = yaml.load(yaml_str)
   return distro, distro['stacks'][stack_name]
 
-def load_stack_distro(stack_name):
+def load_stack_release(release_name, stack_name):
   if stack_name == 'ROS':
     stack_name = 'ros'
   try:
     #load in distro info for stack
     import urllib2
-    usock = urllib2.urlopen('http://ros.org/rosdistro.yaml')
-    distro_str = usock.read()
+    usock = urllib2.urlopen('http://ros.org/distros/%s.rosdistro'%release_name)
+    rosdistro_str = usock.read()
     usock.close()
-    distro, stack_distro = process_distro(stack_name, distro_str)
+    release, stack_props = process_distro(stack_name, rosdistro_str)
   except:
-    distro = stack_distro = {}
-  return distro, stack_distro
+    release = stack_props = {}
+  return release, stack_props
 
 def macro_StackHeader(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
@@ -90,7 +64,11 @@ def macro_StackHeader(macro, arg1):
   except:
     return 'Newly proposed, mistyped, or obsolete stack. Could not find "' + stack_name + '" in rosdoc: '+url 
 
-  distro, stack_distro = load_stack_distro(stack_name)
+  # try to locate stack within any known release
+  stack_props = None
+  for release_name in ['latest', 'boxturtle']:
+      if not stack_props:
+          _, stack_props = load_stack_release(release_name, stack_name)
 
   data = yaml.load(ydata)
   if not data or type(data) != dict:
@@ -155,7 +133,7 @@ def macro_StackHeader(macro, arg1):
   troubleshooting = Page(macro.request, '%s/Troubleshooting'%stack_name).link_to(macro.request, text='Troubleshooting')
   tutorials = Page(macro.request, '%s/Tutorials'%stack_name).link_to(macro.request, text='Tutorials')
   review_link = Page(macro.request, '%s/Reviews'%stack_name).link_to(macro.request, text='Reviews')
-  releases_link = li(1)+Page(macro.request, '%s/Releases'%stack_name).link_to(macro.request, text='Releases')+li(0) if stack_distro else ''
+  releases_link = li(1)+Page(macro.request, '%s/Releases'%stack_name).link_to(macro.request, text='Releases')+li(0) if stack_props else ''
   changelist = Page(macro.request, '%s/ChangeList'%stack_name).link_to(macro.request, text='Change List')
   roadmap = Page(macro.request, '%s/Roadmap'%stack_name).link_to(macro.request, text='Roadmap')
   review_str = review_link + text(' ('+review_status+')')
