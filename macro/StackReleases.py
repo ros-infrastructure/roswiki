@@ -98,7 +98,7 @@ def macro_StackReleases(macro, arg1):
   releases = {}
   release_names = ['latest', 'boxturtle']
   for release_name in release_names:
-    releases[release_name] = load_stack_release('latest', stack_name)
+    releases[release_name] = load_stack_release(release_name, stack_name)
   
   p = macro.formatter.paragraph
   url = macro.formatter.url
@@ -135,6 +135,9 @@ def macro_StackReleases(macro, arg1):
   # link to distributions
   for release_name in release_names:
       release, stack_props = releases[release_name]
+      if not stack_props:
+          continue
+      
       body += h(1, 3)+"Distribution: %s"%release_name+h(0, 3)+\
           ul(1)
 
