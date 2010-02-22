@@ -78,9 +78,6 @@ def macro_PackageHeader(macro, arg1):
      external_documentation = u''
   api_documentation = data.get('api_documentation', '')
   repository = data.get('repository', 'unknown')
-  # hack for now, until rosdoc can parse .git configs
-  if repository == 'unknown' and package_name.startswith('cob3_'):
-    repository = 'http://github.com/ipa320/care-o-bot.git'
   repos = {'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
            'http://foote-ros-pkg.googlecode.com/svn':'foote-ros-pkg',
            'http://gt-ros-pkg.googlecode.com/svn':'gt-ros-pkg',
@@ -176,7 +173,7 @@ def macro_PackageHeader(macro, arg1):
   try:
     repo_li = ''
     if repository in repos:
-      repo_li =  li(1)+text("Repository: ")+wiki_url(macro,repos[repository])+li(0)
+      repo_li =  li(1)+text("Repository: ")+wiki_url(macro,repos[repository])+' (<a href="%s">%s</a>)'%repository+li(0)
     package_desc = h(1, 2, id="first")+text('Package Summary')+h(0, 2)+\
       p(1, css_id="package-info")+rawHTML(description)+p(0)+\
       p(1, id="package-info")+\
