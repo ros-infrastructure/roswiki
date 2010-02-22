@@ -96,8 +96,6 @@ def macro_PackageHeader(macro, arg1):
            'http://ua-ros-pkg.googlecode.com/svn':'ua-ros-pkg',
            'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
            'git://github.com/ipa320/care-o-bot':'care-o-bot'}
-           
-
 
   stack = data.get('stack', None)
 
@@ -232,8 +230,5 @@ def macro_PackageHeader(macro, arg1):
       div(0)
 
   package_links+=div(0)
-
-  #html_str = u''.join([s for s in [nav, package_links, package_desc]])
-  #return html_str
   return rawHTML(nav) + package_links + package_desc 
 
