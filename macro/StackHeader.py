@@ -69,7 +69,7 @@ def macro_StackHeader(macro, arg1):
   review_notes = data.get('review_notes', '') or ''
   repository = data.get('repository', 'unknown')
   vcs = data.get('vcs', None)  
-  packages = data.get('packages', []))
+  packages = data.get('packages', [])
 
   # filter out test packages
   packages = [s for s in packages if not s.startswith('test_')]
