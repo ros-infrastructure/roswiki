@@ -2,24 +2,47 @@ from MoinMoin.Page import Page
 
 doc_url = "http://ros.org/doc/api/"
 
+class UtilException(Exception): pass
+
 def ahref(url, text):
     """create HTML link to specified URL with link text"""
     return '<a href="%(url)s">%(text)s</a>'%locals()
 
-def package_link(package):
-    return url_base + package 
+def package_manifest_link(package):
+    """
+    Generate link to manifest.yaml for package
+    """
+    return doc_url + package + "/manifest.yaml"
+
+def package_html_link(package):
+    """
+    Generate link to auto-generated package HTML documentation
+    """
+    return doc_url + package  + '/html/'
 
 def msg_doc_link(package, link_title):
-    package_url = package_link(package)  
+    package_url = package_html_link(package)  
     return ahref('%(package_url)sindex-msg.html'%locals(), link_title)
 
 def msg_link(package, msg):
-    package_url = package_link(package)
+    package_url = package_html_link(package)
     return ahref('%(package_url)smsg/%(msg)s.html'%locals(), msg)
   
 def srv_link(package, srv):
-    package_url = package_link(package)
+    package_url = package_html_link(package)
     return ahref('%(package_url)ssrv/%(srv)s.html'%locals(), srv)
+
+def sub_link(macro, page, sub, title=None):
+    """
+    Generate link to wiki subpage
+    @param macro: macro instance
+    @param page: current page name
+    @param sub: sub page name
+    @param title: (optional) link text
+    """
+    if title is None:
+        title = sub
+    return Page(macro.request, '%s/%s'%(sub, page)).link_to(macro.request, text=title)
 
 def wiki_url(macro, page,shorten=None):
     """
@@ -54,13 +77,13 @@ _repos = {'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
 def get_repo_li(macro, url, vcs):
     """get list item HTML for repository URL
     @param macro: Moin macro object
-    @param vcs: version control protocol (e.g. 'svn')
-    @type  vcs: str
-    @param url: url of repository
-    @type  url: str
+    @param props: package/stack manifest dictionary
     """
+    url = data.get('repository', 'unknown')
+    vcs = data.get('vcs', None)
+
     if url in _repos:
-        return '<li>Repository: '+wiki_url(macro,repos[url])+' (<a href="%s">%s</a>)'%(url, url)+"</li>"
+        return '<li>Repository: '+wiki_url(macro,_repos[url])+' (<a href="%s">%s</a>)'%(url, url)+"</li>"
     else:
         return ''
 
@@ -87,3 +110,41 @@ def load_stack_release(release_name, stack_name):
         release = stack_props = {}
     return release, stack_props
 
+import urllib2
+def _load_manifest(url):
+    """
+    Load manifest.yaml properties into dictionary for package
+    @param url: URL to load manifest data from
+    @return: manifest properties dictionary
+    @raise UtilException: if unable to load. Text of error message is human-readable
+    """
+    try:
+        import yaml
+    except:
+        raise UtilException('python-yaml is not installed on the wiki. Please have an admin install on this machine')
+    try:
+        usock = urllib2.urlopen(url)
+        data = usock.read()
+        usock.close()
+    except:
+        raise UtilException('Newly proposed, mistyped, or obsolete package. Could not find package "' + package_name + '" in rosdoc: '+url)
+    data = yaml.load(unicode(data, 'utf-8'))
+    if not data:
+        raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
+    return data
+    
+def load_package_manifest(package_name):
+    """
+    Load manifest.yaml properties into dictionary for package
+    @return: manifest properties dictionary
+    @raise UtilException: if unable to load. Text of error message is human-readable
+    """
+    return _load_manifest(package_manifest_link(package_name))
+
+def load_stack_manifest(stack_name):
+    """
+    Load stack.yaml properties into dictionary for package
+    @return: stack manifest properties dictionary
+    @raise UtilException: if unable to load. Text of error message is human-readable
+    """
+    return _load_manifest(stack_manifest_link(stack_name))

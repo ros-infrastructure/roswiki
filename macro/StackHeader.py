@@ -4,43 +4,14 @@ from MoinMoin.wikiutil import get_unicode
 
 from macroutils import wiki_url, get_repo_li, load_stack_release
 
-url_base = "http://ros.org/doc/api/" 
 generates_headings = True
 dependencies = []
-
-def _href(url, text):
-  return '<a href="%(url)s">%(text)s</a>'%locals()
-def wiki_url(macro, page,shorten=None):
-  if not shorten or len(page) < shorten:
-    page_text = page
-  else:
-    page_text = page[:shorten]+'...'
-  return Page(macro.request, page).link_to(macro.request, text=page_text)
-def stack_link(stack):
-  return url_base + stack 
-def stack_html_link(stack):
-  return url_base + stack + "/html/"
 
 def macro_StackHeader(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
   if not stack_name:
     return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name)]]"    
-  stack_url = stack_html_link(stack_name)
-  url = stack_link(stack_name) + "/stack.yaml"
-
-  try:
-    import yaml
-  except:
-    return 'python-yaml is not installed on the wiki. Please have an admin install on this machine'
-  try:
-    usock = urllib2.urlopen(url)
-    ydata = usock.read()
-    usock.close()
-  except:
-    return 'Newly proposed, mistyped, or obsolete stack. Could not find "' + stack_name + '" in rosdoc: '+url 
-  data = yaml.load(ydata)
-  if not data or type(data) != dict:
-    return "Unable to retrieve stack data. Auto-generated documentation may need to regenerate: "+str(url)
+  data = load_stack_manifest(stack_name)
 
   # try to locate stack within any known release
   stack_props = None
@@ -67,8 +38,6 @@ def macro_StackHeader(macro, arg1):
   depends_on = data.get('depends_on', [])
   review_status = data.get('review_status', 'unreviewed')
   review_notes = data.get('review_notes', '') or ''
-  repository = data.get('repository', 'unknown')
-  vcs = data.get('vcs', None)  
   packages = data.get('packages', [])
 
   # filter out test packages
@@ -104,16 +73,11 @@ def macro_StackHeader(macro, arg1):
     nav = strong(1)+text(stack_name)+strong(0)
   
   # - links
-  troubleshooting = Page(macro.request, '%s/Troubleshooting'%stack_name).link_to(macro.request, text='Troubleshooting')
-  tutorials = Page(macro.request, '%s/Tutorials'%stack_name).link_to(macro.request, text='Tutorials')
-  review_link = Page(macro.request, '%s/Reviews'%stack_name).link_to(macro.request, text='Reviews')
   releases_link = li(1)+Page(macro.request, '%s/Releases'%stack_name).link_to(macro.request, text='Releases')+li(0) if stack_props else ''
-  changelist = Page(macro.request, '%s/ChangeList'%stack_name).link_to(macro.request, text='Change List')
-  roadmap = Page(macro.request, '%s/Roadmap'%stack_name).link_to(macro.request, text='Roadmap')
-  review_str = review_link + text(' ('+review_status+')')
+  review_str = sub_link(macro, stack_name, 'Reviews') + text(' ('+review_status+')')
   
   try:
-    repo_li = get_repo_li(macro, repository, vcs)
+    repo_li = get_repo_li(macro, data)
     desc = macro.formatter.heading(1, 2, id="summary")+text('Stack Summary')+macro.formatter.heading(0, 2)+\
       p(1,id="package-info")+rawHTML(description)+p(0)+\
       p(1,id="package-info")+ul(1)+\
@@ -125,11 +89,11 @@ def macro_StackHeader(macro, arg1):
   try:
     links = div(1, id="package-links")+strong(1)+text('Stack Links')+strong(0)+\
       ul(1)+\
-      li(1)+tutorials+li(0)+\
-      li(1)+troubleshooting+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'Tutorials')+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)+\
       releases_link+\
-      li(1)+changelist+li(0)+\
-      li(1)+roadmap+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'Changelist', title='Change List')+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
       li(1)+review_str+li(0)+\
       ul(0)
   except UnicodeDecodeError:
@@ -157,4 +121,3 @@ def macro_StackHeader(macro, arg1):
   links+=div(0)
 
   return rawHTML(nav) + rawHTML(links) + desc
-

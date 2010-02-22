@@ -3,58 +3,22 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 from MoinMoin.PageEditor import PageEditor
 
+from macroutils import wiki_url, get_repo_li, load_stack_release, msg_doc_link, load_package_manifest, package_html_link
 
-
-url_base = "http://ros.org/doc/api/" 
 generates_headings = True
 dependencies = []
 
-def _href(url, text):
-  return '<a href="%(url)s">%(text)s</a>'%locals()
-def wiki_url(macro, page,shorten=None):
-  if not shorten or len(page) < shorten:
-    page_text = page
-  else:
-    page_text = page[:shorten]+'...'
-  return Page(macro.request, page).link_to(macro.request, text=page_text)
-def msg_doc_link(package_url, link_title):
-  return _href('%(package_url)sindex-msg.html'%locals(), link_title)
-def msg_link(package_url, msg):
-  return _href('%(package_url)smsg/%(msg)s.html'%locals(), msg)
-def srv_link(package_url, srv):
-  return _href('%(package_url)ssrv/%(srv)s.html'%locals(), srv)
-def package_link(package):
-  return url_base + package 
-def package_html_link(package):
-  return url_base + package + "/html/"
-
 def macro_PackageHeader(macro, arg1):
   package_name = get_unicode(macro.request, arg1)
-  package_url = None
-
-  try:
-    import yaml
-  except:
-    return 'python-yaml is not installed on the wiki. Please have an admin install on this machine'
-
   if not package_name:
     return "ERROR in PackageHeader. Usage: [[PackageHeader(pkg_name)]]"    
-  
   package_url = package_html_link(package_name)
-  url = package_link(package_name) + "/manifest.yaml"
-  
   try:
-    usock = urllib2.urlopen(url)
-    data = usock.read()
-    usock.close()
-  except:
-    return 'Newly proposed, mistyped, or obsolete package. Could not find package "' + package_name + '" in rosdoc: '+url 
+      data = load_package_manifest(package_name)
+  except UtilException, e:
+      return str(e)
 
-  data = yaml.load(unicode(data, 'utf-8'))
-  if not data:
-    return "Unable to retrieve package data. Auto-generated documentation may need to regenerate"
   # keys
-  # - manifest keys
   brief = data.get('brief', package_name)
   authors = data.get('authors', 'unknown')
   try:
@@ -77,26 +41,6 @@ def macro_PackageHeader(macro, arg1):
   if 'ros.org' in external_documentation or 'pr.willowgarage.com' in external_documentation:
      external_documentation = u''
   api_documentation = data.get('api_documentation', '')
-  repository = data.get('repository', 'unknown')
-  repos = {'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
-           'http://foote-ros-pkg.googlecode.com/svn':'foote-ros-pkg',
-           'http://gt-ros-pkg.googlecode.com/svn':'gt-ros-pkg',
-           'git://github.com/ipa320/care-o-bot.git':'care-o-bot',
-           'git://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
-           'http://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
-           'http://github.com/ipa320/care-o-bot.git':'care-o-bot',
-           'https://code.ros.org/svn/ros':'ros',
-           'https://code.ros.org/svn/ros-pkg':'ros-pkg',
-           'https://code.ros.org/svn/wg-ros-pkg':'wg-ros-pkg',
-           'https://tum-ros-pkg.svn.sourceforge.net/svnroot/tum-ros-pkg':'tum-ros-pkg',
-           'https://bosch-ros-pkg.svn.sourceforge.net/svnroot/bosch-ros-pkg':'bosch-ros-pkg',
-           'http://prairiedog.googlecode.com/svn':'prairiedog-ros-pkg',
-           'http://utexas-art-ros-pkg.googlecode.com/svn':'utexas-art-ros-pkg',
-           'http://alufr-ros-pkg.googlecode.com/svn':'alufr-ros-pkg',
-           'http://ua-ros-pkg.googlecode.com/svn':'ua-ros-pkg',
-           'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
-           'git://github.com/ipa320/care-o-bot':'care-o-bot'}
-
   stack = data.get('stack', None)
 
   p = macro.formatter.paragraph
@@ -156,7 +100,7 @@ def macro_PackageHeader(macro, arg1):
   elif srvs and not msgs:
     msg_doc_title = "Srv API"
   if msgs or srvs:
-    msg_doc = li(1)+strong(1)+msg_doc_link(package_url, msg_doc_title)+strong(0)+li(0)
+    msg_doc = li(1)+strong(1)+msg_doc_link(package_name, msg_doc_title)+strong(0)+li(0)
   else:
     msg_doc = text('')
 
@@ -169,9 +113,7 @@ def macro_PackageHeader(macro, arg1):
     external_documentation = li(1)+strong(1)+url(1, url=external_documentation)+text("External Documentation")+url(0)+strong(0)+li(0)
   
   try:
-    repo_li = ''
-    if repository in repos:
-      repo_li =  li(1)+text("Repository: ")+wiki_url(macro,repos[repository])+' (<a href="%s">%s</a>)'%(repository, repository)+li(0)
+    repo_li = get_repo_li(macro, data) 
     package_desc = h(1, 2, id="first")+text('Package Summary')+h(0, 2)+\
       p(1, css_id="package-info")+rawHTML(description)+p(0)+\
       p(1, id="package-info")+\
