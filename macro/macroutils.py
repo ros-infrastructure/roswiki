@@ -48,7 +48,7 @@ def sub_link(macro, page, sub, title=None):
     """
     if title is None:
         title = sub
-    return Page(macro.request, '%s/%s'%(sub, page)).link_to(macro.request, text=title)
+    return Page(macro.request, '%s/%s'%(page, sub)).link_to(macro.request, text=title)
 
 def wiki_url(macro, page,shorten=None):
     """

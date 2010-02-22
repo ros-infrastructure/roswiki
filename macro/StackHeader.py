@@ -95,7 +95,7 @@ def macro_StackHeader(macro, arg1):
       li(1)+sub_link(macro, stack_name, 'Tutorials')+li(0)+\
       li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)+\
       releases_link+\
-      li(1)+sub_link(macro, stack_name, 'Changelist', title='Change List')+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)+\
       li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
       li(1)+review_str+li(0)+\
       ul(0)

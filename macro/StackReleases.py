@@ -102,12 +102,12 @@ def macro_StackReleases(macro, arg1):
 
   # link to license/changelist/roadmap
   license = "License: %s"%data.get('license', 'unknown')
-  review_status = sub_link(macro, stack_name, "Review Status")+": %s"%data.get('review_status', 'unreviewed')
+  review_status = sub_link(macro, stack_name, "Reviews", "Review Status")+": %s"%data.get('review_status', 'unreviewed')
   
   body += ul(1)+\
       li(1)+license+li(0)+\
       li(1)+review_status+li(0)+\
-      li(1)+sub_link(macro, stack_name, 'Changelist', 'Change List')+li(0)+\
+      li(1)+sub_link(macro, stack_name, 'ChangeList', 'Change List')+li(0)+\
       li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
       ul(0)
   
