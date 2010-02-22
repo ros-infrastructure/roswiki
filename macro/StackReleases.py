@@ -140,20 +140,17 @@ def macro_StackReleases(macro, arg1):
 
       rules = get_rules(release, stack_name)
       version = stack_props['version']
-
-      props = expand_rules(props, release_name, stack_name, version)
+      props = expand_rules(rules, release_name, stack_name, version)
+      release_svn = props.get('release-svn', '')
+      distro_svn = props.get('distro-svn', '')
         
       body += li(1)+strong(1)+version+strong(0)+ul(1)
       source_tarball = props.get('source-tarball', '')
       if source_tarball:
           body += li(1)+"Source Tarball: %s"%link(source_tarball)+li(0)
-
-      release_svn = props.get('release-svn', '')
       if release_svn:
           body += li(1)+"SVN: %s"%link(release_svn)+li(0)
       body += ul(0)+li(0)         
-
-      distro_svn = props.get('distro-svn', '')
       if distro_svn:
         body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
       body += ul(0)
