@@ -51,25 +51,24 @@ _repos = {'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
           'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
           'git://github.com/ipa320/care-o-bot':'care-o-bot'}
 
-def get_repo_li(url, vcs):
+def get_repo_li(macro, url, vcs):
     """get list item HTML for repository URL
+    @param macro: Moin macro object
     @param vcs: version control protocol (e.g. 'svn')
     @type  vcs: str
     @param url: url of repository
     @type  url: str
     """
     if url in _repos:
-    repo_li = ''
-    if repository in repos:
-      repo_li =  '<li>Repository: '+wiki_url(macro,repos[repository])+' (<a href="%s">%s</a>)'%(repository, repository)+"</li>"
-        
-        pass
+        return '<li>Repository: '+wiki_url(macro,repos[url])+' (<a href="%s">%s</a>)'%(url, url)+"</li>"
     else:
         return ''
 
 def process_distro(stack_name, yaml_str):
-    """@return: distro properties, stack properties. Stack properties
-    is just for convenience as it is part of distro properties"""
+    """
+    @return: distro properties, stack properties. Stack properties
+    is just for convenience as it is part of distro properties
+    """
     import yaml
     distro = yaml.load(yaml_str)
     return distro, distro['stacks'][stack_name]

@@ -113,7 +113,7 @@ def macro_StackHeader(macro, arg1):
   review_str = review_link + text(' ('+review_status+')')
   
   try:
-    repo_li = get_repo_li(repository, vcs)
+    repo_li = get_repo_li(macro, repository, vcs)
     desc = macro.formatter.heading(1, 2, id="summary")+text('Stack Summary')+macro.formatter.heading(0, 2)+\
       p(1,id="package-info")+rawHTML(description)+p(0)+\
       p(1,id="package-info")+ul(1)+\
