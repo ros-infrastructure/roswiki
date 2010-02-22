@@ -7,40 +7,39 @@ generates_headings = True
 dependencies = []
 
 # copied from create_release.py
-def expand_uri(rule, stack_name, stack_ver, distro_name, os_name, os_ver):
+def expand_uri(rule, stack_name, stack_ver, release_name, os_name, os_ver):
   if stack_name == 'ROS':
     stack_name = 'ros'
   s = rule.replace('$STACK_NAME', stack_name)
   s =    s.replace('$STACK_VERSION', stack_ver)
-  s =    s.replace('$DISTRO_NAME', distro_name)
+  s =    s.replace('$RELEASE_NAME', distro_name)
   s =    s.replace('$OS_NAME', os_name)
   s =    s.replace('$OS_VERSION', os_ver)
   return s
 
-def get_props(distro, distro_name, stack_name):
+def get_rules(distro, stack_name):
   """@param distro: rosdistro document"""
   if stack_name == 'ROS':
     stack_name = 'ros'
   # there are three tiers of dictionaries that we look in for uri rules
   rules_d = [distro.get('stacks', {}),
-             distro.get('stacks', {}).get(stack_name, {}),
-             distro.get('stacks', {}).get(stack_name, {}).get(distro_name, {})]
+             distro.get('stacks', {}).get(stack_name, {})]
   rules_d = [d for d in rules_d if d]
-  # load the '_uri_rules' from the dictionaries, in order
+  # load the '_rules' from the dictionaries, in order
   props = {}
   for d in rules_d:
     if type(d) == dict:
-      props.update(d.get('_uri_rules', {}))
+      props.update(d.get('_rules', {}))
 
   if not props:
-    raise ("cannot load _uri_rules")
+    raise ("cannot load _rules")
   return props
 
-def expand_props(props, distro_name, stack_name, stack_version):
+def expand_rules(props, release_name, stack_name, stack_version):
   # currently ignore OS name/OS version. Will have to implement once we start doing rules for debs
   props_copy = props.copy()
   for k, v in props.iteritems():
-    props_copy[k] = expand_uri(v, stack_name, stack_version, distro_name, '', '')
+    props_copy[k] = expand_uri(v, stack_name, stack_version, release_name, '', '')
   return props_copy
     
 def process_distro(stack_name, yaml_str):
@@ -48,28 +47,19 @@ def process_distro(stack_name, yaml_str):
   distro = yaml.load(yaml_str)
   return distro, distro['stacks'][stack_name]
 
-def load_stack_distro(stack_name):
+def load_stack_release(release_name, stack_name):
   if stack_name == 'ROS':
     stack_name = 'ros'
   try:
     #load in distro info for stack
     import urllib2
-    usock = urllib2.urlopen('http://ros.org/rosdistro.yaml')
-    distro_str = usock.read()
+    usock = urllib2.urlopen('http://ros.org/distros/%s.rosdistro'%release_name)
+    rosdistro_str = usock.read()
     usock.close()
-    distro, stack_distro = process_distro(stack_name, distro_str)
+    release, stack_props = process_distro(stack_name, rosdistro_str)
   except:
-    distro = stack_distro = {}
-  return distro, stack_distro
-
-def distro_keys(stack_distro):
-  return [k for k in stack_distro.keys() if k[0] != '_']
-
-def get_stack_versions(stack_distro, distro_name):
-  if type(stack_distro[distro_name]) == str:
-      return [stack_distro[distro_name]]
-  else:
-      return [k for k in stack_distro[distro_name].keys() if k[0] != '_']
+    release = stack_props = {}
+  return release, stack_props
 
 def init_stack_macro(stack_name, macro_name):
   try:
@@ -104,9 +94,12 @@ def macro_StackReleases(macro, arg1):
     stack_url, data = init_stack_macro(stack_name, 'StackReleases')
   except Exception, e:
     return str(e)
-
-  distro, stack_distro = load_stack_distro(stack_name)
-
+  
+  releases = {}
+  release_names = ['latest', 'boxturtle']
+  for release_name in release_names:
+    releases[release_name] = load_stack_release('latest', stack_name)
+  
   p = macro.formatter.paragraph
   url = macro.formatter.url
   div = macro.formatter.div
@@ -118,21 +111,6 @@ def macro_StackReleases(macro, arg1):
   h = macro.formatter.heading
   text = macro.formatter.text
   rawHTML = macro.formatter.rawHTML
-
-  """
-Releases for navigation
-
- * Change List
- * Roadmap
-
-Distribution: latest
- * 0.2.0
-   * Debian: "apt-get install ros-latest-navigation"
-   * Tarball: https://code.ros.org/svn/stacks/navigation/tags/navigation-0.2.0
-   * SVN: https://code.ros.org/svn/stacks/navigation/tags/navigation-0.2.0
- * SVN: https://code.ros.org/svn/stacks/navigation/tags/latest
-
-"""
 
   def link(url):
     return '<a href="%s">%s</a>'%(url, url)
@@ -155,28 +133,27 @@ Distribution: latest
   
 
   # link to distributions
-  distro_names = distro_keys(stack_distro)
-  for distro_name in distro_names:
-      body += h(1, 3)+"Distribution: %s"%distro_name+h(0, 3)+\
+  for release_name in release_names:
+      release, stack_props = releases[release_name]
+      body += h(1, 3)+"Distribution: %s"%release_name+h(0, 3)+\
           ul(1)
 
-      props = get_props(distro, distro_name, stack_name)
-      versions = get_stack_versions(stack_distro, distro_name)
+      rules = get_rules(release, stack_name)
+      version = stack_props['version']
 
-      for version in versions:
-        props_expanded = expand_props(props, distro_name, stack_name, version)
+      props = expand_rules(props, release_name, stack_name, version)
         
-        body += li(1)+strong(1)+version+strong(0)+ul(1)
-        source_tarball = props_expanded.get('source-tarball', '')
-        if source_tarball:
+      body += li(1)+strong(1)+version+strong(0)+ul(1)
+      source_tarball = props.get('source-tarball', '')
+      if source_tarball:
           body += li(1)+"Source Tarball: %s"%link(source_tarball)+li(0)
 
-        release_svn = props_expanded.get('release-svn', '')
-        if release_svn:
+      release_svn = props.get('release-svn', '')
+      if release_svn:
           body += li(1)+"SVN: %s"%link(release_svn)+li(0)
-        body += ul(0)+li(0)         
+      body += ul(0)+li(0)         
 
-      distro_svn = props_expanded.get('distro-svn', '')
+      distro_svn = props.get('distro-svn', '')
       if distro_svn:
         body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
       body += ul(0)
