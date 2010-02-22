@@ -8,6 +8,12 @@ def ahref(url, text):
     """create HTML link to specified URL with link text"""
     return '<a href="%(url)s">%(text)s</a>'%locals()
 
+def stack_manifest_link(stack):
+    """
+    Generate link to stack.yaml for package
+    """
+    return doc_url + stack + "/stack.yaml"
+
 def package_manifest_link(package):
     """
     Generate link to manifest.yaml for package
@@ -74,13 +80,13 @@ _repos = {'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
           'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
           'git://github.com/ipa320/care-o-bot':'care-o-bot'}
 
-def get_repo_li(macro, url, vcs):
+def get_repo_li(macro, props):
     """get list item HTML for repository URL
     @param macro: Moin macro object
     @param props: package/stack manifest dictionary
     """
-    url = data.get('repository', 'unknown')
-    vcs = data.get('vcs', None)
+    url = props.get('repository', 'unknown')
+    vcs = props.get('vcs', None)
 
     if url in _repos:
         return '<li>Repository: '+wiki_url(macro,_repos[url])+' (<a href="%s">%s</a>)'%(url, url)+"</li>"

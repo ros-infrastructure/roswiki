@@ -41,6 +41,7 @@ def macro_PackageHeader(macro, arg1):
   if 'ros.org' in external_documentation or 'pr.willowgarage.com' in external_documentation:
      external_documentation = u''
   api_documentation = data.get('api_documentation', '')
+  repository = data.get('repository', 'unknown')
   stack = data.get('stack', None)
 
   p = macro.formatter.paragraph
