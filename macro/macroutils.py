@@ -1,4 +1,8 @@
-from MoinMoin.Page import Page
+import sys
+try:
+    from MoinMoin.Page import Page
+except ImportError:
+    print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
 doc_url = "http://ros.org/doc/api/"
 
@@ -139,18 +143,46 @@ def _load_manifest(url):
         raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
     return data
     
-def load_package_manifest(package_name):
+def load_package_manifest(package_name, lang=None):
     """
     Load manifest.yaml properties into dictionary for package
+    @param lang: optional language argument for localization, e.g. 'ja'
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    return _load_manifest(package_manifest_link(package_name))
+    data = _load_manifest(package_manifest_link(package_name))
+    if lang is not None and lang != 'en':
+        try:
+            import yaml
+            usock = urllib2.urlopen('http://ros.org/il8n/packages.%s.yaml'%lang)
+            il8n = yaml.load(unicode(usock.read(), 'utf-8'))
+            usock.close()
 
-def load_stack_manifest(stack_name):
+            # override properties with translation
+            if package_name in il8n:
+                data['description'] = il8n[package_name]['description']
+        except:
+             pass
+    return data
+
+def load_stack_manifest(stack_name, lang=None):
     """
     Load stack.yaml properties into dictionary for package
+    @param lang: optional language argument for localization, e.g. 'ja'
     @return: stack manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    return _load_manifest(stack_manifest_link(stack_name))
+    data = _load_manifest(stack_manifest_link(stack_name))
+    if lang is not None and lang != 'en':
+        try:
+            import yaml
+            usock = urllib2.urlopen('http://ros.org/il8n/stacks.%s.yaml'%lang)
+            il8n = yaml.load(unicode(usock.read(), 'utf-8'))
+            usock.close()
+
+            # override properties with translation
+            if stack_name in il8n:
+                data['description'] = il8n[stack_name]['description']
+        except:
+             pass
+    return data

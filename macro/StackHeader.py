@@ -9,10 +9,11 @@ dependencies = []
 
 def macro_StackHeader(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
+  lang = get_unicode(macro.request, arg2)
   if not stack_name:
     return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name)]]"
   try:
-      data = load_stack_manifest(stack_name)
+      data = load_stack_manifest(stack_name, lang)
   except UtilException, e:
       return str(e)
 
