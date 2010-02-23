@@ -8,13 +8,14 @@ from macroutils import wiki_url, get_repo_li, load_stack_release, msg_doc_link, 
 generates_headings = True
 dependencies = []
 
-def macro_PackageHeader(macro, arg1):
+def macro_PackageHeader(macro, arg1, arg2='en'):
   package_name = get_unicode(macro.request, arg1)
+  lang = get_unicode(macro.request, arg2)
   if not package_name:
-    return "ERROR in PackageHeader. Usage: [[PackageHeader(pkg_name)]]"    
+    return "ERROR in PackageHeader. Usage: [[PackageHeader(pkg_name opt_lang)]]"    
   package_url = package_html_link(package_name)
   try:
-      data = load_package_manifest(package_name)
+      data = load_package_manifest(package_name, lang)
   except UtilException, e:
       return str(e)
 

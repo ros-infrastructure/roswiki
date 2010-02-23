@@ -7,11 +7,18 @@ from macroutils import wiki_url, get_repo_li, load_stack_release, load_stack_man
 generates_headings = True
 dependencies = []
 
-def macro_StackHeader(macro, arg1):
+def macro_StackHeader(macro, arg1, arg2='ja'):
   stack_name = get_unicode(macro.request, arg1)
   lang = get_unicode(macro.request, arg2)
+  if ' ' in stack_name:
+    #something changed in the API such that the above arg1, arg2 passing no longer works
+    splits = stack_name.split(' ')
+    if len(splits) > 2:
+      return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name opt_lang)]]"
+    stack_name, lang = splits
+  
   if not stack_name:
-    return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name)]]"
+    return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name opt_lang)]]"
   try:
       data = load_stack_manifest(stack_name, lang)
   except UtilException, e:
