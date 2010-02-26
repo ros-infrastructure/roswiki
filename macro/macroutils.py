@@ -121,10 +121,11 @@ def load_stack_release(release_name, stack_name):
     return release, stack_props
 
 import urllib2
-def _load_manifest(url):
+def _load_manifest(url, name):
     """
     Load manifest.yaml properties into dictionary for package
     @param url: URL to load manifest data from
+    @param name: printable name (for debugging)
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
@@ -137,7 +138,7 @@ def _load_manifest(url):
         data = usock.read()
         usock.close()
     except:
-        raise UtilException('Newly proposed, mistyped, or obsolete package. Could not find package "' + package_name + '" in rosdoc: '+url)
+        raise UtilException('Newly proposed, mistyped, or obsolete package. Could not find package "' + name + '" in rosdoc: '+url)
     data = yaml.load(unicode(data, 'utf-8'))
     if not data:
         raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
@@ -150,7 +151,7 @@ def load_package_manifest(package_name, lang=None):
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_manifest(package_manifest_link(package_name))
+    data = _load_manifest(package_manifest_link(package_name), package_name)
     if lang is not None and lang != 'en':
         try:
             import yaml
@@ -172,7 +173,7 @@ def load_stack_manifest(stack_name, lang=None):
     @return: stack manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_manifest(stack_manifest_link(stack_name))
+    data = _load_manifest(stack_manifest_link(stack_name), stack_name)
     if lang is not None and lang != 'en':
         try:
             import yaml
