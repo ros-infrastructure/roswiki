@@ -2,7 +2,7 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import load_stack_release, load_stack_manifest, UtilException
+from macroutils import load_stack_release, load_stack_manifest, UtilException, sub_link
 
 url_base = "http://ros.org/doc/api/" 
 generates_headings = True
@@ -165,7 +165,7 @@ def macro_StackReleases(macro, arg1):
       if distro_svn:
           body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
       if variants:
-          body += li(1) + "Variants: %s"%(','.join(variants)) + li(0)
+          body += li(1) + "Variants: %s"%(', '.join(variants)) + li(0)
       body += ul(0)
   
   return body
