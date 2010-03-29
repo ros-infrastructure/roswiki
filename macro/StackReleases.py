@@ -9,39 +9,66 @@ generates_headings = True
 dependencies = []
 
 # copied from create_release.py
-def expand_uri(rule, stack_name, stack_ver, release_name, os_name, os_ver):
-  if stack_name == 'ROS':
-    stack_name = 'ros'
-  s = rule.replace('$STACK_NAME', stack_name)
-  s =    s.replace('$STACK_VERSION', stack_ver)
-  s =    s.replace('$RELEASE_NAME', release_name)
-  s =    s.replace('$OS_NAME', os_name)
-  s =    s.replace('$OS_VERSION', os_ver)
-  return s
+def expand_rule(rule, stack_name, stack_ver, release_name, os_name, os_ver):
+    if stack_name == 'ROS':
+        stack_name = 'ros'
+    s = rule.replace('$STACK_NAME', stack_name)
+    s =    s.replace('$STACK_VERSION', stack_ver)
+    s =    s.replace('$RELEASE_NAME', release_name)
+    s =    s.replace('$OS_NAME', os_name)
+    s =    s.replace('$OS_VERSION', os_ver)
+    return s
 
+# copied from roslib2.distro
+def get_variants(distro, stack_name):
+    """
+    Retrieve names of variants that stack is present in. This operates
+    on the raw distro dictionary document.
+    
+    @param distro: rosdistro document
+    @type  distro: dict
+    """
+    if stack_name == 'ROS':
+        stack_name = 'ros'
+
+    retval = []
+    variants = distro.get('variants', {})
+    
+    for variant_d in variants:
+        try:
+            variant = variant_d.keys()[0]
+            variant_props = variant_d[variant]
+            if stack_name in variant_props['stacks']:
+                retval.append(variant)
+            elif 'extends' in variant_props and variant_props['extends'] in retval:
+                retval.append(variant)                
+        except:
+            pass
+    return retval
+      
 def get_rules(distro, stack_name):
-  """@param distro: rosdistro document"""
-  if stack_name == 'ROS':
-    stack_name = 'ros'
-  # there are three tiers of dictionaries that we look in for uri rules
-  rules_d = [distro.get('stacks', {}),
-             distro.get('stacks', {}).get(stack_name, {})]
-  rules_d = [d for d in rules_d if d]
-  # load the '_rules' from the dictionaries, in order
-  props = {}
-  for d in rules_d:
-    if type(d) == dict:
-      props.update(d.get('_rules', {}))
+    """@param distro: rosdistro document"""
+    if stack_name == 'ROS':
+        stack_name = 'ros'
+    # there are three tiers of dictionaries that we look in for uri rules
+    rules_d = [distro.get('stacks', {}),
+               distro.get('stacks', {}).get(stack_name, {})]
+    rules_d = [d for d in rules_d if d]
+    # load the '_rules' from the dictionaries, in order
+    props = {}
+    for d in rules_d:
+        if type(d) == dict:
+            props.update(d.get('_rules', {}))
 
-  if not props:
-    raise ("cannot load _rules")
-  return props
+    if not props:
+        raise Exception("cannot load _rules")
+    return props
 
 def expand_rules(props, release_name, stack_name, stack_version):
   # currently ignore OS name/OS version. Will have to implement once we start doing rules for debs
   props_copy = props.copy()
   for k, v in props.iteritems():
-    props_copy[k] = expand_uri(v, stack_name, stack_version, release_name, '', '')
+    props_copy[k] = expand_rule(v, stack_name, stack_version, release_name, '', '')
   return props_copy
     
 def init_stack_macro(stack_name, macro_name):
@@ -122,6 +149,7 @@ def macro_StackReleases(macro, arg1):
           ul(1)
 
       rules = get_rules(release, stack_name)
+      variants = get_variants(release, stack_name)
       version = stack_props['version']
       props = expand_rules(rules, release_name, stack_name, version)
       release_svn = props.get('release-svn', '')
@@ -135,7 +163,9 @@ def macro_StackReleases(macro, arg1):
           body += li(1)+"SVN: %s"%link(release_svn)+li(0)
       body += ul(0)+li(0)         
       if distro_svn:
-        body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
+          body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
+      if variants:
+          body += li(1) + "Variants: %s"%(','.join(variants)) + li(0)
       body += ul(0)
   
   return body
