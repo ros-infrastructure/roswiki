@@ -156,9 +156,9 @@ def macro_StackReleases(macro, arg1):
       distro_svn = props.get('distro-svn', '')
       dev_svn = props.get('dev-svn', '')      
         
-      body += li(1)+strong(1)+"Version: %s"%version+strong(0)+ul(1)
       if variants:
           body += li(1) + "Variants: %s"%(', '.join(variants)) + li(0)
+      body += li(1)+strong(1)+"Version: %s"%version+strong(0)+ul(1)
       source_tarball = props.get('source-tarball', '')
       if source_tarball:
           body += li(1)+"Source Tarball: %s"%link(source_tarball)+li(0)
