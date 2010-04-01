@@ -5,7 +5,7 @@ def execute(macro, args):
     args = args.split(',')
   else:
     args = args.split()
-  project = args0]
+  project = args[0]
   num = args[1]
   if num[0] == '#':
     num = num[1:]
