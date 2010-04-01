@@ -65,24 +65,31 @@ def wiki_url(macro, page,shorten=None):
     return Page(macro.request, page).link_to(macro.request, text=page_text)
 
 # reverse map of URLs to wiki page names
-_repos = {'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
+_repos = {
+          'http://alufr-ros-pkg.googlecode.com/svn':'alufr-ros-pkg',
+          'http://ajh-ros-pkg.sourceforge.net/':'ajh-ros-pkg',
+          'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
+          'https://bosch-ros-pkg.svn.sourceforge.net/svnroot/bosch-ros-pkg':'bosch-ros-pkg',
+          'git://github.com/ipa320/care-o-bot.git':'care-o-bot',
+          'http://github.com/ipa320/care-o-bot.git':'care-o-bot',
+          'http://cmu-ros-pkg.sourceforge.net/':'cmu-ros-pkg',
+          'http://code.google.com/p/cu-ros-pkg/':'cu-ros-pkg',
           'http://foote-ros-pkg.googlecode.com/svn':'foote-ros-pkg',
           'http://gt-ros-pkg.googlecode.com/svn':'gt-ros-pkg',
-          'git://github.com/ipa320/care-o-bot.git':'care-o-bot',
+          'git://github.com/IHeartRobotics/iheart-ros-pkg.git':'iheart-ros-pkg',
+          'http://code.google.com/p/lis-ros-pkg/':'lis-ros-pkg',
+          'http://prairiedog.googlecode.com/svn':'prairiedog-ros-pkg',
+          'https://code.ros.org/svn/ros':'ros',
+          'http://ros-engagement.sourceforge.net/':'ros-engagement',
+          'https://code.ros.org/svn/ros-pkg':'ros-pkg',
+          'https://tum-ros-pkg.svn.sourceforge.net/svnroot/tum-ros-pkg':'tum-ros-pkg',
+          'http://ua-ros-pkg.googlecode.com/svn':'ua-ros-pkg',
           'git://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
           'http://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
-          'http://github.com/ipa320/care-o-bot.git':'care-o-bot',
-          'https://code.ros.org/svn/ros':'ros',
-          'https://code.ros.org/svn/ros-pkg':'ros-pkg',
-          'https://code.ros.org/svn/wg-ros-pkg':'wg-ros-pkg',
-          'https://tum-ros-pkg.svn.sourceforge.net/svnroot/tum-ros-pkg':'tum-ros-pkg',
-          'https://bosch-ros-pkg.svn.sourceforge.net/svnroot/bosch-ros-pkg':'bosch-ros-pkg',
-          'http://prairiedog.googlecode.com/svn':'prairiedog-ros-pkg',
           'http://utexas-art-ros-pkg.googlecode.com/svn':'utexas-art-ros-pkg',
-          'http://alufr-ros-pkg.googlecode.com/svn':'alufr-ros-pkg',
-          'http://ua-ros-pkg.googlecode.com/svn':'ua-ros-pkg',
+          'https://code.ros.org/svn/wg-ros-pkg':'wg-ros-pkg',
           'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
-          'git://github.com/ipa320/care-o-bot':'care-o-bot'}
+          }
 
 def get_repo_li(macro, props):
     """get list item HTML for repository URL
