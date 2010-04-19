@@ -88,6 +88,8 @@ _repos = {
           'http://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
           'http://utexas-art-ros-pkg.googlecode.com/svn':'utexas-art-ros-pkg',
           'https://code.ros.org/svn/wg-ros-pkg':'wg-ros-pkg',
+          'http://svn.mech.kuleuven.be/repos/orocos/trunk/kul-ros-pkg/': 'kul-ros-pkg',
+          'http://cornell-ros-pkg.googlecode.com/svn/trunk/': 'cornell-ros-pkg',
           'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
           }
 
