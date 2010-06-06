@@ -94,7 +94,7 @@ _repos = {
     'http://cornell-ros-pkg.googlecode.com/svn/trunk/': 'cornell-ros-pkg',
     'http://rice-ros-pkg.svn.sourceforge.net/svnroot/rice-ros-pkg/': 'rice-ros-pkg',
     'https://jsk-ros-pkg.svn.sourceforge.net/svnroot/jsk-ros-pkg/': 'jsk-ros-pkg',
-    'http://svn.openrobotino.org/trunk/ros/': 'openrobotino',
+    'http://svn.openrobotino.org': 'openrobotino',
     'http://robotics.ccny.cuny.edu/git/ccny-ros-pkg.git/': 'ccny-ros-pkg',
     }
 
