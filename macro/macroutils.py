@@ -90,7 +90,7 @@ _repos = {
     'http://code.google.com/p/cu-ros-pkg/':'cu-ros-pkg',
     'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
     'git://github.com/IHeartRobotics/iheart-ros-pkg.git':'iheart-ros-pkg',
-    'http://svn.mech.kuleuven.be/repos/orocos/trunk/kul-ros-pkg/': 'kul-ros-pkg',
+    'http://svn.mech.kuleuven.be/repos/orocos': 'kul-ros-pkg',
     'http://cornell-ros-pkg.googlecode.com/svn/trunk/': 'cornell-ros-pkg',
     'http://rice-ros-pkg.svn.sourceforge.net/svnroot/rice-ros-pkg/': 'rice-ros-pkg',
     'https://jsk-ros-pkg.svn.sourceforge.net/svnroot/jsk-ros-pkg/': 'jsk-ros-pkg',
