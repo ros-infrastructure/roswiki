@@ -97,7 +97,7 @@ _repos = {
     'https://jsk-ros-pkg.svn.sourceforge.net/svnroot/jsk-ros-pkg/': 'jsk-ros-pkg',
     'http://svn.openrobotino.org': 'openrobotino',
     'http://robotics.ccny.cuny.edu/git/ccny-ros-pkg.git/': 'ccny-ros-pkg',
-    'https://svn-agbkb.informatik.uni-bremen.de/dfki-sks-ros-pkg/': 'dfki-sks-ros-pkg',
+    'https://svn-agbkb.informatik.uni-bremen.de/dfki-sks-ros-pkg': 'dfki-sks-ros-pkg',
     }
 
 def get_repo_li(macro, props):
