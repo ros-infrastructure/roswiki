@@ -177,6 +177,11 @@ class Navigation:
           str = self.macro.formatter.strong(1) + self.macro.formatter.emphasis(1) + result[0] + self.macro.formatter.strong(0) + ": " + ' | '.join(result[1:]) + self.macro.formatter.emphasis(0)
         else:
           str = ' | '.join(result)
+
+        # wrap up the nav menu in a span so it's easier for rosmanual to find
+        if len(str) > 0:
+          str = self.macro.formatter.span(1, css_class="macro-nav-menu") + str + self.macro.formatter.span(0) + "\n"
+
         return str
 
 
