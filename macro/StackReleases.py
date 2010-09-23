@@ -1,6 +1,11 @@
 import urllib2
-from MoinMoin.Page import Page
-from MoinMoin.wikiutil import get_unicode
+try:
+    from MoinMoin.Page import Page
+    from MoinMoin.wikiutil import get_unicode
+except ImportError, e:
+    #enable external testing
+    Page = None
+    get_unicode = None
 
 from macroutils import load_stack_release, load_stack_manifest, UtilException, sub_link
 
@@ -47,29 +52,67 @@ def get_variants(distro, stack_name):
     return retval
       
 def get_rules(distro, stack_name):
-    """@param distro: rosdistro document"""
+    """
+    Retrieve rules from distro for specified stack This operates on
+    the raw distro dictionary document.
+
+    @param distro: rosdistro document
+    @type  distro: dict
+    @param stack_name: name of stack to get rules for
+    @type  stack_name: str
+    """
+
     if stack_name == 'ROS':
         stack_name = 'ros'
+        
+    # _rules: named section
+    named_rules_d = distro.get('_rules', {})
+    
     # there are three tiers of dictionaries that we look in for uri rules
     rules_d = [distro.get('stacks', {}),
                distro.get('stacks', {}).get(stack_name, {})]
     rules_d = [d for d in rules_d if d]
+
     # load the '_rules' from the dictionaries, in order
     props = {}
     for d in rules_d:
         if type(d) == dict:
-            props.update(d.get('_rules', {}))
+            update_r = d.get('_rules', {})
+            if type(update_r) == str:
+                try:
+                    update_r = named_rules_d[update_r]
+                except KeyError:
+                    raise DistroException("no _rules named [%s]"%(update_r))
+                
+            new_style = True
+            for k in ['distro-svn', 'release-svn', 'dev-svn']:
+                if k in update_r:
+                    new_style = False
+            if new_style:
+                # in new style, we do not do additive rules
+                if not type(update_r) == dict:
+                    raise Exception("invalid rules: %s %s"%(d, type(d)))
+                # ignore empty definition
+                if update_r:
+                    props = update_r
+            else:
+                # legacy: rules overlay higher level rules
+                if not type(update_r) == dict:
+                    raise Exception("invalid rules: %s %s"%(d, type(d)))
+                props.update(update_r)
 
     if not props:
         raise Exception("cannot load _rules")
     return props
 
 def expand_rules(props, release_name, stack_name, stack_version):
-  # currently ignore OS name/OS version. Will have to implement once we start doing rules for debs
-  props_copy = props.copy()
-  for k, v in props.iteritems():
-    props_copy[k] = expand_rule(v, stack_name, stack_version, release_name, '', '')
-  return props_copy
+    props_copy = props.copy()
+    for k, v in props.iteritems():
+        if type(v) == dict:
+            props_copy[k] = expand_rules(v, release_name, stack_name, stack_version, release_name)
+        else:
+            props_copy[k] = expand_rule(v, stack_name, stack_version, release_name, '', '')
+    return props_copy
     
 def init_stack_macro(stack_name, macro_name):
   try:
@@ -152,23 +195,35 @@ def macro_StackReleases(macro, arg1):
       variants = get_variants(release, stack_name)
       version = stack_props['version']
       props = expand_rules(rules, release_name, stack_name, version)
-      release_svn = props.get('release-svn', '')
-      distro_svn = props.get('distro-svn', '')
-      dev_svn = props.get('dev-svn', '')      
-        
+
       if variants:
           body += li(1) + "Variants: %s"%(', '.join(variants)) + li(0)
       body += li(1)+strong(1)+"Version: %s"%version+strong(0)+ul(1)
-      source_tarball = props.get('source-tarball', '')
-      if source_tarball:
-          body += li(1)+"Source Tarball: %s"%link(source_tarball)+li(0)
-      if release_svn:
-          body += li(1)+"SVN: %s"%link(release_svn)+li(0)
-      body += ul(0)+li(0)         
-      if distro_svn:
-          body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
-      if dev_svn:
-          body += li(1)+"Development branch: %s"%link(dev_svn)+li(0)
+      if 'svn' in props or 'release-svn' in props:
+          if 'svn' in props:
+              r = props['svn']
+              release_svn = props.get('release-tag', '')
+              distro_svn = props.get('distro-tag', '')
+              dev_svn = props.get('dev', '')      
+          else:
+              release_svn = props.get('release-svn', '')
+              distro_svn = props.get('distro-svn', '')
+              dev_svn = props.get('dev-svn', '')      
+        
+          if release_svn:
+              body += li(1)+"SVN: %s"%link(release_svn)+li(0)
+          body += ul(0)+li(0)         
+          if distro_svn:
+              body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
+          if dev_svn:
+              body += li(1)+"Development branch: %s"%link(dev_svn)+li(0)
+              
+      elif 'hg' in props:
+          r = props['hg']
+          body += li(1)+"URL: %s"%link(r['uri'])+li(0)
+          body += li(1)+"Development branch: %s"%r['dev-branch']+li(0)
+          body += li(1)+"Release tag: %s"%r['release-tag']+li(0)
+
       body += ul(0)
   
   return body
