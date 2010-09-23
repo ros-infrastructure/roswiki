@@ -109,7 +109,7 @@ def expand_rules(props, release_name, stack_name, stack_version):
     props_copy = props.copy()
     for k, v in props.iteritems():
         if type(v) == dict:
-            props_copy[k] = expand_rules(v, release_name, stack_name, stack_version, release_name)
+            props_copy[k] = expand_rules(v, release_name, stack_name, stack_version)
         else:
             props_copy[k] = expand_rule(v, stack_name, stack_version, release_name, '', '')
     return props_copy
@@ -149,7 +149,7 @@ def macro_StackReleases(macro, arg1):
     return str(e)
   
   releases = {}
-  release_names = ['latest', 'boxturtle', 'cturtle']
+  release_names = ['cturtle', 'boxturtle', 'unstable']
   for release_name in release_names:
     releases[release_name] = load_stack_release(release_name, stack_name)
   
@@ -202,9 +202,9 @@ def macro_StackReleases(macro, arg1):
       if 'svn' in props or 'release-svn' in props:
           if 'svn' in props:
               r = props['svn']
-              release_svn = props.get('release-tag', '')
-              distro_svn = props.get('distro-tag', '')
-              dev_svn = props.get('dev', '')      
+              release_svn = r.get('release-tag', '')
+              distro_svn = r.get('distro-tag', '')
+              dev_svn = r.get('dev', '')      
           else:
               release_svn = props.get('release-svn', '')
               distro_svn = props.get('distro-svn', '')
