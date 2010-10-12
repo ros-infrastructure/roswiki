@@ -55,15 +55,14 @@ def macro_RepoHeader(macro, arg1):
     packages = [s for s in packages if not s.startswith('test_')]
     packages.sort()
 
-    top = strong(1)+text(stack_name)+strong(0)
-
     package_links = []
     for pkg in packages:
       package_links.append(wiki_url(macro, pkg))
 
     
     stack_html = \
-        h(1,3)+text(stack_name)+h(0,3)+\
+        rawHTML('<a name="%s">'%(stack_name))+\
+        h(1,3)+rawHTML(wiki_url(macro, stack_name))+h(0,3)+\
         p(1,id="package-info")+rawHTML(description)+p(0)+\
         p(1,id="package-info")+ul(1)+\
         li(1)+text("Author: "+authors)+li(0)+\
@@ -72,11 +71,17 @@ def macro_RepoHeader(macro, arg1):
         ul(0)+p(0)
     stack_items.append(stack_html)
 
+
+  toc = ul(1)
+  for stack_name in stacks.iterkeys():
+    toc += li(1)+rawHTML('<a href="#%s">%s</a>'%(stack_name, stack_name))+li(0)
+  toc += ul(0)
   
   uri = vcs_config['uri']
   repo_desc = h(1,2)+text(repo_name+' stacks')+h(0,2)+\
       ul(1)+\
-      li(1)+text('Version Control: %s'%(vcs_config['type']))+rawHTML('<a href="%s">%s</a>'%(uri, uri))+li(0)+\
+      li(1)+text('Version Control: %s '%(vcs_config['type']))+rawHTML('<a href="%s">%s</a>'%(uri, uri))+li(0)+\
+      li(1)+text('Contents')+toc+li(0)+\
       ul(0)
 
   return repo_desc+'\n'.join(stack_items)
