@@ -12,7 +12,7 @@ def macro_RepoHeader(macro, arg1):
   if not repo_name:
     return "ERROR in RepoHeader. Usage: [[RepoHeader(repo_name)]]"
   try:
-      data = load_stack_manifest(stack_name, lang)
+      data = load_repo_manifest(repo_name)
   except UtilException, e:
       return str(e)
 
