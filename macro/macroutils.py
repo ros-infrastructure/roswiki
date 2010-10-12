@@ -116,10 +116,21 @@ def get_repo_li(macro, props):
     url = props.get('repository', 'unknown')
     vcs = props.get('vcs', None)
 
+    # TODO: once we deploy repo.yaml, the _repos[url] link can be removed
     if url in _repos:
         return '<li>Repository: '+wiki_url(macro,_repos[url])+' (<a href="%s">%s</a>)'%(url, url)+"</li>"
     else:
         return ''
+
+def get_vcs_li(macro, stack_data):
+  if 'vcs' in stack_data and 'vcs_uri' in stack_data:
+    type_ = stack_data['vcs']
+    uri = stack_data['vcs_uri']
+    f = macro.formatter
+    li = f.listitem
+    return li(1)+f.text(type_)+f.rawHTML(' <a href="%s">%s'%(uri, uri))+li(0)
+  else:
+    return ''
 
 def process_distro(stack_name, yaml_str):
     """

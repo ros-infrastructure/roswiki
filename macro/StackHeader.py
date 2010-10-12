@@ -55,17 +55,10 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
   packages = [s for s in packages if not s.startswith('test_')]
   packages.sort()
 
-  p = macro.formatter.paragraph
-  url = macro.formatter.url
-  div = macro.formatter.div
-  em = macro.formatter.emphasis
-  br = macro.formatter.linebreak
-  strong = macro.formatter.strong
-  li = macro.formatter.listitem
-  ul = macro.formatter.bullet_list
-  h = macro.formatter.heading
-  text = macro.formatter.text
-  rawHTML = macro.formatter.rawHTML
+  f = macro.formatter
+  p, url, div, em, strong, br = f.paragraph, f.url, f.div, f.emphasis, f.strong, f.linebreak
+  li, ul = f.listitem, f.bullet_list
+  h, text, rawHTML = f.heading, f.text, f.rawHTML
 
   top = strong(1)+text(stack_name)+strong(0)
   top += '<script type="text/javascript" src="/js/roswiki.js"></script>'
@@ -89,12 +82,16 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
   
   try:
     repo_li = get_repo_li(macro, data)
+    vcs_li = get_vcs_li(macro, data)
+    
     desc = macro.formatter.heading(1, 2, id="summary")+text('Stack Summary')+macro.formatter.heading(0, 2)+\
       p(1,id="package-info")+rawHTML(description)+p(0)+\
       p(1,id="package-info")+ul(1)+\
       li(1)+text("Author: "+authors)+li(0)+\
       li(1)+text("License: "+license)+li(0)+\
-      repo_li+ul(0)+p(0)
+      repo_li+\
+      vcs_li+\
+      ul(0)+p(0)
   except UnicodeDecodeError:
     desc = h(1, 2)+text("Stack Summary")+h(0,2)+p(1)+text('Error retrieving stack summary')+p(0)
   try:

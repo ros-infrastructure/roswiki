@@ -2,7 +2,7 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import wiki_url, get_repo_li, load_repo_manifest, sub_link, UtilException
+from macroutils import wiki_url, get_repo_li, get_vcs_li, load_repo_manifest, sub_link, UtilException
 
 generates_headings = True
 dependencies = []
@@ -59,7 +59,13 @@ def macro_RepoHeader(macro, arg1):
     for pkg in packages:
       package_links.append(wiki_url(macro, pkg))
 
-    
+    # don't include vcs link for git/bzr/hg/etc... as URI cannot point
+    # to stack directly in a DVCS, i.e. it's only useful for SVN
+    # stacks.
+    if data['vcs'] == 'svn':
+      vcs_li = get_vcs_li(macro, data)
+    else:
+      vcs_li = ''
     stack_html = \
         rawHTML('<a name="%s">'%(stack_name))+\
         h(1,3)+rawHTML(wiki_url(macro, stack_name))+h(0,3)+\
@@ -68,6 +74,7 @@ def macro_RepoHeader(macro, arg1):
         li(1)+text("Author: "+authors)+li(0)+\
         li(1)+text("License: "+license)+li(0)+\
         li(1)+text("Packages: ")+rawHTML(", ".join(package_links))+li(0)+\
+        vcs_li+\
         ul(0)+p(0)
     stack_items.append(stack_html)
 
