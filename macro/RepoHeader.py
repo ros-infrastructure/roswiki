@@ -69,7 +69,7 @@ def macro_RepoHeader(macro, arg1):
         li(1)+text("Author: "+authors)+li(0)+\
         li(1)+text("License: "+license)+li(0)+\
         li(1)+text("Packages: "+", ".join(package_links))+li(0)+\
-        p(0)
+        ul(0)+p(0)
     stack_items.append(stack_html)
 
   
