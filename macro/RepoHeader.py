@@ -2,7 +2,7 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import wiki_url, get_repo_li, load_stack_release, load_stack_manifest, sub_link, UtilException
+from macroutils import wiki_url, get_repo_li, load_repo_manifest, sub_link, UtilException
 
 generates_headings = True
 dependencies = []
@@ -63,7 +63,7 @@ def macro_RepoHeader(macro, arg1):
 
     
     stack_html = \
-        h3(1)+text(stack_name)+h3(0)+\
+        h(1,3)+text(stack_name)+h(0,3)+\
         p(1,id="package-info")+rawHTML(description)+p(0)+\
         p(1,id="package-info")+ul(1)+\
         li(1)+text("Author: "+authors)+li(0)+\
@@ -73,9 +73,9 @@ def macro_RepoHeader(macro, arg1):
     stack_items.append(stack_html)
 
   
-  repo_desc = h2(1)+text(repo_name+' stacks')+h2(0)+\
+  repo_desc = h(1,2)+text(repo_name+' stacks')+h(0,2)+\
       ul(1)+\
-      li(1)+text('Version Control: %s <a href="%s">'%(vcs_config['type'], vcs_config['uri']))+li(0)+\
+      li(1)+text('Version Control: %s'%(vcs_config['type'])+rawHTML('<a href="%s">'%(vcs_config['uri']))+li(0)+\
       ul(0)
 
   return repo_desc+'\n'.join(stack_items)
