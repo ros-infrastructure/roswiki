@@ -73,9 +73,10 @@ def macro_RepoHeader(macro, arg1):
     stack_items.append(stack_html)
 
   
+  uri = vcs_config['uri']
   repo_desc = h(1,2)+text(repo_name+' stacks')+h(0,2)+\
       ul(1)+\
-      li(1)+text('Version Control: %s'%(vcs_config['type'])+rawHTML('<a href="%s">'%(vcs_config['uri']))+li(0)+\
+      li(1)+text('Version Control: %s'%(vcs_config['type']))+rawHTML('<a href="%s">%s</a>'%(uri, uri))+li(0)+\
       ul(0)
 
   return repo_desc+'\n'.join(stack_items)
