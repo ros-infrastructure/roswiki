@@ -123,14 +123,14 @@ def get_repo_li(macro, props):
         return ''
 
 def get_vcs_li(macro, stack_data):
-  if 'vcs' in stack_data and 'vcs_uri' in stack_data:
-    type_ = stack_data['vcs']
-    uri = stack_data['vcs_uri']
-    f = macro.formatter
-    li = f.listitem
-    return li(1)+f.text(type_)+f.rawHTML(' <a href="%s">%s'%(uri, uri))+li(0)
-  else:
-    return ''
+    if 'vcs' in stack_data and 'vcs_uri' in stack_data:
+        type_ = stack_data['vcs']
+        uri = stack_data['vcs_uri']
+        f = macro.formatter
+        li = f.listitem
+        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s'%(uri, uri))+li(0)
+    else:
+        return ''
 
 def process_distro(stack_name, yaml_str):
     """
