@@ -33,7 +33,8 @@ def macro_RepoHeader(macro, arg1):
   rawHTML = macro.formatter.rawHTML
 
   stack_items = []
-  for stack_name,data in stacks.iteritems():
+  for stack_name in sorted(stacks.iterkeys()):
+    data = stacks[stack_name]
 
     # keys
     authors = data.get('authors', 'unknown')
@@ -80,7 +81,7 @@ def macro_RepoHeader(macro, arg1):
 
 
   toc = ul(1)
-  for stack_name in stacks.iterkeys():
+  for stack_name in sorted(stacks.iterkeys()):
     toc += li(1)+rawHTML('<a href="#%s">%s</a>'%(stack_name, stack_name))+li(0)
   toc += ul(0)
   

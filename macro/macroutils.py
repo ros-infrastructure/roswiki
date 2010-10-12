@@ -128,7 +128,7 @@ def get_vcs_li(macro, stack_data):
         uri = stack_data['vcs_uri']
         f = macro.formatter
         li = f.listitem
-        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s'%(uri, uri))+li(0)
+        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>'%(uri, uri))+li(0)
     else:
         return ''
 
