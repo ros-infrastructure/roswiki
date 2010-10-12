@@ -18,6 +18,12 @@ def stack_manifest_link(stack):
     """
     return doc_url + stack + "/stack.yaml"
 
+def repo_manifest_link(repo):
+    """
+    Generate link to repo.yaml for repository
+    """
+    return doc_url + repo + "/repo.yaml"
+
 def package_manifest_link(package):
     """
     Generate link to manifest.yaml for package
@@ -183,6 +189,15 @@ def load_package_manifest(package_name, lang=None):
         except:
              pass
     return data
+
+def load_repo_manifest(repo_name):
+    """
+    Load repo.yaml properties into dictionary for package
+    @param lang: optional language argument for localization, e.g. 'ja'
+    @return: manifest properties dictionary
+    @raise UtilException: if unable to load. Text of error message is human-readable
+    """
+    return _load_manifest(repo_manifest_link(repo_name), repo_name)
 
 def load_stack_manifest(stack_name, lang=None):
     """
