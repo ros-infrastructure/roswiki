@@ -1,4 +1,7 @@
+from __future__ import with_statement
+
 import sys
+import yaml
 try:
     from MoinMoin.Page import Page
 except ImportError:
@@ -137,7 +140,6 @@ def process_distro(stack_name, yaml_str):
     @return: distro properties, stack properties. Stack properties
     is just for convenience as it is part of distro properties
     """
-    import yaml
     distro = yaml.load(yaml_str)
     return distro, distro['stacks'][stack_name]
 
@@ -164,10 +166,6 @@ def _load_manifest(url, name):
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    try:
-        import yaml
-    except:
-        raise UtilException('python-yaml is not installed on the wiki. Please have an admin install on this machine')
     try:
         usock = urllib2.urlopen(url)
         data = usock.read()
@@ -208,7 +206,13 @@ def load_repo_manifest(repo_name):
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    return _load_manifest(repo_manifest_link(repo_name), repo_name)
+    filename = '/var/www/www.ros.org/html/doc/api/%s/repo.yaml'%(repo_name)
+    with open(filename) as f:
+        data = yaml.load(f)
+    if not data:
+        raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
+    return data
+
 
 def load_stack_manifest(stack_name, lang=None):
     """
