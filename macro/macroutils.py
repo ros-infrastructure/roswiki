@@ -9,6 +9,8 @@ except ImportError:
 
 doc_url = "http://ros.org/doc/api/"
 
+doc_path = '/var/www/www.ros.org/html/doc/api/'
+
 class UtilException(Exception): pass
 
 def ahref(url, text):
@@ -21,6 +23,18 @@ def stack_manifest_link(stack):
     """
     return doc_url + stack + "/stack.yaml"
 
+def stack_manifest_file(stack):
+    """
+    Generate filesystem path to stack.yaml for package
+    """
+    return os.path.join(doc_path, stack, "stack.yaml")
+
+def repo_manifest_file(repo):
+    """
+    Generate filesystem path to stack.yaml for package
+    """
+    return os.path.join(doc_path, repo, "repo.yaml")
+
 def repo_manifest_link(repo):
     """
     Generate link to repo.yaml for repository
@@ -32,6 +46,12 @@ def package_manifest_link(package):
     Generate link to manifest.yaml for package
     """
     return doc_url + package + "/manifest.yaml"
+
+def package_manifest_file(package):
+    """
+    Generate filesystem path to manifest.yaml for package
+    """
+    return os.path.join(doc_path, package, "manifest.yaml")
 
 def package_html_link(package):
     """
@@ -177,6 +197,27 @@ def _load_manifest(url, name):
         raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
     return data
     
+def _load_manifest_file(filename, name):
+    """
+    Load manifest.yaml properties into dictionary for package
+    @param filename: file to load manifest data from
+    @param name: printable name (for debugging)
+    @return: manifest properties dictionary
+    @raise UtilException: if unable to load. Text of error message is human-readable
+    """
+    if not os.path.exists(filename):
+        raise UtilException('Newly proposed, mistyped, or obsolete package. Could not find package "' + name + '" in rosdoc')
+
+    try:
+        with open(filename) as f:
+            data = yaml.load(f)
+    except:
+        raise UtilException("Error loading manifest data")        
+
+    if not data:
+        raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
+    return data
+
 def load_package_manifest(package_name, lang=None):
     """
     Load manifest.yaml properties into dictionary for package
@@ -184,7 +225,7 @@ def load_package_manifest(package_name, lang=None):
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_manifest(package_manifest_link(package_name), package_name)
+    data = _load_manifest_file(package_manifest_file(package_name), package_name)
     if lang is not None and lang != 'en':
         try:
             import yaml
@@ -206,9 +247,7 @@ def load_repo_manifest(repo_name):
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    filename = '/var/www/www.ros.org/html/doc/api/%s/repo.yaml'%(repo_name)
-    with open(filename) as f:
-        data = yaml.load(f)
+    data = _load_manifest_file(repo_manifest_file(repo_name), repo_name)
     if not data:
         raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
     return data
@@ -221,7 +260,7 @@ def load_stack_manifest(stack_name, lang=None):
     @return: stack manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_manifest(stack_manifest_link(stack_name), stack_name)
+    data = _load_manifest_file(stack_manifest_file(stack_name), stack_name)
     if lang is not None and lang != 'en':
         try:
             import yaml
