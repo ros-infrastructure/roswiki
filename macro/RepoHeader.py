@@ -12,13 +12,13 @@ def macro_RepoHeader(macro, arg1):
   if not repo_name:
     return "ERROR in RepoHeader. Usage: [[RepoHeader(repo_name)]]"
   try:
-      data = load_repo_manifest(repo_name)
+      repo_data = load_repo_manifest(repo_name)
   except UtilException, e:
       return str(e)
 
-  vcs_config = data['vcs']
+  vcs_config = repo_data['vcs']
   
-  stacks = data['stacks']
+  stacks = repo_data['stacks']
 
   p = macro.formatter.paragraph
   url = macro.formatter.url
@@ -35,6 +35,7 @@ def macro_RepoHeader(macro, arg1):
   stack_items = []
   for stack_name in sorted(stacks.iterkeys()):
     data = stacks[stack_name]
+    data['vcs'] = vcs_config['type']
 
     # keys
     authors = data.get('authors', 'unknown')
@@ -63,7 +64,7 @@ def macro_RepoHeader(macro, arg1):
     # don't include vcs link for git/bzr/hg/etc... as URI cannot point
     # to stack directly in a DVCS, i.e. it's only useful for SVN
     # stacks.
-    if data['vcs'] == 'svn':
+    if vcs_config['type'] == 'svn':
       vcs_li = get_vcs_li(macro, data)
     else:
       vcs_li = ''
