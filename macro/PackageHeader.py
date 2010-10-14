@@ -122,22 +122,6 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
       ul(1)+li(1)+text("Author: %s"%authors)+li(0)+\
       li(1)+text("License: %s"%license)+li(0)+\
       repo_li+ul(0)+p(0)
-    if package_name:
-      repo_change =True
-      page= Page(macro.request, package_name)
-      pageeditor=PageEditor(macro.request, package_name)
-      savetext = page.get_raw_body()
-      lines = savetext.splitlines()
-      lines = [line.strip() for line in lines]
-      for line in lines: 
-        if line.startswith('## repository: %s'%repository):
-          repo_change=False
-    
-      if repo_change ==True:
-        lines = [line for line in lines if not line.startswith('## repository:')]
-        savetext = u"## repository: %s\n%s" % (repository, "\n".join(lines))
-        pageeditor.saveText(savetext, 0, action='SAVE', notify=False)
-
 
   except UnicodeDecodeError:
     package_desc = h(1, 2)+text('Package Summary')+h(0, 2)+\
