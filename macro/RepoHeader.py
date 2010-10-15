@@ -7,7 +7,7 @@ from macroutils import wiki_url, get_repo_li, get_vcs_li, load_repo_manifest, su
 generates_headings = True
 dependencies = []
 
-def get_items(macro, repo_data):
+def get_stack_items(macro, repo_data):
     f = macro.formatter
     p, url, div, br = f.paragraph, f.url, f.div, f.linebreak
     em, strong = f.emphasis, f.strong
