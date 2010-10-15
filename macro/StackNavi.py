@@ -121,7 +121,7 @@ def macro_StackNavi(macro, arg1):
     desc = h(1, 2)+text("Stack Summary")+h(0,2)+p(1)+text('Error retrieving stack summary')+p(0)
   #TODO: Changelist, Roadmap, Releases
   try:
-    links = div(1, id="package-links")+strong(1)+text('Stack Links')+strong(0)+\
+    links = div(1, css_class="package-links")+strong(1)+text('Stack Links')+strong(0)+\
       ul(1)+\
       li(1)+tutorials+li(0)+\
       li(1)+troubleshooting+li(0)+\
@@ -132,7 +132,7 @@ def macro_StackNavi(macro, arg1):
   #TODO
   #<li><a href="%(dependency_tree)s">Dependency Tree</a></li>
   except UnicodeDecodeError:
-    links = div(1, id="package-links")+div(0)
+    links = div(1, css_class="package-links")+div(0)
 
   if depends:
     depends.sort()

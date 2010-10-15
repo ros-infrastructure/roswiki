@@ -95,7 +95,7 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
   except UnicodeDecodeError:
     desc = h(1, 2)+text("Stack Summary")+h(0,2)+p(1)+text('Error retrieving stack summary')+p(0)
   try:
-    links = div(1, id="package-links")+strong(1)+text('Stack Links')+strong(0)+\
+    links = div(1, css_class="package-links")+strong(1)+text('Stack Links')+strong(0)+\
       ul(1)+\
       li(1)+sub_link(macro, stack_name, 'Tutorials')+li(0)+\
       li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)+\
@@ -105,7 +105,7 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
       li(1)+review_str+li(0)+\
       ul(0)
   except UnicodeDecodeError:
-    links = div(1, id="package-links")+div(0)
+    links = div(1, css_class="package-links")+div(0)
 
   if depends:
     depends.sort()

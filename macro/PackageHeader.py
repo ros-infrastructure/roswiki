@@ -128,7 +128,7 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
       p(1)+text('Error retrieving package summary')+p(0)
 
   try:
-    package_links = div(1, id="package-links")+\
+    package_links = div(1, css_class="package-links")+\
       strong(1)+text("Package Links")+strong(0)+\
       ul(1)+\
       li(1)+strong(1)+url(1, url=package_url)+text("Code API")+url(0)+strong(0)+li(0)+msg_doc+\
@@ -139,7 +139,7 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
       li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
       ul(0)
   except UnicodeDecodeError:
-    package_links = div(1, id="package-links")+div(0)
+    package_links = div(1, css_class="package-links")+div(0)
 
   if depends:
     depends.sort()
