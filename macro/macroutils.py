@@ -110,7 +110,8 @@ def get_vcs_li(macro, stack_data):
     if 'vcs' in stack_data and 'vcs_uri' in stack_data:
         type_ = stack_data['vcs']
         uri = stack_data['vcs_uri']
-        li = macro.formatter.listitem
+        f = macro.formatter
+        li = f.listitem
         return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>'%(uri, uri))+li(0)
     else:
         return ''
