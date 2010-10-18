@@ -2,7 +2,7 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import wiki_url, get_repo_li, load_stack_release, load_stack_manifest, sub_link, UtilException
+from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, load_stack_manifest, sub_link, UtilException
 
 generates_headings = True
 dependencies = []

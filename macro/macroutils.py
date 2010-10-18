@@ -94,55 +94,15 @@ def wiki_url(macro, page,shorten=None):
         page_text = page[:shorten]+'...'
     return Page(macro.request, page).link_to(macro.request, text=page_text)
 
-# reverse map of URLs to wiki page names
-_repos = {
-    'https://sail-ros-pkg.svn.sourceforge.net/svnroot/sail-ros-pkg/trunk': 'sail-ros-pkg',
-    'http://alufr-ros-pkg.googlecode.com/svn':'alufr-ros-pkg',
-    'http://ajh-ros-pkg.sourceforge.net/':'ajh-ros-pkg',
-    'http://brown-ros-pkg.googlecode.com/svn':'brown-ros-pkg',
-    'https://bosch-ros-pkg.svn.sourceforge.net/svnroot/bosch-ros-pkg':'bosch-ros-pkg',
-    'git://github.com/ipa320/care-o-bot.git':'care-o-bot',
-    'http://github.com/ipa320/care-o-bot.git':'care-o-bot',
-    'http://cmu-ros-pkg.sourceforge.net/':'cmu-ros-pkg',
-    'http://foote-ros-pkg.googlecode.com/svn':'foote-ros-pkg',
-    'http://gt-ros-pkg.googlecode.com/svn':'gt-ros-pkg',
-    'http://code.google.com/p/lis-ros-pkg/':'lis-ros-pkg',
-    'http://prairiedog.googlecode.com/svn':'prairiedog-ros-pkg',
-    'https://code.ros.org/svn/ros':'ros',
-    'http://ros-engagement.sourceforge.net/':'ros-engagement',
-    'https://code.ros.org/svn/ros-pkg':'ros-pkg',
-    'https://tum-ros-pkg.svn.sourceforge.net/svnroot/tum-ros-pkg':'tum-ros-pkg',
-    'http://ua-ros-pkg.googlecode.com/svn':'ua-ros-pkg',
-    'git://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
-    'http://ram.umd.edu/umd-ros-pkg.git': 'umd-ros-pkg',
-    'http://utexas-art-ros-pkg.googlecode.com/svn':'utexas-art-ros-pkg',
-    'https://code.ros.org/svn/wg-ros-pkg':'wg-ros-pkg',
-    'http://code.google.com/p/cu-ros-pkg/':'cu-ros-pkg',
-    'https://wu-ros-pkg.svn.sourceforge.net/svnroot/wu-ros-pkg':'wu-ros-pkg',
-    'git://github.com/IHeartRobotics/iheart-ros-pkg.git':'iheart-ros-pkg',
-    'http://svn.mech.kuleuven.be/repos/orocos': 'kul-ros-pkg',
-    'http://svn.mech.kuleuven.be/repos/orocos/trunk/kul-ros-pkg': 'kul-ros-pkg',
-    'http://cornell-ros-pkg.googlecode.com/svn/trunk/': 'cornell-ros-pkg',
-    'http://rice-ros-pkg.svn.sourceforge.net/svnroot/rice-ros-pkg/': 'rice-ros-pkg',
-    'https://jsk-ros-pkg.svn.sourceforge.net/svnroot/jsk-ros-pkg/': 'jsk-ros-pkg',
-    'http://svn.openrobotino.org': 'openrobotino',
-    'http://robotics.ccny.cuny.edu/git/ccny-ros-pkg.git/': 'ccny-ros-pkg',
-    'https://svn-agbkb.informatik.uni-bremen.de/dfki-sks-ros-pkg': 'dfki-sks-ros-pkg',
-    'http://isr-uc-ros-pkg.googlecode.com/svn': 'isr-uc-ros-pkg',
-    'http://nxt.foote-ros-pkg.googlecode.com/hg':'nxt-foote-ros-pkg',
-    }
-
 def get_repo_li(macro, props):
-    """get list item HTML for repository URL
+    """
+    Get list item HTML for repository URL
     @param macro: Moin macro object
     @param props: package/stack manifest dictionary
     """
-    url = props.get('repository', 'unknown')
-    vcs = props.get('vcs', None)
-
-    # TODO: once we deploy repo.yaml, the _repos[url] link can be removed
-    if url in _repos:
-        return '<li>Repository: '+wiki_url(macro,_repos[url])+' (<a href="%s">%s</a>)'%(url, url)+"</li>"
+    if 'repository' in props:
+        li = macro.formatter.listitem
+        return li(1)+wiki_url(macro, props['repository'])+li(0)
     else:
         return ''
 
@@ -150,8 +110,7 @@ def get_vcs_li(macro, stack_data):
     if 'vcs' in stack_data and 'vcs_uri' in stack_data:
         type_ = stack_data['vcs']
         uri = stack_data['vcs_uri']
-        f = macro.formatter
-        li = f.listitem
+        li = macro.formatter.listitem
         return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>'%(uri, uri))+li(0)
     else:
         return ''

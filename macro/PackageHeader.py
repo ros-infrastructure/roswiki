@@ -1,9 +1,8 @@
 import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
-from MoinMoin.PageEditor import PageEditor
 
-from macroutils import wiki_url, get_repo_li, load_stack_release, msg_doc_link, load_package_manifest, package_html_link, UtilException
+from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, msg_doc_link, load_package_manifest, package_html_link, UtilException
 
 generates_headings = True
 dependencies = []
@@ -42,21 +41,14 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
   if 'ros.org' in external_documentation or 'pr.willowgarage.com' in external_documentation:
      external_documentation = u''
   api_documentation = data.get('api_documentation', '')
-  repository = data.get('repository', 'unknown')
-  stack = data.get('stack', None)
 
-  p = macro.formatter.paragraph
-  url = macro.formatter.url
-  div = macro.formatter.div
-  em = macro.formatter.emphasis
-  br = macro.formatter.linebreak
-  strong = macro.formatter.strong
-  li = macro.formatter.listitem
-  ul = macro.formatter.bullet_list
-  h = macro.formatter.heading
-  text = macro.formatter.text
-  rawHTML = macro.formatter.rawHTML
-  comment = macro.formatter.comment
+  f = macro.formatter
+  p, url, div = f.paragraph, f.url, f.div
+  em, strong, br = f.emphasis, f.strong, f.linebreak
+  li, ul = f.listitem, f.bullet_list
+  h = f.heading
+  text, rawHTML = f.text, f.rawHTML
+  comment = f.comment
 
   if stack and stack.lower() not in ['ros', 'sandbox']:
     # set() logic is to get around temporary bug
@@ -115,13 +107,17 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
     external_documentation = li(1)+strong(1)+url(1, url=external_documentation)+text("External Documentation")+url(0)+strong(0)+li(0)
   
   try:
-    repo_li = get_repo_li(macro, data) 
+    repo_li = get_repo_li(macro, data)
+    vcs_li = get_vcs_li(macro, data)
+
     package_desc = h(1, 2, id="first")+text('Package Summary')+h(0, 2)+\
       p(1, css_id="package-info")+rawHTML(description)+p(0)+\
       p(1, id="package-info")+\
       ul(1)+li(1)+text("Author: %s"%authors)+li(0)+\
       li(1)+text("License: %s"%license)+li(0)+\
-      repo_li+ul(0)+p(0)
+      repo_li+\
+      vcs_li+\
+      ul(0)+p(0)
 
   except UnicodeDecodeError:
     package_desc = h(1, 2)+text('Package Summary')+h(0, 2)+\
