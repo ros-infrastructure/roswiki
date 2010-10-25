@@ -130,7 +130,10 @@ def load_stack_release(release_name, stack_name):
         stack_name = 'ros'
     try:
         import urllib2
-        usock = urllib2.urlopen('http://ros.org/distros/%s.rosdistro'%release_name)
+        if release_name == 'boxturtle':
+            usock = urllib2.urlopen('http://ros.org/distros/%s.rosdistro'%release_name)
+        else:
+            usock = urllib2.urlopen('https://code.ros.org/svn/release/trunk/distros/%s.rosdistro'%release_name)
         rosdistro_str = usock.read()
         usock.close()
         release, stack_props = process_distro(stack_name, rosdistro_str)
