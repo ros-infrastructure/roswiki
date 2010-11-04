@@ -26,7 +26,7 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
 
   # try to locate stack within any known release
   stack_props = None
-  for release_name in ['latest', 'boxturtle']:
+  for release_name in ['cturtle', 'unstable', 'boxturtle']:
       if not stack_props:
           _, stack_props = load_stack_release(release_name, stack_name)
 
