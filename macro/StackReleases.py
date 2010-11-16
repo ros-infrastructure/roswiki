@@ -18,7 +18,8 @@ def expand_rule(rule, stack_name, stack_ver, release_name, os_name, os_ver):
     if stack_name == 'ROS':
         stack_name = 'ros'
     s = rule.replace('$STACK_NAME', stack_name)
-    s =    s.replace('$STACK_VERSION', stack_ver)
+    if stack_ver:
+        s =    s.replace('$STACK_VERSION', stack_ver)
     s =    s.replace('$RELEASE_NAME', release_name)
     s =    s.replace('$OS_NAME', os_name)
     s =    s.replace('$OS_VERSION', os_ver)
