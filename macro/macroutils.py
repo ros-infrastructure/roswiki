@@ -101,8 +101,9 @@ def get_repo_li(macro, props):
     @param props: package/stack manifest dictionary
     """
     if 'repository' in props:
-        li = macro.formatter.listitem
-        return li(1)+wiki_url(macro, props['repository'])+li(0)
+        f = macro.formatter
+        li = f.listitem
+        return li(1)+f.text("Repository: ")+wiki_url(macro, props['repository'])+li(0)
     else:
         return ''
 
