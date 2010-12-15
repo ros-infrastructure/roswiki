@@ -112,11 +112,11 @@ def get_vcs_li(macro, stack_data):
         type_ = stack_data['vcs']
         uri_display = uri = stack_data['vcs_uri']
         # link goes to browsable version of repo if github
-        if uri.startswith('https://github.com/') and uri.endswith('.git'):
+        if '//github.com/' in uri and uri.endswith('.git'):
             uri = uri[:-4]
         f = macro.formatter
         li = f.listitem
-        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>'%(uri_display, uri))+li(0)
+        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>'%(uri, uri_display))+li(0)
     else:
         return ''
 
