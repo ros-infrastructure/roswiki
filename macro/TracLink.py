@@ -9,9 +9,9 @@ def execute(macro, args):
     extra_args=""
 
   f = macro.formatter
-  t = f.text
+  text = f.text
   url = f.url
   base = "https://code.ros.org/trac/%s/"%(project)
   base_q = base + "query?component=%s&status=assigned&status=new&status=reopened"%(component)
   base_new = base + "newticket?component=%s"%(component)
-  return text("Use trac to ") + url(1, base_new+"&type=defect&%s"%(extra_args)) + text("report bugs") + url(0) + text(" or ") + url(1, base_new+"&type=enhancement%s"%(extra_args)) + text("request features") + url(0) + text("(") + url(1,base_q) + text("(View active tickets)") + url(0) + text(")") + f.linebreak(0)
+  return text("Use trac to ") + url(1, base_new+"&type=defect&%s"%(extra_args)) + text("report bugs") + url(0) + text(" or ") + url(1, base_new+"&type=enhancement%s"%(extra_args)) + text("request features") + url(0) + text(".  [") + url(1,base_q) + text("View active tickets") + url(0) + text("]") + f.linebreak(0)
