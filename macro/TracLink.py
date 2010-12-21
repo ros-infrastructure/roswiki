@@ -8,4 +8,10 @@ def execute(macro, args):
   else:
     extra_args=""
 
-  return macro.formatter.text("Use trac to ") + macro.formatter.url(1, "https://code.ros.org/trac/%s/newticket?component=%s&type=defect&%s"%(project, component, extra_args)) + macro.formatter.text("report bugs") + macro.formatter.url(0) + macro.formatter.text(" or ") + macro.formatter.url(1, "https://code.ros.org/trac/%s/newticket?component=%s&type=enhancement%s"%(project, component, extra_args)) + macro.formatter.text("request features") + macro.formatter.url(0) + macro.formatter.linebreak(0)
+  f = macro.formatter
+  t = f.text
+  url = f.url
+  base = "https://code.ros.org/trac/%s/"%(project)
+  base_q = base + "query?component=%s&status=assigned&status=new&status=reopened"%(component)
+  base_new = base + "newticket?component=%s"%(component)
+  return text("Use trac to ") + url(1, base_new+"&type=defect&%s"%(extra_args)) + text("report bugs") + url(0) + text(" or ") + url(1, base_new+"&type=enhancement%s"%(extra_args)) + text("request features") + url(0) + text("(") + url(1,base_q) + text("(View active tickets)") + url(0) + text(")") + f.linebreak(0)
