@@ -50,7 +50,7 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
   text, rawHTML = f.text, f.rawHTML
   comment = f.comment
 
-  if stack and stack.lower() not in ['ros', 'sandbox']:
+  if stack and stack.lower() not in ['sandbox']:
     # set() logic is to get around temporary bug
     siblings = list(set(data.get('siblings', [])))
     # filter out test packages
