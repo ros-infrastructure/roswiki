@@ -1,7 +1,7 @@
 #To change the set of active distros:
 # 1) Change the below line
 
-distros = ['boxturtle', 'cturtle', 'unstable']
+distros = ['diamondback', 'boxturtle', 'cturtle', 'unstable']
 
 # 2) Change which distro is open by default in RosVersion.js (on the ros.org wiki, this should be at /usr/share/moin/htdocs/common/js, but ymmv
 #
