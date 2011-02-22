@@ -19,8 +19,8 @@ def execute(macro, args):
 
     if args:
       version = str(args)    
-      if version == 'D' or version == 'D Turtle' or version == 'Diamondback':
-        return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Diamondback (unstable)</span>'
+      if version.lower() in ['electric', 'electric turtle']:
+        return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Electric Turtle (unstable)</span>'
       else:
         return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">New in %s</span>'%version
 
@@ -36,10 +36,4 @@ def execute(macro, args):
 
     html = "\n".join([distro_html(distro, distros) for distro in distros])
     return macro.formatter.rawHTML(html)
-
-
-
-
-
-
 
