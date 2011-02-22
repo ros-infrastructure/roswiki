@@ -223,12 +223,21 @@ def macro_StackReleases(macro, arg1):
               body += li(1)+"Development branch: %s"%link(dev_svn)+li(0)
           body += ul(0)
               
-      elif 'hg' in props:
-          r = props['hg']
-          body += li(1)+"URL: %s"%link(r['uri'])+li(0)
+      elif 'hg' in props or 'git' in props:
+          if 'hg' in props:
+              r = props['hg']
+          else:
+              r = props['git']
+
+          if 'anon-uri' in r:
+              uri = r['anon-uri']
+          else:
+              uri = r['uri']
+
+          body += li(1)+"URL: %s"%link(uri)+li(0)
           body += li(1)+"Development branch: %s"%r['dev-branch']+li(0)
           body += li(1)+"Release tag: %s"%r['release-tag']+li(0)
 
-      body += ul(0)
+      body += ul(0) + li(0) + ul(0)
   
   return body
