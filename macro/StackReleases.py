@@ -189,13 +189,16 @@ def macro_StackReleases(macro, arg1):
       if not stack_props:
           continue
       
-      body += h(1, 3)+"Distribution: %s"%release_name+h(0, 3)+\
-          ul(1)
-
       rules = get_rules(release, stack_name)
       variants = get_variants(release, stack_name)
       version = stack_props['version']
       props = expand_rules(rules, release_name, stack_name, version)
+
+      if version is None:
+          continue
+      
+      body += h(1, 3)+"Distribution: %s"%release_name+h(0, 3)+\
+          ul(1)
 
       if variants:
           body += li(1) + "Variants: %s"%(', '.join(variants)) + li(0)
@@ -218,6 +221,7 @@ def macro_StackReleases(macro, arg1):
               body += li(1)+"SVN: %s"%link(distro_svn)+li(0)
           if dev_svn:
               body += li(1)+"Development branch: %s"%link(dev_svn)+li(0)
+          body += ul(0)
               
       elif 'hg' in props:
           r = props['hg']
