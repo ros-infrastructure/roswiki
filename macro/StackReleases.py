@@ -150,7 +150,7 @@ def macro_StackReleases(macro, arg1):
     return str(e)
   
   releases = {}
-  release_names = ['cturtle', 'boxturtle', 'unstable']
+  release_names = ['diamondback', 'cturtle', 'boxturtle', 'unstable']
   for release_name in release_names:
     releases[release_name] = load_stack_release(release_name, stack_name)
   
