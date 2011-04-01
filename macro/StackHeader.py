@@ -79,7 +79,7 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
   # - links
   releases_link = li(1)+Page(macro.request, '%s/Releases'%stack_name).link_to(macro.request, text='Releases')+li(0) if stack_props else ''
   review_str = sub_link(macro, stack_name, 'Reviews') + text(' ('+review_status+')')
-  
+  faq_link = li(1)+url(1, url='http://answers.ros.org/questions/?tags=%s'%stack_name)+text("FAQ")+url(0)+li(0)  
   try:
     repo_li = get_repo_li(macro, data)
     vcs_li = get_vcs_li(macro, data)
@@ -99,6 +99,7 @@ def macro_StackHeader(macro, arg1, arg2='ja'):
       ul(1)+\
       li(1)+sub_link(macro, stack_name, 'Tutorials')+li(0)+\
       li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)+\
+      faq_link+\
       releases_link+\
       li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)+\
       li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
