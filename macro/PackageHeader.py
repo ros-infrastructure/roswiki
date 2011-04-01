@@ -41,6 +41,7 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
   if 'ros.org' in external_documentation or 'pr.willowgarage.com' in external_documentation:
      external_documentation = u''
   api_documentation = data.get('api_documentation', '')
+  stack = data.get('stack', None)
 
   f = macro.formatter
   p, url, div = f.paragraph, f.url, f.div
@@ -99,6 +100,7 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
     msg_doc = text('')
 
   troubleshooting = Page(macro.request, '%s/Troubleshooting'%package_name).link_to(macro.request, text='Troubleshooting')
+  faq = url(1, url='http://answers.ros.org/questions/?tags=%s'%package_name)+text("FAQ")+url(0)
   tutorials = Page(macro.request, '%s/Tutorials'%package_name).link_to(macro.request, text='Tutorials')
   review_link = Page(macro.request, '%s/Reviews'%package_name).link_to(macro.request, text='Reviews')
   review_str = '%(review_link)s (%(review_status)s)'%locals()
@@ -131,6 +133,7 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
       external_documentation+\
       li(1)+tutorials+li(0)+\
       li(1)+troubleshooting+li(0)+\
+      li(1)+faq+li(0)+\
       li(1)+review_str+li(0)+\
       li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
       ul(0)
