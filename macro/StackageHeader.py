@@ -1,5 +1,6 @@
 import urllib2
 from MoinMoin.Page import Page
+from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_stack_release, \
      load_package_manifest, UtilException, load_stack_manifest

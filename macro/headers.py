@@ -164,7 +164,7 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
         links = div(1, css_class="package-links")+strong(1)+text('Stack Links')+strong(0)+\
                 ul(1)+\
                 tutorials_link+\
-                troubleshooting_link+\                
+                troubleshooting_link+\
                 releases_link+\
                 li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)+\
                 li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
@@ -186,7 +186,7 @@ def get_dependency_list(data, css_prefix=''):
         links += strong(1)+\
                  '<a href="#" onClick="toggleExpandable(\'%sdependencies-list\');">Dependencies</a> (%s)'%(css_prefix, len(depends))+\
                  strong(0)+'<br />'+\
-                 '<div id="dependencies-list" style="display:none">'+\
+                 '<div id="%sdependencies-list" style="display:none">'%(css_prefix)+\
                  ul(1)
         for d in depends:
             links += li(1)+wiki_url(macro,d,shorten=20)+li(0)
@@ -196,13 +196,14 @@ def get_dependency_list(data, css_prefix=''):
         links += strong(1)+\
                  '<a href="#" onClick="toggleExpandable(\'%sused-by-list\');">Used by</a> (%s)'%(css_prefix, len(depends_on))+\
                  strong(0)+"<br />"+\
-                 '<div id="used-by-list" style="display:none">'+ul(1) 
+                 '<div id="%sused-by-list" style="display:none">'%(css_prefix)+ul(1) 
         for d in depends_on:
             links += li(1)+wiki_url(macro,d,shorten=20)+li(0)
         links += ul(0)+div(0)
         
     return links
 
+from MoinMoin.wikiutil import get_unicode
 def macro_PackageHeader(macro, arg1, arg2='en'):
     package_name = get_unicode(macro.request, arg1)
     lang = get_unicode(macro.request, arg2)
