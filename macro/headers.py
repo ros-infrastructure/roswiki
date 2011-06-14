@@ -129,6 +129,9 @@ def get_package_links(macro, package_name, data):
     else:
         troubleshooting = ''
         
+    # not used anymore
+    # dependency_tree = li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
+                        
     try:
         package_links = div(1, css_class="package-links")+\
                         strong(1)+text("Package Links")+strong(0)+\
@@ -139,7 +142,6 @@ def get_package_links(macro, package_name, data):
                         troubleshooting+\
                         li(1)+url(1, url='http://answers.ros.org/questions/?tags=%s'%(package_name))+text("FAQ")+url(0)+li(0)+\
                         li(1)+review_str+li(0)+\
-                        #li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
                         ul(0)
     except UnicodeDecodeError:
         package_links = div(1, css_class="package-links")
