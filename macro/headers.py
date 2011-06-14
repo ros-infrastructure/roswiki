@@ -118,7 +118,7 @@ def get_package_links(macro, package_name, data):
         msg_doc = text('')
     
     package_url = package_html_link(package_name)
-    review_str = sub_link(macro, package_name, 'Reviews') + + text(' ('+review_status+')')
+    review_str = sub_link(macro, package_name, 'Reviews') + text(' ('+review_status+')')
     dependency_tree = data.get('dependency_tree', '')
     if external_documentation:
         external_documentation = li(1)+strong(1)+url(1, url=external_documentation)+text("External Documentation")+url(0)+strong(0)+li(0)
