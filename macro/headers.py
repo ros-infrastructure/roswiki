@@ -49,7 +49,7 @@ def is_stack_released(stack_name):
             _, stack_props = load_stack_release(release_name, stack_name)
     return bool(stack_props)
     
-def get_description(macro, data, description, type_):
+def get_description(macro, data, type_):
     # keys
     authors = data.get('authors', 'unknown')
     try:
