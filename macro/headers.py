@@ -159,8 +159,6 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     else:
         troubleshooting_link = review_link = tutorials_link = ''
 
-    desc = get_description(macro, data, 'stack')
-    
     try:
         links = div(1, css_class="package-links")+strong(1)+text('Stack Links')+strong(0)+\
                 ul(1)+\
@@ -178,7 +176,8 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     return links
     
 def get_dependency_list(macro, data, css_prefix=''):
-    li, ul, strong = f.listitem, f.bullet_list, f.strong
+    f = macro.formatter
+    li, ul, strong, div = f.listitem, f.bullet_list, f.strong, f.div
     
     depends = data.get('depends', [])
     depends_on = data.get('depends_on', [])

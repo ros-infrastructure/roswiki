@@ -29,6 +29,7 @@ def macro_StackageHeader(macro, arg1, arg2='ja'):
     packages = data.get('packages', [])
     is_unary = [stack_name] == packages
     
+    desc = get_description(macro, data, 'stack')
     nav = get_nav(macro, stack_name, packages)
     links = get_stack_links(macro, stack_name, data, packages, is_unary)
 
