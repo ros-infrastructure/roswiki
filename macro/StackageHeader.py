@@ -4,7 +4,7 @@ from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_stack_release, \
      load_package_manifest, UtilException, load_stack_manifest
-from headers import get_nav, get_stack_links, get_package_links
+from headers import get_nav, get_stack_links, get_package_links, get_description
 
 generates_headings = True
 dependencies = []
@@ -35,7 +35,7 @@ def macro_StackageHeader(macro, arg1, arg2='ja'):
 
     if is_unary:
         try:
-            package_data = load_package_manifest(package_name, lang)
+            package_data = load_package_manifest(stack_name, lang)
             links += get_package_links(macro, stack_name, package_data)
         except:
             pass

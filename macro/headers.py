@@ -13,7 +13,8 @@ def get_nav(macro, stack_name, packages):
         return nav
     elif [stack_name] == packages:
         # unary stack header
-        return nav+strong(1)+text(stack_name)+strong(0)
+        return nav
+        #return nav+strong(1)+text(stack_name)+strong(0)
     
     page_name = macro.formatter.page.page_name
 
@@ -89,6 +90,7 @@ def get_description(macro, data, type_):
                ul(0)+p(0)
     except UnicodeDecodeError:
         desc = h(1, 2)+text(title)+h(0,2)+p(1)+text('Error retrieving '+title)+p(0)
+    return desc
     
 def get_package_links(macro, package_name, data):
     f = macro.formatter
@@ -133,7 +135,7 @@ def get_package_links(macro, package_name, data):
                         li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
                         ul(0)
     except UnicodeDecodeError:
-        package_links = div(1, css_class="package-links")+div(0)
+        package_links = div(1, css_class="package-links")
   
     package_links += get_dependency_list(macro, data, '')
     package_links+=div(0)
@@ -170,9 +172,9 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
                 review_link+\
                 ul(0)
     except UnicodeDecodeError:
-        links = div(1, css_class="package-links")+div(0)
+        links = div(1, css_class="package-links")
   
-    links += get_dependency_list(macro, data, 'stack-')
+    links += get_dependency_list(macro, data, 'stack-') + div(0)
     return links
     
 def get_dependency_list(macro, data, css_prefix=''):
@@ -205,21 +207,3 @@ def get_dependency_list(macro, data, css_prefix=''):
         
     return links
 
-from MoinMoin.wikiutil import get_unicode
-def macro_PackageHeader(macro, arg1, arg2='en'):
-    package_name = get_unicode(macro.request, arg1)
-    lang = get_unicode(macro.request, arg2)
-    if not package_name:
-        return "ERROR in PackageHeader. Usage: [[PackageHeader(pkg_name opt_lang)]]"    
-
-    try:
-        data = load_package_manifest(package_name, lang)
-    except UtilException, e:
-        return str(e)
-  
-    nav = get_nav(macro, stack, list(set(data.get('siblings', []))))
-    package_desc = get_description(macro, data, 'package')
-    links = get_package_links(macro, package_name, data)
-  
-    return macro.formatter.rawHTML(nav) + package_links + package_desc 
-  
