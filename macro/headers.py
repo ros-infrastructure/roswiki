@@ -135,7 +135,7 @@ def get_package_links(macro, package_name, data):
     except UnicodeDecodeError:
         package_links = div(1, css_class="package-links")+div(0)
   
-    package_links += get_dependency_list(data, '')
+    package_links += get_dependency_list(macro, data, '')
     package_links+=div(0)
     return package_links
 
@@ -174,10 +174,12 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     except UnicodeDecodeError:
         links = div(1, css_class="package-links")+div(0)
   
-    links += get_dependency_list(data, 'stack-')
+    links += get_dependency_list(macro, data, 'stack-')
     return links
     
-def get_dependency_list(data, css_prefix=''):
+def get_dependency_list(macro, data, css_prefix=''):
+    li, ul, strong = f.listitem, f.bullet_list, f.strong
+    
     depends = data.get('depends', [])
     depends_on = data.get('depends_on', [])
     
