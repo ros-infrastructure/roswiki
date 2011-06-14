@@ -123,6 +123,12 @@ def get_package_links(macro, package_name, data):
     if external_documentation:
         external_documentation = li(1)+strong(1)+url(1, url=external_documentation)+text("External Documentation")+url(0)+strong(0)+li(0)
 
+    # only include troubleshooting link if it exists.  We're now using the FAQ link
+    if Page(macro.request, '%s/%s'%(package_name, 'Troubleshooting')).exists():
+        troubleshooting = li(1)+sub_link(macro, package_name, 'Troubleshooting')+li(0)
+    else:
+        troubleshooting = ''
+        
     try:
         package_links = div(1, css_class="package-links")+\
                         strong(1)+text("Package Links")+strong(0)+\
@@ -130,9 +136,10 @@ def get_package_links(macro, package_name, data):
                         li(1)+strong(1)+url(1, url=package_url)+text("Code API")+url(0)+strong(0)+li(0)+msg_doc+\
                         external_documentation+\
                         li(1)+sub_link(macro, package_name, 'Tutorials')+li(0)+\
-                        li(1)+sub_link(macro, package_name, 'Troubleshooting')+li(0)+\
+                        troubleshooting+\
+                        li(1)+url(1, url='http://answers.ros.org/questions/?tags=%s'%(package_name))+text("FAQ")+url(0)+li(0)+\
                         li(1)+review_str+li(0)+\
-                        li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
+                        #li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
                         ul(0)
     except UnicodeDecodeError:
         package_links = div(1, css_class="package-links")
@@ -150,10 +157,10 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
   
     # - links
     if is_released:
-        releases_link = li(1)+Page(macro.request, '%s/Releases'%stack_name).link_to(macro.request, text='Releases')+li(0) 
+        releases_link = li(1)+sub_link(macro, stack_name, 'Releases')+li(0) 
     else:
         releases_link = ''
-    if is_unary:
+    if not is_unary:
         troubleshooting_link = li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)
         review_status = data.get('review_status', 'unreviewed')
         review_link = li(1)+sub_link(macro, stack_name, 'Reviews') + text(' ('+review_status+')')+li(0)
