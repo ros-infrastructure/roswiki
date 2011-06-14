@@ -6,6 +6,7 @@ from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, \
 
 def get_nav(macro, stack_name, packages):
     nav = '<script type="text/javascript" src="/js/roswiki.js"></script>'
+    strong, text = macro.formatter.strong, macro.formatter.text
 
     if not stack_name or stack_name == 'sandbox':
         # ignore sandbox and non-stacked packages
