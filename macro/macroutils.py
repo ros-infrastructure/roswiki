@@ -12,6 +12,9 @@ doc_url = "http://ros.org/doc/api/"
 
 doc_path = '/var/www/www.ros.org/html/doc/api/'
 
+CONTRIBUTE_TMPL = """Cannot load information on %(name)s, which means that it is not yet in our index.
+Please see <a href="http://www.ros.org/wiki/Get%20Involved#Documenting_Your_.2A-ros-pkg_Repository_on_ROS.org">this page</a> for information on how to submit your repository to our index."""
+
 class UtilException(Exception): pass
 
 def ahref(url, text):
