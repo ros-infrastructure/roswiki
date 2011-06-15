@@ -2,7 +2,7 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import wiki_url, get_repo_li, get_vcs_li, load_repo_manifest, sub_link, UtilException
+from macroutils import wiki_url, get_repo_li, get_vcs_li, load_repo_manifest, sub_link, UtilException, CONTRIBUTE_TMPL
 
 generates_headings = True
 dependencies = []
@@ -80,7 +80,8 @@ def macro_RepoHeader(macro, args):
     try:
         repo_data = load_repo_manifest(repo_name)
     except UtilException, e:
-        return str(e)
+        name = repo_name
+        return CONTRIBUTE_TMPL%locals()
 
     if len(args) > 1:
         display_packages = 'packages' in args[1:]
