@@ -21,7 +21,8 @@ def macro_PackageHeader(macro, arg1, arg2='en'):
         name = package_name
         return CONTRIBUTE_TMPL%locals()
   
-    nav = get_nav(macro, package_name, list(set(data.get('siblings', []))))
+    stack_name = data.get('stack', None) 
+    nav = get_nav(macro, stack_name, list(set(data.get('siblings', []))))
     desc = get_description(macro, data, 'package')
     links = get_package_links(macro, package_name, data)
   
