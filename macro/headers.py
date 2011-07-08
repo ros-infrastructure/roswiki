@@ -22,7 +22,7 @@ def get_nav(macro, stack_name, packages):
     if stack_name == page_name:
         top = strong(1)+text(stack_name)+strong(0)
     else:
-        top = strong(1)+wiki_url(macro, stack_name)+strong(0)+text(': ')
+        top = strong(1)+wiki_url(macro, stack_name)+strong(0)
 
     # create navigation elements for packages
     packages = [s for s in packages if not s.startswith('test_')]
@@ -163,7 +163,10 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     else:
         releases_link = ''
     if not is_unary:
-        troubleshooting_link = li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)
+        if Page(macro.request, '%s/%s'%(stack_name, 'Troubleshooting')).exists():        
+            troubleshooting_link = li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)
+        else:
+            troubleshooting_link = ''
         review_status = data.get('review_status', 'unreviewed')
         review_link = li(1)+sub_link(macro, stack_name, 'Reviews') + text(' ('+review_status+')')+li(0)
         tutorials_link=li(1)+sub_link(macro, stack_name, 'Tutorials')+li(0)
