@@ -103,7 +103,7 @@ def get_repo_li(macro, props):
     @param macro: Moin macro object
     @param props: package/stack manifest dictionary
     """
-    if 'repository' in props:
+    if 'repository' in props and props['repository'] is not None:
         f = macro.formatter
         li = f.listitem
         return li(1)+f.text("Repository: ")+wiki_url(macro, props['repository'])+li(0)
