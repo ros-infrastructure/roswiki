@@ -169,7 +169,7 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     # - links
     if is_released:
         releases_link = li(1)+sub_link(macro, stack_name, 'Releases')+li(0) 
-        changelist_link = li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)+\
+        changelist_link = li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)
     else:
         releases_link = changelist_link = ''
     if not is_unary:
