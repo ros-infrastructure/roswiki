@@ -169,27 +169,26 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     # - links
     if is_released:
         releases_link = li(1)+sub_link(macro, stack_name, 'Releases')+li(0) 
+        changelist_link = li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)+\
     else:
-        releases_link = ''
+        releases_link = changelist_link = ''
     if not is_unary:
-        if Page(macro.request, '%s/%s'%(stack_name, 'Troubleshooting')).exists():        
-            troubleshooting_link = li(1)+sub_link(macro, stack_name, 'Troubleshooting')+li(0)
-        else:
-            troubleshooting_link = ''
+        troubleshooting_link = li_if_exists(macro, stack_name, 'Troubleshooting')
         review_status = data.get('review_status', 'unreviewed')
         review_link = li(1)+sub_link(macro, stack_name, 'Reviews') + text(' ('+review_status+')')+li(0)
-        tutorials_link=li(1)+sub_link(macro, stack_name, 'Tutorials')+li(0)
+        tutorials_link=li_if_exists(macro, stack_name, 'Tutorials')
     else:
         troubleshooting_link = review_link = tutorials_link = ''
 
+    roadmap_link = li_if_exists(macro, stack_name, 'Roadmap')
     try:
         links = div(1, css_class="package-links")+strong(1)+text('Stack Links')+strong(0)+\
                 ul(1)+\
                 tutorials_link+\
                 troubleshooting_link+\
                 releases_link+\
-                li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)+\
-                li(1)+sub_link(macro, stack_name, 'Roadmap')+li(0)+\
+                changelist_link+\
+                roadmap_link+\
                 review_link+\
                 ul(0)
     except UnicodeDecodeError:
