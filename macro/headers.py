@@ -92,7 +92,7 @@ def get_description(macro, data, type_):
         desc = h(1, 2)+text(title)+h(0,2)+p(1)+text('Error retrieving '+title)+p(0)
     return desc
     
-def li_if_exist(macro, page, sub_page):
+def li_if_exists(macro, page, sub_page):
     li = macro.formatter.listitem
     if Page(macro.request, '%s/%s'%(page, sub_page)).exists():
         return li(1)+sub_link(macro, page, sub_page)+li(0)
@@ -107,7 +107,7 @@ def get_package_links(macro, package_name, data):
 
     review_status = data.get('review_status', 'unreviewed')
 
-    external_website = data.get('url', '') 
+    external_website = data.get('url', '')  or ''
     if 'ros.org' in external_website or 'willowgarage.com' in external_website:
         external_website = u''
     # let external docs override
@@ -135,7 +135,7 @@ def get_package_links(macro, package_name, data):
     else:
         review_str = li(1)+sub_link(macro, package_name, 'Reviews') + text(' ('+review_status+')')+li(0)
     if external_website:
-        external_website = li(1)+strong(1)+url(1, url=external_website)+text("%s website"%(package_name))+url(0)+strong(0)+li(0)
+        external_website = li(1)+url(1, url=external_website)+text("%s website"%(package_name))+url(0)+li(0)
 
     # only include troubleshooting link if it exists.  We're now using the FAQ link
     troubleshoot = li_if_exists(macro, package_name, 'Troubleshooting')
@@ -148,7 +148,7 @@ def get_package_links(macro, package_name, data):
                         li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)+msg_doc+\
                         external_website+\
                         tutorials+\
-                        troubleshooting+\
+                        troubleshoot+\
                         li(1)+url(1, url='http://answers.ros.org/questions/?tags=%s'%(package_name))+text("FAQ")+url(0)+li(0)+\
                         review_str+\
                         ul(0)
