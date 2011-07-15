@@ -92,6 +92,13 @@ def get_description(macro, data, type_):
         desc = h(1, 2)+text(title)+h(0,2)+p(1)+text('Error retrieving '+title)+p(0)
     return desc
     
+def li_if_exist(macro, page, sub_page):
+    li = macro.formatter.listitem
+    if Page(macro.request, '%s/%s'%(page, sub_page)).exists():
+        return li(1)+sub_link(macro, page, sub_page)+li(0)
+    else:
+        return ''
+
 def get_package_links(macro, package_name, data):
     f = macro.formatter
     p, url, div = f.paragraph, f.url, f.div
@@ -99,10 +106,16 @@ def get_package_links(macro, package_name, data):
     li, ul = f.listitem, f.bullet_list
 
     review_status = data.get('review_status', 'unreviewed')
-    external_documentation = data.get('external_documentation', '') or data.get('url', '') or '' 
-    if 'ros.org' in external_documentation or 'pr.willowgarage.com' in external_documentation:
-        external_documentation = u''
 
+    external_website = data.get('url', '') 
+    if 'ros.org' in external_website or 'willowgarage.com' in external_website:
+        external_website = u''
+    # let external docs override
+    if 'external_documentation' in data:
+        api_documentation = data['external_documentation']
+    else:
+        api_documentation = data['api_documentation']
+        
     msgs = data.get('msgs', [])
     srvs = data.get('srvs', [])
 
@@ -117,31 +130,27 @@ def get_package_links(macro, package_name, data):
     else:
         msg_doc = text('')
     
-    package_url = package_html_link(package_name)
-    review_str = sub_link(macro, package_name, 'Reviews') + text(' ('+review_status+')')
-    dependency_tree = data.get('dependency_tree', '')
-    if external_documentation:
-        external_documentation = li(1)+strong(1)+url(1, url=external_documentation)+text("External Documentation")+url(0)+strong(0)+li(0)
+    if '3rdparty' in review_status:
+        review_str = ''
+    else:
+        review_str = li(1)+sub_link(macro, package_name, 'Reviews') + text(' ('+review_status+')')+li(0)
+    if external_website:
+        external_website = li(1)+strong(1)+url(1, url=external_website)+text("%s website"%(package_name))+url(0)+strong(0)+li(0)
 
     # only include troubleshooting link if it exists.  We're now using the FAQ link
-    if Page(macro.request, '%s/%s'%(package_name, 'Troubleshooting')).exists():
-        troubleshooting = li(1)+sub_link(macro, package_name, 'Troubleshooting')+li(0)
-    else:
-        troubleshooting = ''
+    troubleshoot = li_if_exists(macro, package_name, 'Troubleshooting')
+    tutorials = li_if_exists(macro, package_name, 'Tutorials')
         
-    # not used anymore
-    # dependency_tree = li(1)+url(1, url=dependency_tree)+text('Dependency Tree')+url(0)+li(0)+\
-                        
     try:
         package_links = div(1, css_class="package-links")+\
                         strong(1)+text("Package Links")+strong(0)+\
                         ul(1)+\
-                        li(1)+strong(1)+url(1, url=package_url)+text("Code API")+url(0)+strong(0)+li(0)+msg_doc+\
-                        external_documentation+\
-                        li(1)+sub_link(macro, package_name, 'Tutorials')+li(0)+\
+                        li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)+msg_doc+\
+                        external_website+\
+                        tutorials+\
                         troubleshooting+\
                         li(1)+url(1, url='http://answers.ros.org/questions/?tags=%s'%(package_name))+text("FAQ")+url(0)+li(0)+\
-                        li(1)+review_str+li(0)+\
+                        review_str+\
                         ul(0)
     except UnicodeDecodeError:
         package_links = div(1, css_class="package-links")
