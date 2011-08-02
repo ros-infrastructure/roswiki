@@ -7,8 +7,13 @@
 # -Display which distro is active under the buttons so people know default, and know if their action took effect
 # -Have better error-reporting somehow if rosversion sections have typos (maybe show all distros that aren't listed as hidden, so that a mistyped distro will always be visible?)
 # -Automatically label the sections as "c-turtle only" so people see the changes?
+import sys
 import re
-from MoinMoin import wikiutil
+try:
+    from MoinMoin import wikiutil
+except:
+    sys.stderr.write("Cannot import MoinMoin, for testing only\n")
+
 Dependencies = []
 
 # configure the active set of distros
