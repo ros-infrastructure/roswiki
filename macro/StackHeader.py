@@ -9,20 +9,20 @@ from headers import get_nav, get_stack_links, get_package_links, get_description
 generates_headings = True
 dependencies = []
 
-def macro_StackHeader(macro, arg1, arg2='ja'):
+def macro_StackHeader(macro, arg1, arg2=None):
     stack_name = get_unicode(macro.request, arg1)
-    lang = get_unicode(macro.request, arg2)
+    distro = get_unicode(macro.request, arg2)
     if ' ' in stack_name:
         #something changed in the API such that the above arg1, arg2 passing no longer works
         splits = stack_name.split(' ')
         if len(splits) > 2:
-            return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name opt_lang)]]"
-        stack_name, lang = splits
+            return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name opt_distro)]]"
+        stack_name, distro = splits
     if not stack_name:
-        return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name opt_lang)]]"
+        return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name opt_distro)]]"
 
     try:
-        data = load_stack_manifest(stack_name, lang)
+        data = load_stack_manifest(stack_name, distro)
     except UtilException, e:
         name = stack_name
         return CONTRIBUTE_TMPL%locals()

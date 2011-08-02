@@ -23,17 +23,23 @@ def ahref(url, text):
     """create HTML link to specified URL with link text"""
     return '<a href="%(url)s">%(text)s</a>'%locals()
 
-def stack_manifest_link(stack):
+def stack_manifest_link(stack, distro=None):
     """
     Generate link to stack.yaml for package
     """
-    return doc_url + stack + "/stack.yaml"
-
-def stack_manifest_file(stack):
+    if distro:
+        return doc_url + distro + "/" + stack + "/stack.yaml"
+    else:
+        return doc_url + stack + "/stack.yaml"
+    
+def stack_manifest_file(stack, distro=None):
     """
     Generate filesystem path to stack.yaml for package
     """
-    return os.path.join(doc_path, stack, "stack.yaml")
+    if distro:
+        return os.path.join(doc_path, distro, stack, "stack.yaml")
+    else:
+        return os.path.join(doc_path, stack, "stack.yaml")        
 
 def repo_manifest_file(repo):
     """
@@ -47,11 +53,14 @@ def repo_manifest_link(repo):
     """
     return doc_url + repo + "/repo.yaml"
 
-def package_manifest_link(package):
+def package_manifest_link(package, distro=None):
     """
     Generate link to manifest.yaml for package
     """
-    return doc_url + package + "/manifest.yaml"
+    if distro:
+        return doc_url + distro + "/" + package + "/manifest.yaml"
+    else:
+        return doc_url + package + "/manifest.yaml"        
 
 def package_manifest_file(package, distro=None):
     """
@@ -218,24 +227,11 @@ def load_repo_manifest(repo_name):
     return data
 
 
-def load_stack_manifest(stack_name, lang=None):
+def load_stack_manifest(stack_name, distro=None):
     """
     Load stack.yaml properties into dictionary for package
     @param lang: optional language argument for localization, e.g. 'ja'
     @return: stack manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_manifest_file(stack_manifest_file(stack_name), stack_name, 'stack')
-    if lang is not None and lang != 'en':
-        try:
-            import yaml
-            usock = urllib2.urlopen('http://ros.org/il8n/stacks.%s.yaml'%lang)
-            il8n = yaml.load(unicode(usock.read(), 'utf-8'))
-            usock.close()
-
-            # override properties with translation
-            if stack_name in il8n:
-                data['description'] = il8n[stack_name]['description']
-        except:
-             pass
-    return data
+    return _load_manifest_file(stack_manifest_file(stack_name, distro), stack_name, 'stack')
