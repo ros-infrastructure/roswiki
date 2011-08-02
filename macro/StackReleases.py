@@ -7,7 +7,7 @@ except ImportError, e:
     Page = None
     get_unicode = None
 
-from macroutils import load_stack_release, load_stack_manifest, UtilException, sub_link
+from macroutils import load_stack_release, load_stack_manifest, UtilException, sub_link, distro_names
 
 url_base = "http://ros.org/doc/api/" 
 generates_headings = True
@@ -150,7 +150,7 @@ def macro_StackReleases(macro, arg1):
     return str(e)
   
   releases = {}
-  release_names = ['diamondback', 'cturtle', 'boxturtle', 'unstable']
+  release_names = distro_names
   for release_name in release_names:
     releases[release_name] = load_stack_release(release_name, stack_name)
   

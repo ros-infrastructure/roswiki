@@ -1,11 +1,7 @@
 #To change the set of active distros:
-# 1) Change the below line
-
-distros = ['cturtle', 'diamondback', 'electric']
-
-# 2) Change which distro is open by default in RosVersion.js (on the ros.org wiki, this should be at /usr/share/moin/htdocs/common/js, but ymmv
+# 1) Change which distro is open by default in RosVersion.js (on the ros.org wiki, this should be at /usr/share/moin/htdocs/common/js, but ymmv
 #
-# 3) Restart the server
+# 2) Restart the server
 
 #Still TODO:
 # -Display which distro is active under the buttons so people know default, and know if their action took effect
@@ -14,6 +10,14 @@ distros = ['cturtle', 'diamondback', 'electric']
 import re
 from MoinMoin import wikiutil
 Dependencies = []
+
+# configure the active set of distros
+from macroutils import distro_names as distros
+
+if 'boxturtle' in distros:
+    distros.remove('boxturtle')
+if 'unstable' in distros:
+    distros.remove('unstable')
 
 def execute(macro, args):
 

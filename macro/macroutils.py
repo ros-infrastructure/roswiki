@@ -8,6 +8,8 @@ try:
 except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'unstable']
+
 doc_url = "http://ros.org/doc/api/"
 
 doc_path = '/var/www/www.ros.org/html/doc/api/'
@@ -51,11 +53,14 @@ def package_manifest_link(package):
     """
     return doc_url + package + "/manifest.yaml"
 
-def package_manifest_file(package):
+def package_manifest_file(package, distro=None):
     """
     Generate filesystem path to manifest.yaml for package
     """
-    return os.path.join(doc_path, package, "manifest.yaml")
+    if distro:
+        return os.path.join(doc_path, distro, package, "manifest.yaml")
+    else:
+        return os.path.join(doc_path, package, "manifest.yaml")
 
 def package_html_link(package):
     """
@@ -191,27 +196,14 @@ def _load_manifest_file(filename, name, type_='package'):
         raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
     return data
 
-def load_package_manifest(package_name, lang=None):
+def load_package_manifest(package_name, distro=None):
     """
     Load manifest.yaml properties into dictionary for package
     @param lang: optional language argument for localization, e.g. 'ja'
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_manifest_file(package_manifest_file(package_name), package_name, "package")
-    if lang is not None and lang != 'en':
-        try:
-            import yaml
-            usock = urllib2.urlopen('http://ros.org/il8n/packages.%s.yaml'%lang)
-            il8n = yaml.load(unicode(usock.read(), 'utf-8'))
-            usock.close()
-
-            # override properties with translation
-            if package_name in il8n:
-                data['description'] = il8n[package_name]['description']
-        except:
-             pass
-    return data
+    return _load_manifest_file(package_manifest_file(package_name, distro), package_name, "package")
 
 def load_repo_manifest(repo_name):
     """

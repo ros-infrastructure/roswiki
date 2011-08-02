@@ -2,7 +2,8 @@ import urllib2
 from MoinMoin.Page import Page
 
 from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, \
-     msg_doc_link, load_package_manifest, package_html_link, UtilException, load_stack_manifest, sub_link
+     msg_doc_link, load_package_manifest, package_html_link, UtilException, \
+     load_stack_manifest, sub_link, distro_names
 
 def get_nav(macro, stack_name, packages):
     nav = '<script type="text/javascript" src="/js/roswiki.js"></script>'
@@ -45,7 +46,7 @@ def get_nav(macro, stack_name, packages):
       
 def is_stack_released(stack_name):
     stack_props = None
-    for release_name in ['diamondback', 'cturtle', 'unstable', 'boxturtle']:
+    for release_name in distro_names:
         if not stack_props:
             _, stack_props = load_stack_release(release_name, stack_name)
     return bool(stack_props)
