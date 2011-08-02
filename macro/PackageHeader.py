@@ -9,11 +9,17 @@ from headers import get_nav, get_stack_links, get_package_links, get_description
 generates_headings = True
 dependencies = []
 
-def macro_PackageHeader(macro, arg1, arg2='en'):
+def macro_PackageHeader(macro, arg1, arg2=None):
     package_name = get_unicode(macro.request, arg1)
     opt_distro = get_unicode(macro.request, arg2)
     if not package_name:
         return "ERROR in PackageHeader. Usage: [[PackageHeader(package_name opt_distro)]]"    
+    if ' ' in package_name:
+        #something changed in the API such that the above arg1, arg2 passing no longer works
+        splits = package_name.split(' ')
+        if len(splits) > 2:
+            return "ERROR in PackageHeader. Usage: [[PackageHeader(pkg_name opt_distro)]]"
+        package_name, distro = splits
 
     try:
         data = load_package_manifest(package_name, opt_distro)

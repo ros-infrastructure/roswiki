@@ -12,7 +12,7 @@ distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'unstable']
 
 doc_url = "http://ros.org/doc/api/"
 
-doc_path = '/var/www/www.ros.org/html/doc/api/'
+doc_path = '/var/www/www.ros.org/html/doc/'
 
 CONTRIBUTE_TMPL = """Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.
 Please see <a href="http://www.ros.org/wiki/Get%%20Involved#Documenting_Your_.2A-ros-pkg_Repository_on_ROS.org">this page</a> for information on how to submit your repository to our index."""
@@ -37,15 +37,15 @@ def stack_manifest_file(stack, distro=None):
     Generate filesystem path to stack.yaml for package
     """
     if distro:
-        return os.path.join(doc_path, distro, stack, "stack.yaml")
+        return os.path.join(doc_path, distro, 'api', stack, "stack.yaml")
     else:
-        return os.path.join(doc_path, stack, "stack.yaml")        
+        return os.path.join(doc_path, 'api', stack, "stack.yaml")        
 
 def repo_manifest_file(repo):
     """
     Generate filesystem path to stack.yaml for package
     """
-    return os.path.join(doc_path, repo, "repo.yaml")
+    return os.path.join(doc_path, 'api', repo, "repo.yaml")
 
 def repo_manifest_link(repo):
     """
@@ -67,9 +67,9 @@ def package_manifest_file(package, distro=None):
     Generate filesystem path to manifest.yaml for package
     """
     if distro:
-        return os.path.join(doc_path, distro, package, "manifest.yaml")
+        return os.path.join(doc_path, distro, 'api', package, "manifest.yaml")
     else:
-        return os.path.join(doc_path, package, "manifest.yaml")
+        return os.path.join(doc_path, 'api', package, "manifest.yaml")
 
 def package_html_link(package):
     """
