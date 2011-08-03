@@ -9,8 +9,10 @@ except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
 distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'unstable']
+distro_names_indexed = ['diamondback', 'electric', 'unstable'] #boxturtle and cturtle not indexed
 
-doc_url = "http://ros.org/doc/api/"
+#doc_url = "http://ros.org/doc/api/"
+doc_url = "http://ros.org/doc/"
 
 doc_path = '/var/www/www.ros.org/html/doc/'
 
@@ -28,9 +30,9 @@ def stack_manifest_link(stack, distro=None):
     Generate link to stack.yaml for package
     """
     if distro:
-        return doc_url + distro + "/" + stack + "/stack.yaml"
+        return doc_url + distro + "/api/" + stack + "/stack.yaml"
     else:
-        return doc_url + stack + "/stack.yaml"
+        return doc_url + "api/" + stack + "/stack.yaml"
     
 def stack_manifest_file(stack, distro=None):
     """
@@ -51,16 +53,16 @@ def repo_manifest_link(repo):
     """
     Generate link to repo.yaml for repository
     """
-    return doc_url + repo + "/repo.yaml"
+    return doc_url + "api/" + repo + "/repo.yaml"
 
 def package_manifest_link(package, distro=None):
     """
     Generate link to manifest.yaml for package
     """
     if distro:
-        return doc_url + distro + "/" + package + "/manifest.yaml"
+        return doc_url + distro + "/api/" + package + "/manifest.yaml"
     else:
-        return doc_url + package + "/manifest.yaml"        
+        return doc_url + "api/" + package + "/manifest.yaml"        
 
 def package_manifest_file(package, distro=None):
     """
@@ -71,14 +73,24 @@ def package_manifest_file(package, distro=None):
     else:
         return os.path.join(doc_path, 'api', package, "manifest.yaml")
 
-def package_html_link(package):
+def get_package_versions(package):
+    distros = []
+    for d in distro_names_indexed:
+        if os.path.exists(package_manifest_file(package, d)):
+            distros.append(d)
+    return distros
+    
+def package_html_link(package, distro=None):
     """
     Generate link to auto-generated package HTML documentation
     """
-    return doc_url + package  + '/html/'
-
-def msg_doc_link(package, link_title):
-    package_url = package_html_link(package)  
+    if distro:
+        return doc_url + distro + "/api/" + package + '/html/'
+    else:
+        return doc_url + "api/" + package  + '/html/'
+    
+def msg_doc_link(package, link_title, distro=None):
+    package_url = package_html_link(package, distro)  
     return ahref('%(package_url)sindex-msg.html'%locals(), link_title)
 
 def msg_link(package, msg):

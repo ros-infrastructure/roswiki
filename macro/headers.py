@@ -1,9 +1,14 @@
+import sys
 import urllib2
-from MoinMoin.Page import Page
+try:
+    from MoinMoin.Page import Page
+except:
+    sys.stderr.write("Cannot import Moin.  For testing only")
 
 from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, \
      msg_doc_link, load_package_manifest, package_html_link, UtilException, \
-     load_stack_manifest, sub_link, distro_names
+     load_stack_manifest, sub_link, distro_names, \
+     get_package_versions
 
 def get_nav(macro, stack_name, packages):
     nav = '<script type="text/javascript" src="/js/roswiki.js"></script>'
@@ -126,10 +131,6 @@ def get_package_links(macro, package_name, data):
         msg_doc_title = "Msg API"
     elif srvs and not msgs:
         msg_doc_title = "Srv API"
-    if msgs or srvs:
-        msg_doc = li(1)+strong(1)+msg_doc_link(package_name, msg_doc_title)+strong(0)+li(0)
-    else:
-        msg_doc = text('')
     
     if '3rdparty' in review_status:
         review_str = ''
@@ -142,11 +143,32 @@ def get_package_links(macro, package_name, data):
     troubleshoot = li_if_exists(macro, package_name, 'Troubleshooting')
     tutorials = li_if_exists(macro, package_name, 'Tutorials')
         
+    versions = get_package_versions(package_name)
+
+    if versions and 'ros.org/doc/api' in api_documentation:
+        code_api = li(1)+strong(1)+text("Code API")+strong(0)+"<br />"
+        for v in version:
+            code_api = code_api + text(' - ')+url(1, url=package_html_link(package_name, v))+text(v)+url(0)+"<br />"
+        code_api = code_api + li(0)
+    else:
+        code_api = li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)
+        
+    if not msgs and not srvs:
+        msg_doc = text('')
+    elif versions:
+        msg_doc = li(1)+strong(1)+msg_doc_title+strong(0)+"<br />"
+        for v in versions:
+            msg_doc = msg_doc + " - " + msg_doc_link(package_name, v, distro=v)+"<br />"
+        msg_doc = msg_doc + li(0)
+    else:
+        msg_doc = li(1)+strong(1)+msg_doc_link(package_name, msg_doc_title)+strong(0)+li(0)
+        
     try:
         package_links = div(1, css_class="package-links")+\
                         strong(1)+text("Package Links")+strong(0)+\
                         ul(1)+\
-                        li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)+msg_doc+\
+                        code_api+\
+                        msg_doc+\
                         external_website+\
                         tutorials+\
                         troubleshoot+\
