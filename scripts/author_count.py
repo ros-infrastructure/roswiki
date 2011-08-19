@@ -183,6 +183,6 @@ def get_contributors(filename='contributors.txt'):
         return [x.strip() for x in f.readlines() if x.strip()]
 
 if __name__ == '__main__':
-    text = create_html(common=False)
+    text = create_html()
     with open('contributors.html', 'w') as f:
         f.write(text.encode('utf-8'))

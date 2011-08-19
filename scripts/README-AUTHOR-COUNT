@@ -1,5 +1,6 @@
 Running:
 
  1. Run install_all.py.  Currently set to 'electric'
+ 2. source /opt/ros/electric/setup.sh
  2. Run author_count.py
  3. cp contributors.html onto ros.org web server in /var/www/www.ros.org/html
