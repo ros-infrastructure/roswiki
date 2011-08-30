@@ -28,7 +28,7 @@ def execute(macro, args):
 
     if args:
       version = str(args)    
-      if version.lower() in ['electric', 'electric turtle']:
+      if version.lower() in ['fuerte', 'groovy']:
         return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Electric Turtle (unstable)</span>'
       else:
         return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">New in %s</span>'%version
