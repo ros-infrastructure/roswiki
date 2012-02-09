@@ -3,6 +3,7 @@ from __future__ import with_statement
 import os
 import sys
 import yaml
+import urllib2
 try:
     from MoinMoin.Page import Page
 except ImportError:
@@ -164,9 +165,9 @@ def load_stack_release(release_name, stack_name):
     if stack_name == 'ROS':
         stack_name = 'ros'
     try:
-        import urllib2
-        if release_name == 'boxturtle':
-            usock = urllib2.urlopen('http://ros.org/distros/%s.rosdistro'%release_name)
+        #TODO: figure out how to cache these better, e.g. have a hudson job that rsyncs to wgs32
+        if release_name in ['boxturtle', 'cturtle', 'diamondback']:
+            usock = open('/var/www/www.ros.org/html/distros/%s.rosdistro'%release_name)
         else:
             usock = urllib2.urlopen('https://code.ros.org/svn/release/trunk/distros/%s.rosdistro'%release_name)
         rosdistro_str = usock.read()
@@ -176,7 +177,6 @@ def load_stack_release(release_name, stack_name):
         release = stack_props = {}
     return release, stack_props
 
-import urllib2
 def _load_manifest(url, name, type_='package'):
     """
     Load manifest.yaml properties into dictionary for package
