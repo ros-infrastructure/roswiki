@@ -172,7 +172,7 @@ def get_package_links(macro, package_name, data):
                         external_website+\
                         tutorials+\
                         troubleshoot+\
-                        li(1)+url(1, url='http://answers.ros.org/questions/?tags=%s'%(package_name))+text("FAQ")+url(0)+li(0)+\
+                        li(1)+url(1, url='http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:%s/page:1/'%(package_name))+text("FAQ")+url(0)+li(0)+\
                         review_str+\
                         ul(0)
     except UnicodeDecodeError:
