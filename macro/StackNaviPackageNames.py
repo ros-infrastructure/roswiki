@@ -2,6 +2,8 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
+from macroutils import load_stack_manifest, UtilException
+
 url_base = "http://ros.org/doc/api/" 
 generates_headings = True
 dependencies = []
@@ -14,14 +16,6 @@ def wiki_url(macro, page,shorten=None):
   else:
     page_text = page[:shorten]+'...'
   return Page(macro.request, page).link_to(macro.request, text=page_text)
-def msg_link(stack_url, msg):
-  return _href('%(stack_url)smsg/%(msg)s.html'%locals(), msg)
-def srv_link(stack_url, srv):
-  return _href('%(stack_url)ssrv/%(srv)s.html'%locals(), srv)
-def stack_link(stack):
-  return url_base + stack 
-def stack_html_link(stack):
-  return url_base + stack + "/html/"
 
 def macro_StackNaviPackageNames(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
@@ -34,18 +28,12 @@ def macro_StackNaviPackageNames(macro, arg1):
 
   if not stack_name:
     return "ERROR in StackHeader. Usage: [[StackHeader(pkg_name)]]"    
-  
-  stack_url = stack_html_link(stack_name)
-  url = stack_link(stack_name) + "/stack.yaml"
-  
-  try:
-    usock = urllib2.urlopen(url)
-    ydata = usock.read()
-    usock.close()
-  except:
-    return 'Newly proposed, mistyped, or obsolete stack. Could not find "' + stack_name + '" in rosdoc: '+url 
 
-  data = yaml.load(ydata)
+  try:
+    data = load_stack_manifest(stack_name)
+  except UtilException as e:
+    return str(e)
+
   if not data or type(data) != dict:
     return "Unable to retrieve stack data. Auto-generated documentation may need to regenerate: "+str(url)
   # keys
