@@ -9,7 +9,7 @@ try:
 except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
-distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'unstable']
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'unstable']
 distro_names_indexed = ['diamondback', 'electric', 'unstable'] #boxturtle and cturtle not indexed
 
 #doc_url = "http://ros.org/doc/api/"
@@ -26,15 +26,6 @@ def ahref(url, text):
     """create HTML link to specified URL with link text"""
     return '<a href="%(url)s">%(text)s</a>'%locals()
 
-def stack_manifest_link(stack, distro=None):
-    """
-    Generate link to stack.yaml for package
-    """
-    if distro:
-        return doc_url + distro + "/api/" + stack + "/stack.yaml"
-    else:
-        return doc_url + "api/" + stack + "/stack.yaml"
-    
 def stack_manifest_file(stack, distro=None):
     """
     Generate filesystem path to stack.yaml for package
@@ -49,21 +40,6 @@ def repo_manifest_file(repo):
     Generate filesystem path to stack.yaml for package
     """
     return os.path.join(doc_path, 'api', repo, "repo.yaml")
-
-def repo_manifest_link(repo):
-    """
-    Generate link to repo.yaml for repository
-    """
-    return doc_url + "api/" + repo + "/repo.yaml"
-
-def package_manifest_link(package, distro=None):
-    """
-    Generate link to manifest.yaml for package
-    """
-    if distro:
-        return doc_url + distro + "/api/" + package + "/manifest.yaml"
-    else:
-        return doc_url + "api/" + package + "/manifest.yaml"        
 
 def package_manifest_file(package, distro=None):
     """
@@ -177,25 +153,6 @@ def load_stack_release(release_name, stack_name):
         release = stack_props = {}
     return release, stack_props
 
-def _load_manifest(url, name, type_='package'):
-    """
-    Load manifest.yaml properties into dictionary for package
-    @param url: URL to load manifest data from
-    @param name: printable name (for debugging)
-    @return: manifest properties dictionary
-    @raise UtilException: if unable to load. Text of error message is human-readable
-    """
-    try:
-        usock = urllib2.urlopen(url)
-        data = usock.read()
-        usock.close()
-    except:
-        raise UtilException('Newly proposed, mistyped, or obsolete %s. Could not find %s "'%(type_, type_) + name + '" in rosdoc: '+url)
-    data = yaml.load(unicode(data, 'utf-8'))
-    if not data:
-        raise UtilException("Unable to retrieve manifest data. Auto-generated documentation may need to regenerate")
-    return data
-    
 def _load_manifest_file(filename, name, type_='package'):
     """
     Load manifest.yaml properties into dictionary for package
