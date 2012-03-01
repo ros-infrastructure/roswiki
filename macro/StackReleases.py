@@ -117,29 +117,6 @@ def expand_rules(props, release_name, stack_name, stack_version):
             props_copy[k] = expand_rule(v, stack_name, stack_version, release_name, '', '')
     return props_copy
     
-def init_stack_macro(stack_name, macro_name):
-  try:
-    import yaml
-  except:
-    raise Exception('python-yaml is not installed on the wiki. Please have an admin install on this machine')
-
-  
-  stack_url = url_base + stack_name + "/html/"
-  url = url_base + stack_name + "/stack.yaml"
-  
-  try:
-    usock = urllib2.urlopen(url)
-    ydata = usock.read()
-    usock.close()
-  except:
-    return 'Newly proposed, mistyped, or obsolete stack. Could not find "' + stack_name + '" in rosdoc: '+url 
-
-  data = yaml.load(ydata)
-  if not data or type(data) != dict:
-    return "Unable to retrieve stack data. Auto-generated documentation may need to regenerate: "+str(url)
-
-  return stack_url, data
-  
 def macro_StackReleases(macro, arg1):
   stack_name = get_unicode(macro.request, arg1)
   if not stack_name:
