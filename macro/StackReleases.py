@@ -1,6 +1,5 @@
 # TODO: replace most of code with rospkg 
 
-import urllib2
 try:
     from MoinMoin.Page import Page
     from MoinMoin.wikiutil import get_unicode

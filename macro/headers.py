@@ -1,5 +1,4 @@
 import sys
-import urllib2
 try:
     from MoinMoin.Page import Page
 except:
