@@ -2,6 +2,8 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
+from macroutils import package_manifest_file
+
 generates_headings = True
 
 ## This is basically a fork of PackageHeader. Apologies for the
@@ -47,12 +49,11 @@ def macro_MsgSrvDoc(macro, arg1, arg2='true'):
     return "ERROR in MsgSrvDoc. Usage: [[MsgSrvDoc(pkg_name)]]"    
   
   package_url = package_html_link(package_name)
-  url = package_link(package_name) + "/manifest.yaml"
+  manifest_file = package_manifest_file(package_name)
   
   try:
-    usock = urllib2.urlopen(url)
-    ydata = usock.read()
-    usock.close()
+    with open(manifest_file) as f:
+      ydata = f.read()
   except:
     return 'Newly proposed, mistyped, or obsolete package. Could not find package "' + package_name + '" in rosdoc: '+url 
 
