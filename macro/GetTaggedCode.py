@@ -21,6 +21,9 @@ def execute(macro, args):
         return "invalid arguments: GetTaggedCode(uri,spec,tag,[{unindent,global_lines,show_uri}])"
 
     uri = args[0]
+    if 'ros.org/wiki' in uri or 'ros.org/doc' in uri:
+        return "GetTaggedCode cannot be used with www.ros.org URLs"
+
     specline = args[1]
 
     if specline[:2] != '#!':
