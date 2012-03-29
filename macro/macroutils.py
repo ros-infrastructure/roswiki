@@ -10,7 +10,7 @@ except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
 distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'unstable']
-distro_names_indexed = ['diamondback', 'electric', 'unstable'] #boxturtle and cturtle not indexed
+distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'unstable'] #boxturtle and cturtle not indexed
 
 #doc_url = "http://ros.org/doc/api/"
 doc_url = "http://ros.org/doc/"
