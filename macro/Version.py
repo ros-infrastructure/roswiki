@@ -37,10 +37,10 @@ def execute(macro, args):
         active = [distro.encode("iso-8859-1")]
         inactive = [x.encode("iso-8859-1") for x in distros if not x == distro]
         sectionarg = '''{show:%s, hide:%s}''' %(active, inactive)
-        html = '''<button id="%s" onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';
-                  document.getElementById('%s').style.background='#e6e6e6';document.getElementById('%s').style.color='#3e4f6e';
-                  document.getElementById('%s').style.background='#e6e6e6';document.getElementById('%s').style.color='#3e4f6e';
-                  return false"> %s </button>'''%(distro, sectionarg, inactive[0], inactive[0], inactive[1], inactive[1], distro)
+        html = '''<button id="%s" onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';''' % (distro, sectionarg)
+        for inactive_distro in inactive:
+            html += '''document.getElementById('%s').style.background='#e6e6e6';document.getElementById('%s').style.color='#3e4f6e';''' % (inactive_distro, inactive_distro)
+        html += '''return false"> %s </button>''' % (distro)
         return html
 
     html = "\n".join([distro_html(distro, distros) for distro in distros])
