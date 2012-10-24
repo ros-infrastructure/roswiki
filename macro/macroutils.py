@@ -9,16 +9,16 @@ try:
 except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
-distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'unstable']
-distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'unstable'] #boxturtle and cturtle not indexed
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'unstable']
+distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'unstable'] #boxturtle and cturtle not indexed
 
 #doc_url = "http://ros.org/doc/api/"
 doc_url = "http://ros.org/doc/"
 
 doc_path = '/var/www/www.ros.org/html/doc/'
 
-CONTRIBUTE_TMPL = """Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.  If you believe the package should be in the index, make sure to pass the distro name (e.g., Fuerte), as the second argument to the PackageHeader or StackHeader wiki macro.
-Please see <a href="http://www.ros.org/wiki/Get%%20Involved#Documenting_Your_.2A-ros-pkg_Repository_on_ROS.org">this page</a> for information on how to submit your repository to our index."""
+CONTRIBUTE_TMPL = """Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.
+Please see <a href="http://www.ros.org/wiki/Get%%20Involved#Indexing_Your_.2A-ros-pkg_Repository_for_Documentation_Generation">this page</a> for information on how to submit your repository to our index."""
 
 class UtilException(Exception): pass
 
@@ -90,7 +90,7 @@ def sub_link(macro, page, sub, title=None):
         title = sub
     return Page(macro.request, '%s/%s'%(page, sub)).link_to(macro.request, text=title)
 
-def wiki_url(macro, page,shorten=None):
+def wiki_url(macro, page,shorten=None,querystr=None):
     """
     Create link to ROS wiki page
     """
@@ -98,7 +98,7 @@ def wiki_url(macro, page,shorten=None):
         page_text = page
     else:
         page_text = page[:shorten]+'...'
-    return Page(macro.request, page).link_to(macro.request, text=page_text)
+    return Page(macro.request, page).link_to(macro.request, text=page_text, querystr=querystr)
 
 def get_repo_li(macro, props):
     """

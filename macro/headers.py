@@ -1,4 +1,7 @@
 import sys
+import urllib2
+import os
+
 try:
     from MoinMoin.Page import Page
 except:
@@ -7,9 +10,9 @@ except:
 from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, \
      msg_doc_link, load_package_manifest, package_html_link, UtilException, \
      load_stack_manifest, sub_link, distro_names, \
-     get_package_versions
+     get_package_versions, CONTRIBUTE_TMPL
 
-def get_nav(macro, stack_name, packages):
+def get_nav(macro, stack_name, packages, distro=None):
     nav = '<script type="text/javascript" src="/js/roswiki.js"></script>'
     strong, em, text = macro.formatter.strong, macro.formatter.emphasis, macro.formatter.text
 
@@ -20,6 +23,10 @@ def get_nav(macro, stack_name, packages):
         # unary stack header
         return nav
         #return nav+strong(1)+text(stack_name)+strong(0)
+
+    distro_query = None
+    if distro:
+        distro_query = "distro=%s"%distro 
     
     page_name = macro.formatter.page.page_name
 
@@ -27,7 +34,7 @@ def get_nav(macro, stack_name, packages):
     if stack_name == page_name:
         top = strong(1)+text(stack_name)+strong(0)
     else:
-        top = strong(1)+wiki_url(macro, stack_name)+strong(0)
+        top = strong(1)+wiki_url(macro, stack_name, querystr=distro_query)+strong(0)
 
     # create navigation elements for packages
     packages = [s for s in packages if not s.startswith('test_')]
@@ -37,7 +44,7 @@ def get_nav(macro, stack_name, packages):
         if pkg == page_name:
             parts.append(text(pkg))
         else:
-            parts.append(wiki_url(macro, pkg))
+            parts.append(wiki_url(macro, pkg, querystr=distro_query))
 
     # assemble nav elements
     nav = nav + em(1) + top 
@@ -85,7 +92,8 @@ def get_description(macro, data, type_):
         vcs_li = get_vcs_li(macro, data)
 
         # id=first for package?
-        desc = h(1, 2, id="summary")+text(title)+h(0, 2)+\
+        #desc = h(1, 2, id="summary")+text(title)+h(0, 2)+\
+        desc = "<h1>"+text(title)+"</h1>"+\
                p(1,id="package-info")+rawHTML(description)+p(0)+\
                p(1,id="package-info")+ul(1)+\
                li(1)+text("Author: "+authors)+li(0)+\
@@ -104,7 +112,66 @@ def li_if_exists(macro, page, sub_page):
     else:
         return ''
 
-def get_package_links(macro, package_name, data):
+def distro_html(distro, distros):
+    active = [distro.encode("iso-8859-1")]
+    inactive = [x.encode("iso-8859-1") for x in distros if not x == distro]
+    sectionarg = '''{show:%s, hide:%s}''' %(active, inactive)
+    html = '''<button id="%s" onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';''' % (distro, sectionarg)
+    for inactive_distro in inactive:
+        html += '''document.getElementById('%s').style.background='#e6e6e6';document.getElementById('%s').style.color='#3e4f6e';''' % (inactive_distro, inactive_distro)
+    html += '''return false"> %s </button>''' % (distro)
+    return html
+
+def generate_package_header(macro, package_name, opt_distro=None):
+    if not package_name:
+        return "ERROR in PackageHeader. Usage: [[PackageHeader(package_name opt_distro)]]"    
+    if ' ' in package_name:
+        #something changed in the API such that the above arg1, arg2 passing no longer works
+        splits = package_name.split(' ')
+        if len(splits) > 2:
+            return "ERROR in PackageHeader. Usage: [[PackageHeader(pkg_name opt_distro)]]"
+        package_name, distro = splits
+
+    try:
+        data = load_package_manifest(package_name, opt_distro)
+    except UtilException, e:
+        name = "name: %s, distro: %s" % (package_name, opt_distro)
+        return CONTRIBUTE_TMPL%locals()
+
+    nav = []
+    #Check to see if the package is a metapackage or a stack
+    package_type = data.get('package_type', 'package')
+
+    if package_type in ['stack', 'metapackage']:
+        nav.append(get_nav(macro, package_name, list(set(data.get('packages', []))), distro=opt_distro))
+  
+    metapackages = data.get('metapackages', None)
+    if metapackages:
+        try:
+	    for metapackage in metapackages:
+                metapackage_data = load_package_manifest(metapackage, opt_distro)
+	        nav.append(get_nav(macro, metapackage, list(set(metapackage_data.get('packages', []))), distro=opt_distro))
+        except UtilException, e:
+            name = metapackages
+            return CONTRIBUTE_TMPL%locals()
+
+    #TODO: Get the correct repo name based on local name being written to manifest
+    if data.has_key('repo_name'):
+        repo_name = data['repo_name']
+    else:
+        repo_name = os.path.splitext(os.path.basename(data['vcs_url']))[0]
+
+    desc = get_description(macro, data, 'package')
+    links = get_package_links(macro, package_name, data, opt_distro, repo_name)
+    
+    html = '<br><br>'.join([macro.formatter.rawHTML(item) for item in nav])
+    if html:
+        html = html + '<br><br>'
+    
+    return html + links + desc 
+
+
+def get_package_links(macro, package_name, data, distro, repo_name=None):
     f = macro.formatter
     p, url, div = f.paragraph, f.url, f.div
     em, strong, h, text = f.emphasis, f.strong, f.heading, f.text
@@ -141,26 +208,25 @@ def get_package_links(macro, package_name, data):
     # only include troubleshooting link if it exists.  We're now using the FAQ link
     troubleshoot = li_if_exists(macro, package_name, 'Troubleshooting')
     tutorials = li_if_exists(macro, package_name, 'Tutorials')
-        
-    versions = get_package_versions(package_name)
 
-    if versions and 'ros.org/doc/api' in api_documentation:
-        code_api = li(1)+strong(1)+text("Code API")+strong(0)+"<br />"
-        for v in version:
-            code_api = code_api + text(' - ')+url(1, url=package_html_link(package_name, v))+text(v)+url(0)+"<br />"
-        code_api = code_api + li(0)
+    if repo_name:
+        releases_link = li(1)+sub_link(macro, repo_name, 'Releases')+li(0) 
+        changelist_link = li(1)+sub_link(macro, repo_name, 'ChangeList', title='Change List')+li(0)
+	roadmap_link = li_if_exists(macro, repo_name, 'Roadmap')
+    else:
+        releases_link = ''
+        changelist_link = ''
+	roadmap_link = ''
+        
+    if 'ros.org/doc/api' in api_documentation:
+        code_api = li(1)+strong(1)+url(1, url=package_html_link(package_name, distro))+text("Code API")+url(0)+strong(0)+li(0)
     else:
         code_api = li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)
         
     if not msgs and not srvs:
         msg_doc = text('')
-    elif versions:
-        msg_doc = li(1)+strong(1)+msg_doc_title+strong(0)+"<br />"
-        for v in versions:
-            msg_doc = msg_doc + " - " + msg_doc_link(package_name, v, distro=v)+"<br />"
-        msg_doc = msg_doc + li(0)
     else:
-        msg_doc = li(1)+strong(1)+msg_doc_link(package_name, msg_doc_title)+strong(0)+li(0)
+        msg_doc = li(1)+strong(1)+msg_doc_link(package_name, msg_doc_title, distro)+strong(0)+li(0)
         
     try:
         package_links = div(1, css_class="package-links")+\
@@ -172,16 +238,19 @@ def get_package_links(macro, package_name, data):
                         tutorials+\
                         troubleshoot+\
                         li(1)+url(1, url='http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:%s/page:1/'%(package_name))+text("FAQ")+url(0)+li(0)+\
+                        changelist_link+\
+                        roadmap_link+\
+                        releases_link+\
                         review_str+\
                         ul(0)
     except UnicodeDecodeError:
         package_links = div(1, css_class="package-links")
   
-    package_links += get_dependency_list(macro, data, '')
+    package_links += get_dependency_list(macro, data, css_prefix=distro, distro=distro)
     package_links+=div(0)
     return package_links
 
-def get_stack_links(macro, stack_name, data, packages, is_unary):
+def get_stack_links(macro, stack_name, data, packages, is_unary, distro):
     f = macro.formatter
     p, div, h, text = f.paragraph, f.div, f.heading, f.text
     li, ul, strong = f.listitem, f.bullet_list, f.strong
@@ -216,16 +285,20 @@ def get_stack_links(macro, stack_name, data, packages, is_unary):
     except UnicodeDecodeError:
         links = div(1, css_class="package-links")
   
-    links += get_dependency_list(macro, data, 'stack-') + div(0)
+    links += get_dependency_list(macro, data, css_prefix='stack-%s'%distro, distro=distro) + div(0)
     return links
-    
-def get_dependency_list(macro, data, css_prefix=''):
+
+def get_dependency_list(macro, data, css_prefix='',distro=None):
     f = macro.formatter
     li, ul, strong, div = f.listitem, f.bullet_list, f.strong, f.div
     
     depends = data.get('depends', [])
     depends_on = data.get('depends_on', [])
-    
+
+    distro_query = None
+    if distro:
+        distro_query = "distro=%s"%distro 
+
     links = ''
     if depends:
         depends.sort()
@@ -235,7 +308,7 @@ def get_dependency_list(macro, data, css_prefix=''):
                  '<div id="%sdependencies-list" style="display:none">'%(css_prefix)+\
                  ul(1)
         for d in depends:
-            links += li(1)+wiki_url(macro,d,shorten=20)+li(0)
+            links += li(1)+wiki_url(macro,d,shorten=20,querystr=distro_query)+li(0)
         links += ul(0)+div(0)
     if depends_on:
         depends_on.sort()
@@ -244,7 +317,7 @@ def get_dependency_list(macro, data, css_prefix=''):
                  strong(0)+"<br />"+\
                  '<div id="%sused-by-list" style="display:none">'%(css_prefix)+ul(1) 
         for d in depends_on:
-            links += li(1)+wiki_url(macro,d,shorten=20)+li(0)
+            links += li(1)+wiki_url(macro,d,shorten=20,querystr=distro_query)+li(0)
         links += ul(0)+div(0)
         
     return links
