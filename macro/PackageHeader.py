@@ -33,7 +33,7 @@ def generate_old_package_header(macro, package_name, opt_distro=None):
     stack_name = data.get('stack', None) 
     nav = get_nav(macro, stack_name, list(set(data.get('siblings', []))), distro=opt_distro)
     desc = get_description(macro, data, 'package')
-    links = get_package_links(macro, package_name, data, opt_distro, None)
+    links = get_package_links(macro, package_name, data, opt_distro)
   
     return macro.formatter.rawHTML(nav) + '<br><br>' + links + desc 
 

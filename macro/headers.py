@@ -141,8 +141,9 @@ def generate_package_header(macro, package_name, opt_distro=None):
     nav = []
     #Check to see if the package is a metapackage or a stack
     package_type = data.get('package_type', 'package')
+    is_metapackage = package_type in ['stack', 'metapackage']
 
-    if package_type in ['stack', 'metapackage']:
+    if is_metapackage:
         nav.append(get_nav(macro, package_name, list(set(data.get('packages', []))), distro=opt_distro))
   
     metapackages = data.get('metapackages', None)
@@ -162,7 +163,7 @@ def generate_package_header(macro, package_name, opt_distro=None):
         repo_name = os.path.splitext(os.path.basename(data['vcs_url']))[0]
 
     desc = get_description(macro, data, 'package')
-    links = get_package_links(macro, package_name, data, opt_distro, repo_name)
+    links = get_package_links(macro, package_name, data, opt_distro, repo_name=repo_name, metapackage=is_metapackage)
     
     html = '<br><br>'.join([macro.formatter.rawHTML(item) for item in nav])
     if html:
@@ -171,7 +172,7 @@ def generate_package_header(macro, package_name, opt_distro=None):
     return html + links + desc 
 
 
-def get_package_links(macro, package_name, data, distro, repo_name=None):
+def get_package_links(macro, package_name, data, distro, repo_name=None, metapackage=False):
     f = macro.formatter
     p, url, div = f.paragraph, f.url, f.div
     em, strong, h, text = f.emphasis, f.strong, f.heading, f.text
@@ -218,7 +219,10 @@ def get_package_links(macro, package_name, data, distro, repo_name=None):
         changelist_link = ''
 	roadmap_link = ''
         
-    if 'ros.org/doc/api' in api_documentation:
+    #We don't want to display the Code API link for a metapackage
+    if metapackage:
+        code_api = ''
+    elif 'ros.org/doc/api' in api_documentation:
         code_api = li(1)+strong(1)+url(1, url=package_html_link(package_name, distro))+text("Code API")+url(0)+strong(0)+li(0)
     else:
         code_api = li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)
