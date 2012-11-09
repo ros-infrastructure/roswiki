@@ -61,6 +61,7 @@ def execute(macro, args):
     indent = 0
     count = 1
     start_line = 1
+    last_line = None
     for l in lines:
         m = re.search('(\s*).*%(End)?Tag\((.*)\)%', l)
         # Only include lines containing <WikiCodeTag()>
@@ -71,12 +72,22 @@ def execute(macro, args):
                     tagged_lines.append(l[indent:])
                 else:
                     tagged_lines.append('\n')
-        elif (m.groups()[1] is None and m.groups()[2] == tag):
+        elif (m.groups()[1] is None and m.groups()[2].split(',')[0] == tag):
+            minus_one = False
+            if len(m.groups()[2].split(',')) == 2 and \
+               m.groups()[2].split(',')[1] == '-1' and \
+               last_line is not None:
+                if len(tagged_lines) >= 1:
+                    del tagged_lines[-1]
+                tagged_lines.append(last_line)
+                minus_one = True
             skip = False
             if shift:
                 indent = len(m.groups()[0])
             if global_lines:
                 start_line = count
+                if minus_one:
+                    start_line -= 1
         elif (m.groups()[1] == 'End' and m.groups()[2] == tag):
             break
         else:
@@ -85,6 +96,7 @@ def execute(macro, args):
                 count += 1
                 if not skip:
                     tagged_lines.append('\n')
+        last_line = l
 
     if len(tagged_lines) == 0:
         return "No tagged region"
