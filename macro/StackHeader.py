@@ -12,6 +12,8 @@ if 'boxturtle' in distro_names:
     distro_names.remove('boxturtle')
 if 'cturtle' in distro_names:
     distro_names.remove('cturtle')
+if 'diamondback' in distro_names:
+    distro_names.remove('diamondback')
 if 'unstable' in distro_names:
     distro_names.remove('unstable')
 
@@ -53,7 +55,7 @@ def macro_StackHeader(macro, arg1, arg2=None):
     if not opt_distro:
         headers_html = []
         for distro in distro_names:
-            if distro in ['boxturtle', 'cturtle', 'electric', 'diamondback', 'fuerte']:
+            if distro in ['boxturtle', 'cturtle', 'diamondback']:
                 stack_header_html = generate_old_stack_header(macro, stack_name, distro)
             else:
                 stack_header_html = generate_package_header(macro, stack_name, distro)
@@ -62,7 +64,7 @@ def macro_StackHeader(macro, arg1, arg2=None):
         html = "\n".join([distro_html(distro, distro_names) for distro in distro_names])
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:
-        if opt_distro in ['boxturtle', 'cturtle', 'electric', 'diamondback', 'fuerte']:
+        if opt_distro in ['boxturtle', 'cturtle', 'diamondback']:
             return generate_old_stack_header(macro, stack_name, opt_distro)
         else:
             return generate_package_header(macro, stack_name, opt_distro)
