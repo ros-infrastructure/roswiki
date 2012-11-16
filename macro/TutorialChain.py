@@ -12,7 +12,10 @@
     @license: BSD
 """
 
+from __future__ import print_function
+
 import re
+from Queue import Queue
 
 from MoinMoin import wikiutil
 from MoinMoin.Page import Page
@@ -68,28 +71,21 @@ def get_wiki_page(wiki_link, macro):
     return tutorial
 
 
-def crawl_tutorials(tutorial_list, macro):
-    # Update the list
-    for i in reversed(range(len(tutorial_list))):
-        if tutorial_list[i][1] is not None:
-            break  # Hit a filled out tutorial, the rest should be too
-        # Check to see if the latest tutorial exists
-        tutorial = get_wiki_page(tutorial_list[i][0], macro)
-        if not tutorial:
-            continue  # Failed to get the page, don't update it
-        tutorial_list[i] = (
-            tutorial['link'],
-            tutorial['title'],
-            tutorial['desc']
-        )
-    # Add the next one
-    next_tutorials = set(list(tutorial['next']))
-    if len(next_tutorials) == 0:
-        return tutorial_list
-    for next in next_tutorials:
-        tutorial_list.append((next, None, None))
-    # Recurse
-    return crawl_tutorials(tutorial_list, macro)
+def crawl_tutorials_breadth_first(tutorial_root, macro):
+    queue = Queue()
+    queue.put((tutorial_root, None))
+    tutorials = []
+    while not queue.empty():
+        link, parent = queue.get()
+        tut = get_wiki_page(link, macro)
+        tup = (tut['link'], tut['title'], tut['desc'])
+        if tut['link'] not in [t[0] for t in tutorials]:
+            tutorials.append(tup)
+        else:
+            tutorials.append(tutorials.pop(tutorials.index(tup)))
+        for next in tut['next']:
+            queue.put((next, tut['link']))
+    return tutorials
 
 
 def execute(macro, first_tutorial):
@@ -104,8 +100,7 @@ def execute(macro, first_tutorial):
                     '{{{"%s"}}}', wiki=True) % first_tutorial
             return '<span class="error">%s</span>' % err
 
-        tutorial_list = [(first_tutorial, None, None)]
-        tutorial_list = crawl_tutorials(tutorial_list, macro)
+        tutorial_list = crawl_tutorials_breadth_first(first_tutorial, macro)
 
         f = macro.formatter
         content = ''
