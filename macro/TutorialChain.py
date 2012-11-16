@@ -2,184 +2,31 @@
 """
     ROS - TutorialChain
 
-    <<TutorialChain(<FirstTutorial>)>>
+    <<TutorialChain(path/to/FirstTutorial)>>
         Given a wiki link to a Tutorial, it will traverse the next links
         until a terminal Tutorial with no next link is found. Then the
         Tutorials are displayed in order with links and descriptions.
 
-    @copyright: 2012 Willow Garage, William Woodall <wwoodall@willowgarage.com>
+    @copyright: 2012 Willow Garage,
+        William Woodall <wwoodall@willowgarage.com>
     @license: BSD
 """
 
 import re
-import StringIO
 
-from MoinMoin.parser import text_moin_wiki as wiki
+from MoinMoin import wikiutil
+from MoinMoin.Page import Page
+from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
 
-
-def pageListWithContext(self, macro, request, formatter, info=1, context=180,
-                        maxlines=1, paging=True, hitsFrom=0, hitsInfo=0):
-    """ Format a list of found pages with context
-
-    The default parameter values will create Google-like search
-    results, as this is the most known search interface. Good
-    interface is familiar interface, so unless we have much better
-    solution (we don't), being like Google is the way.
-
-    @param request: current request
-    @param formatter: formatter to use
-    @param info: show match info near the page link
-    @param context: how many characters to show around each match.
-    @param maxlines: how many contexts lines to show.
-    @param paging: toggle paging
-    @param hitsFrom: current position in the hits
-    @param hitsInfo: toggle hits info line
-    @rtype: unicode
-    @return formatted page list with context
-    """
-    self._reset(request, formatter)
-    f = formatter
-    write = self.buffer.write
-    _ = request.getText
-
-    if paging and len(self.hits) <= request.cfg.search_results_per_page:
-        paging = False
-
-    if len(self.hits) == 0:
-      write(f.definition_list(1) + f.definition_term(1) + "No results found." + f.definition_term(0) + f.definition_list(0))      
-    # Add pages formatted as definition list
-    else:
-        write(f.number_list(1))
-
-        if paging:
-            hitsTo = hitsFrom + request.cfg.search_results_per_page
-            displayHits = self.hits[hitsFrom:hitsTo]
-        else:
-            displayHits = self.hits
-
-        display_results = []
-
-        for page in displayHits:
-            # TODO handle interwiki search hits
-            matchInfo = ''
-            next_page = None
-            if info:
-                matchInfo = self.formatInfo(f, page)
-            if page.attachment:
-                fmt_context = ""
-                querydict = {
-                    'action': 'AttachFile',
-                    'do': 'view',
-                    'target': page.attachment,
-                }
-            elif page.page_name.startswith('FS/'): # XXX FS hardcoded
-                fmt_context = ""
-                querydict = None
-            else:
-                title, fmt_context, next_pages = formatContext(self, macro, page, context, maxlines)
-                if page.rev and page.rev != page.page.getRevList()[0]:
-                    querydict = {
-                        'rev': page.rev,
-                    }
-                else:
-                    querydict = None
-            querystr = self.querystring(querydict)
-            item = [
-                f.listitem(1),
-#                f.pagelink(1, page.page_name, querystr=querystr),
-                f.pagelink(1, page.page_name),
-                title,
-                f.pagelink(0),
-                "<p>", 
-                fmt_context,
-                "</p>",
-                f.listitem(0),
-                ]
-            display_results.append((page.page_name, next_pages, ''.join(item)))
-
-        sorted_display_results = sortResults(display_results)
-
-        for node in sorted_display_results:
-          write(node.body)
-        write(f.number_list(0))
-        if paging:
-            write(self.formatPageLinks(hitsFrom=hitsFrom,
-                hitsPerPage=request.cfg.search_results_per_page,
-                hitsNum=len(self.hits)))
-
-    return self.getvalue()
+Dependencies = ["pages"]
 
 
- 
-class Node:  
-  def __init__(self, pagename, body, dependencies):  
-    self.pagename = pagename  
-    self.body = body  
-    self.dependencies = dependencies
- 
-  def __repr__(self): 
-    return "<Node %s %s>" % (self.pagename, self.dependencies) 
- 
-def topoSort(dependencies): 
-  dead = {} 
-  list = [] 
- 
-  for node in dependencies.values():  dead[node] = False 
-
-  nonterminals = []
-  terminals = []
-  for node in dependencies.values():
-    if node.dependencies:
-      nonterminals.append(node)
-    else:
-      terminals.append(node)
- 
-  for node in nonterminals:
-    visit(dependencies, terminals, node, list, dead); 
- 
-  list.reverse()
-
-  list = list + terminals
-  return list 
- 
-def visit(dependencies, terminals, dependency, list, dead): 
-  if dependency is None: return
-  if dead.get(dependency, False): return 
- 
-  dead[dependency] = True 
- 
-  if dependency.dependencies: 
-    for node in dependency.dependencies:
-      visit(dependencies, terminals, dependencies.get(node, None), list, dead) 
-  try:
-    terminals.remove(dependency)
-  except ValueError: pass
-
-  list.append(dependency) 
- 
-def sortResults(display_results):  
-  dependencies = {}  
- 
-  for pagename, nextpages, body in display_results:  
-    node = Node(pagename, body, nextpages) 
-    dependencies[pagename] = node 
- 
-  results = topoSort(dependencies) 
- 
-  return results
-
-def formatContext(self, macro, page, context, maxlines):
+def formatContext(page, macro):
     """ Format search context for each matched page
 
     Try to show first maxlines interesting matches context.
     """
-    if not page.page:
-        page.page = Page(self.request, page.page_name)
-    body = page.page.get_raw_body()
-    last = len(body) - 1
-    lineCount = 0
-    output = ""
-    next_page = None
+    body = page.get_raw_body()
 
     pagedict = {}
     for line in body.split("\n"):
@@ -200,48 +47,84 @@ def formatContext(self, macro, page, context, maxlines):
             if m:
                 next_pages.append(m.group(1))
 
-    if description:
-        out = StringIO.StringIO()
-        macro.request.redirect(out)
-        wikiizer = wiki.Parser(description, macro.request)
-        wikiizer.format(macro.formatter)
-        description = out.getvalue()
-        macro.request.redirect()
-        del out
-
     return title, description, next_pages
 
 
-def get_wiki_page(wiki_link):
-    return {}
+def get_wiki_page(wiki_link, macro):
+    if not wiki_link:
+        return {}
+    page_name = macro.formatter.page.page_name
+    tutorial_page_name = wikiutil.AbsPageName(page_name, wiki_link)
+    tutorial_page = Page(macro.request, tutorial_page_name)
+    result = formatContext(tutorial_page, macro)
+    if not result:
+        return {}
+    tutorial = {
+        'link': tutorial_page_name,
+        'title': result[0],
+        'desc': result[1],
+        'next': result[2]
+    }
+    return tutorial
 
 
-def crawl_tutorials(tutorial_list):
-    # Check to see if the latest tutorial exists
-    tutorial = get_wiki_page(tutorial_list[-1][0])
-    if not tutorial:
-        return tutorial_list
+def crawl_tutorials(tutorial_list, macro):
     # Update the list
-    tutorial_list[-1] = (tutorial['link'], tutorial['desc'])
+    for i in reversed(range(len(tutorial_list))):
+        if tutorial_list[i][1] is not None:
+            break  # Hit a filled out tutorial, the rest should be too
+        # Check to see if the latest tutorial exists
+        tutorial = get_wiki_page(tutorial_list[i][0], macro)
+        if not tutorial:
+            continue  # Failed to get the page, don't update it
+        tutorial_list[i] = (
+            tutorial['link'],
+            tutorial['title'],
+            tutorial['desc']
+        )
     # Add the next one
-    tutorial_list.append((tutorial['next'], 'Page Not Found'))
+    next_tutorials = set(list(tutorial['next']))
+    if len(next_tutorials) == 0:
+        return tutorial_list
+    for next in next_tutorials:
+        tutorial_list.append((next, None, None))
     # Recurse
-    return crawl_tutorials(tutorial_list)
+    return crawl_tutorials(tutorial_list, macro)
 
 
 def execute(macro, first_tutorial):
-    request = macro.request
-    _ = request.getText
+    try:
+        request = macro.request
+        _ = request.getText
 
-    head = first_tutorial
-    if type(head) == str:
-        head = head.strip()
-    if not head:
-        err = _('Invalid first Tutorial given: '
-                '{{{"%s"}}}', wiki=True) % head
-        return '<span class="error">%s</span>' % err
+        if type(first_tutorial) == str:
+            first_tutorial = first_tutorial.strip()
+        if not first_tutorial:
+            err = _('Invalid first Tutorial given: '
+                    '{{{"%s"}}}', wiki=True) % first_tutorial
+            return '<span class="error">%s</span>' % err
 
-    tutorial_list = [(head, 'Page Not Found')]
-    tutorial_list = crawl_tutorials(tutorial_list)
+        tutorial_list = [(first_tutorial, None, None)]
+        tutorial_list = crawl_tutorials(tutorial_list, macro)
 
-    return tutorial_list
+        f = macro.formatter
+        content = ''
+        content += f.number_list(1)
+        for link, title, desc in tutorial_list:
+            desc = str(desc or 'No Description')
+            content += ''.join([
+                f.listitem(1),
+                f.pagelink(1, str(link or '#BadLink')),
+                str(title or 'No Title'),
+                f.pagelink(0),
+                "<p>",
+                wikiutil.renderText(request, WikiParser, desc),
+                "</p>",
+                f.listitem(0)
+            ])
+        content += f.number_list(0)
+        return content
+    except Exception as e:
+        import traceback
+        tb = traceback.format_exc()
+        return '<span class="error"><pre>%s\nError: %s</pre></span>' % (tb, e)
