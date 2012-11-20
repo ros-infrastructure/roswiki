@@ -119,11 +119,7 @@ def execute(macro, args):
                    '&lt;&lt;Buildsystem(%s)&gt;&gt;' % buildsystem
 
     html = ''
-    if not getattr(macro.request.cfg, 'buildsystem_macro', False):
-        #html += '<script src="//ajax.googleapis.com/ajax/libs/jquery/' + \
-        #        '1.8.3/jquery.min.js"></script>\n'
-        html += buildsystem_js
-        macro.request.cfg.buildsystem_macro = True
+    html += buildsystem_js
+    macro.request.cfg.buildsystem_macro = True
     html += "\n".join([distro_html(system, systems) for system in systems])
     return macro.formatter.rawHTML(html)
-    # return html
