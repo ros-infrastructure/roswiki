@@ -128,6 +128,22 @@ def get_vcs_li(macro, stack_data):
     else:
         return ''
 
+def get_url_li(macro, data):
+    if 'url' in data and data['url'] and 'ros.org/wiki' not in data['url']:
+        f = macro.formatter
+        li = f.listitem
+        return li(1)+f.text("External website: ")+f.rawHTML(' <a href="%s">%s</a>'%(data['url'], data['url']))+li(0)
+    else:
+        return ''
+
+def get_bugtracker_li(macro, data):
+    if 'bugtracker' in data and data['bugtracker']:
+        f = macro.formatter
+        li = f.listitem
+        return li(1)+f.text("Bugtracker: ")+f.rawHTML(' <a href="%s">%s</a>'%(data['bugtracker'], data['bugtracker']))+li(0)
+    else:
+        return ''
+
 def process_distro(stack_name, yaml_str):
     """
     @return: distro properties, stack properties. Stack properties

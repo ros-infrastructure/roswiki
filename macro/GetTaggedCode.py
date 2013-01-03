@@ -122,3 +122,4 @@ def execute(macro, args):
     del out
 
     return result
+

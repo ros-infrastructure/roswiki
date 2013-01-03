@@ -72,7 +72,7 @@ function getURLParameter(name) {
 
 $(document).ready(function() {
     var activesystem = \"""" + DEFAULT_SYSTEM + """";
-    var url_distro = getURLParameter('distro');
+    var url_distro = getURLParameter('buildsystem');
     if (url_distro)
     {
         activesystem = url_distro;

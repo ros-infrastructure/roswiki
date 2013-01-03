@@ -1,3 +1,4 @@
+import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 

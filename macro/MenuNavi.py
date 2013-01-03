@@ -34,7 +34,7 @@ class MyFormatter(Formatter):
 
       if not pagename and page:
           pagename = page.page_name
-      pagename = self.request.normalizePagename(pagename)
+      #pagename = self.request.normalizePagename(pagename)
       if pagename and pagename not in self.pagelinks:
         if self._text:
           linktext = string.join(self._text)

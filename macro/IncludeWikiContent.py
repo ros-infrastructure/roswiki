@@ -3,14 +3,14 @@
 
 A macro to include another wiki page content with the context set to the current
 page. This Inclusion is not recursive (included pages won't get their
-IncludeWikiContent macro evaluated). 
+IncludeWikiContent macro evaluated).
 
-Usage: 
-	Use this macro to include common elements of your wiki, such as standard
-	subpages, headers etc...
+Usage:
+    Use this macro to include common elements of your wiki, such as standard
+    subpages, headers etc...
 
 Syntax:
-	<<IncludeWikiContent(include page name)>>
+    <<IncludeWikiContent(include page name)>>
 
 """
 
@@ -21,6 +21,7 @@ from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
 
 # do not cache
 Dependencies = ["namespace"]
+
 
 def execute(macro, args):
     request = macro.request
@@ -42,4 +43,3 @@ def execute(macro, args):
         return ''
     else:
         return wikiutil.renderText(request, WikiParser, include_page.getPageText())
-

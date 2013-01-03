@@ -222,7 +222,7 @@ def execute(macro, args):
     addcommand = u'addcomment%d' % Globs.formid
     delcommand = u'delcomment%d' % Globs.formid
     
-    action = macro.form.get('commentaction', [''])[0]
+    action = request.form.get('commentaction', [''])[0]
     
     if action == addcommand:
     
@@ -1201,7 +1201,7 @@ def getAuthorFromCookie():
     cookieauthor = ''
     
     try:
-        cookie = Cookie.SimpleCookie(request.saved_cookie)
+        cookie = Cookie.SimpleCookie(request.cookies)
     except Cookie.CookieError:
         # ignore invalid cookies
         cookie = None

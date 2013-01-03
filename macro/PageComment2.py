@@ -231,7 +231,7 @@ def execute(macro, args):
     addcommand = u'addcomment%d' % Globs.formid
     delcommand = u'delcomment%d' % Globs.formid
     
-    action = macro.form.get('commentaction', [''])[0]
+    action = request.form.get('commentaction', [''])[0]
     
     if action == addcommand:
     

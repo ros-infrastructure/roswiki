@@ -1,0 +1,39 @@
+/*  sections.css - sections styles
+
+Usage: copy and paste into your theme screen.css, change colors and
+spacing as needed.
+
+Copyright (c) 2005 by Nir Soffer
+*/
+
+/* Content Sidebar */
+
+#content .sidebar {float: right; width: 200px; margin: 0 0 20px 20px;
+    padding: 0; font-size: 0.85em;}
+#content[dir="rtl"] .sidebar {float: left; margin: 0 20px 20px 0;}
+#content .sidebar p {text-align: left;}
+#content[dir="rtl"] .sidebar p {text-align: right;}
+/* All headings use darker blue and some white space above */
+#content .sidebar h3, #content .sidebar h4 {margin: 1.5em 0 0 0; 
+    padding: 2px 8px; background: #B8C5D9;}
+#content .sidebar *:first-child {margin-top: 0}
+/* all block elements use light blue background */
+#content .sidebar ul, #content .sidebar ol, #content .sidebar p, #content .sidebar table, #content .sidebar div {
+    background: #F2F4F7;}
+#content .sidebar ul, #content .sidebar ol {margin: 0; padding: 0;}
+/* Paragraphs and list items separated with bottom border */
+#content .sidebar p, #content .sidebar li {margin: 0; padding: 4px 8px;
+    border-bottom: 1pt solid #E6EAF0;}
+#content .sidebar li { display: block;}
+#content .sidebar li p {margin: 0; padding: 0; border: none;}
+
+/* Content Figures 
+
+Default figure float to the end of the page. Left of right classes float to the left or right :-)
+*/
+#content .figure {float: right; margin: 0 0 0 20px; padding: 0; 
+    font-size: 0.85em;}
+#content[dir="rtl"] .figure {float: left; margin: 0 20px 0 0;}
+#content .figure.left {float: left; margin: 0 20px 0 0;}
+#content .figure.right {float: right; margin: 0 0 0 20px;}
+#content .figure p {margin: 0; text-align: center; font-weight: bold;}

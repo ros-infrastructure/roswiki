@@ -1,5 +1,7 @@
 # TODO: replace most of code with rospkg 
 
+import sys
+import urllib2
 try:
     from MoinMoin.Page import Page
     from MoinMoin.wikiutil import get_unicode
@@ -112,7 +114,7 @@ def expand_rules(props, release_name, stack_name, stack_version):
     for k, v in props.iteritems():
         if type(v) == dict:
             props_copy[k] = expand_rules(v, release_name, stack_name, stack_version)
-        else:
+        elif v:
             props_copy[k] = expand_rule(v, stack_name, stack_version, release_name, '', '')
     return props_copy
     
@@ -169,7 +171,7 @@ def macro_StackReleases(macro, arg1):
       
       rules = get_rules(release, stack_name)
       variants = get_variants(release, stack_name)
-      version = stack_props['version']
+      version = stack_props.get('version', None)
       props = expand_rules(rules, release_name, stack_name, version)
 
       if version is None:

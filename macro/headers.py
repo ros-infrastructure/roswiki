@@ -9,7 +9,7 @@ try:
 except:
     sys.stderr.write("Cannot import Moin.  For testing only")
 
-from macroutils import wiki_url, get_repo_li, get_vcs_li, load_stack_release, \
+from macroutils import wiki_url, get_repo_li, get_vcs_li, get_bugtracker_li, get_url_li, load_stack_release, \
      msg_doc_link, load_package_manifest, package_html_link, UtilException, \
      load_stack_manifest, sub_link, distro_names, \
      get_package_versions, CONTRIBUTE_TMPL
@@ -72,6 +72,14 @@ def get_description(macro, data, type_):
         authors = unicode(authors, 'utf-8')
     except UnicodeDecodeError:
       authors = ''
+
+    maintainers = data.get('maintainers', '')
+    try:
+      if type(maintainers) != unicode:
+        maintainers = unicode(maintainers, 'utf-8')
+    except UnicodeDecodeError:
+      maintainers = ''
+
     license = data.get('license', 'unknown')
 
     description = data.get('description', '')
@@ -92,15 +100,21 @@ def get_description(macro, data, type_):
     try:
         repo_li = get_repo_li(macro, data)
         vcs_li = get_vcs_li(macro, data)
+        bugtracker_li = get_bugtracker_li(macro, data)
+        url_li = get_url_li(macro, data)
+        maintainers_li = li(1)+text("Maintainer: "+maintainers)+li(0) if maintainers else ''
 
         # id=first for package?
         #desc = h(1, 2, id="summary")+text(title)+h(0, 2)+\
         desc = "<h1>"+text(title)+"</h1>"+\
                p(1,id="package-info")+rawHTML(description)+p(0)+\
                p(1,id="package-info")+ul(1)+\
+               maintainers_li+\
                li(1)+text("Author: "+authors)+li(0)+\
                li(1)+text("License: "+license)+li(0)+\
+               url_li+\
                repo_li+\
+               bugtracker_li+\
                vcs_li+\
                ul(0)+p(0)
     except UnicodeDecodeError:
@@ -197,7 +211,9 @@ def generate_package_header(macro, package_name, opt_distro=None):
 	            last_timestamp = datetime.datetime.fromtimestamp(data['timestamp'])
 	            last_time_str = last_timestamp.strftime("%B %d, %Y at %I:%M %p")
 		    time_str = last_time_str
-	        status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (Doc job status: %s <a href="%s/lastBuild/testReport">details</a>).</span>' % (time_str, result.lower(), jenkins_url)
+
+                link_url = jenkins_url + '/lastBuild/console' if result == 'FAILURE' else jenkins_url + '/lastBuild/testReport/(root)/message_generation_failure_class/message_generation_failureFailure'
+	        status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (Doc job status: %s <a href="%s">details</a>).</span>' % (time_str, result.lower(), link_url)
         except Exception as e:
 	    status_string = "<b>Could not retreive doc job information, communication with jenkins failed %s, %s</b>" % (e, jenkins_url)
             pass

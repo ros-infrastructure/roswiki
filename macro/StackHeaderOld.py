@@ -1,14 +1,15 @@
+import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_stack_release, \
-     load_package_manifest, UtilException, load_stack_manifest
+     load_package_manifest, UtilException, load_stack_manifest, CONTRIBUTE_TMPL
 from headers import get_nav, get_stack_links, get_package_links, get_description
 
 generates_headings = True
 dependencies = []
 
-def macro_StackageHeader(macro, arg1, arg2='ja'):
+def macro_StackHeader(macro, arg1, arg2='ja'):
     stack_name = get_unicode(macro.request, arg1)
     lang = get_unicode(macro.request, arg2)
     if ' ' in stack_name:
@@ -23,7 +24,8 @@ def macro_StackageHeader(macro, arg1, arg2='ja'):
     try:
         data = load_stack_manifest(stack_name, lang)
     except UtilException, e:
-        return str(e)
+        name = stack_name
+        return CONTRIBUTE_TMPL%locals()
   
     packages = data.get('packages', [])
     is_unary = [stack_name] == packages

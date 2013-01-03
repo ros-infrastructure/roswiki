@@ -14,7 +14,7 @@ from MoinMoin import wikiutil
 def execute(self, args):
   #TODO - check that template is valid
 
-  result = wikiutil.link_tag(self.request, "%s?action=edit&amp;template=%s" % (
+  result = wikiutil.link_tag(self.request, "%s?action=edit&template=%s" % (
                         wikiutil.quoteWikinameURL(self.formatter.page.page_name),
                         wikiutil.quoteWikinameURL(args)), args)
   return result
