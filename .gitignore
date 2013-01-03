@@ -1,0 +1,7 @@
+*.pyc
+filter/__init__.py
+formatter/__init__.py
+processor/__init__.py
+userprefs/__init__.py
+xmlrpc/__init__.py
+
