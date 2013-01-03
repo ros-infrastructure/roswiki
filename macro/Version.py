@@ -28,8 +28,8 @@ def execute(macro, args):
 
     if args:
       version = str(args)    
-      if version.lower() in ['groovy']:
-        return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Groovy Turtle (unstable)</span>'
+      if version.lower() == 'hydro':
+        return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Hydro Turtle</span>'
       else:
         return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">New in %s</span>'%version
 
