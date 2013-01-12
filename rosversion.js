@@ -41,12 +41,10 @@ $(document).ready(function() {
     $("div.version").not("."+activedistro).hide();
     if($("#"+activedistro).length > 0)
     {
-      console.log('groovy');
       $("#"+activedistro).click();//CHANGE THIS LINE TO THE DISTRO DISPLAYED BY DEFAULT
     }
     else
     {
-      console.log($("input.version:hidden:first"));
       $("button:first").click();
     }
     $("input.version:hidden").each(function(){var bg = $(this).attr("value").split(":"); $("div.version." + bg[0]).css("background-color",bg[1]).removeClass(bg[0])});
