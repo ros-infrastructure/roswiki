@@ -128,6 +128,85 @@ def li_if_exists(macro, page, sub_page):
     else:
         return ''
 
+def get_doc_status(opt_distro, repo_name):
+    #Try to get the current build status for the doc job
+    status_string = "<b>Doc job status is unknown.</b>"
+    if opt_distro:
+        jenkins_url = 'http://jenkins.willowgarage.com:8080/job/%s' % \
+                (data.get("doc_job", "doc-%s-%s" % (opt_distro, repo_name)))
+        try:
+            jenkins_stream = urllib2.urlopen('%s/lastBuild/api/json' % \
+	                     (jenkins_url), timeout=1.0)
+	    status_json = json.load(jenkins_stream)
+	    result = status_json.get("result", "UNKNOWN")
+	    timestamp = datetime.datetime.fromtimestamp(int(status_json.get("timestamp", 0)) / 1000.0)
+	    time_str = timestamp.strftime("%B %d, %Y at %I:%M %p")
+	    if result == 'SUCCESS':
+	        status_string = '<i>Documentation generated on %s</i>' % (time_str)
+            elif result is None:
+                status_string = '<i>Documentation is currently being re-generated</i>'
+            else:
+                if result =='FAILURE' and data.has_key('timestamp'):
+                    last_timestamp = datetime.datetime.fromtimestamp(data['timestamp'])
+                    last_time_str = last_timestamp.strftime("%B %d, %Y at %I:%M %p")
+                    time_str = last_time_str
+
+                link_url = jenkins_url + '/lastBuild/console' if result == 'FAILURE' else jenkins_url + '/lastBuild/testReport/(root)/message_generation_failure_class/message_generation_failureFailure'
+                status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (Doc job status: %s <a href="%s">details</a>).</span>' % (time_str, result.lower(), link_url)
+        except Exception as e:
+            status_string = "<b>Could not retreive doc job information, communication with jenkins failed %s, %s</b>" % (e, jenkins_url)
+            pass
+
+    return status_string
+
+def get_repo_name(data, package_name):
+    package_type = data.get('package_type', 'package')
+    if package_type == 'stack':
+        stack_name = package_name
+    else:
+        stack_name = ''
+
+    metapackages = data.get('metapackages', None)
+    if metapackages:
+        for metapackage in metapackages:
+            try:
+                metapackage_data = load_package_manifest(metapackage, opt_distro)
+                metapackage_type = metapackage_data.get('package_type', None)
+                if metapackage_type == 'stack':
+                    stack_name = metapackage
+            except UtilException, e:
+                continue
+
+    #Get the correct repo name based on local name being written to manifest
+    if stack_name:
+        repo_name = stack_name
+    elif data.has_key('repo_name'):
+        repo_name = data['repo_name']
+    elif data.has_key('vcs_url'):
+        repo_name = os.path.splitext(os.path.basename(data['vcs_url']))[0]
+    else:
+        repo_name = os.path.splitext(os.path.basename(data['vcs_uri']))[0]
+
+    return repo_name
+
+
+def doc_html(distros, package_name):
+    doc_html = '<a href="javascript:toggleDocStatus()">Documentation Status</a>'
+    doc_html += '<div id="doc_status" style="display:none;"><ul>'
+    for distro in distros:
+        doc_html += '<li><b>%s:</b> '
+        try:
+            data = load_package_manifest(package_name, distro)
+            repo_name = get_repo_name(data, package_name)
+            doc_string = get_doc_status(distro, repo_name)
+            doc_html += doc_string
+        except UtilException, e:
+            name = "name: %s, distro: %s" % (package_name, distro)
+            doc_html += CONTRIBUTE_TMPL%locals()
+        doc_html += '</li>'
+    doc_html += '</div>'
+    return doc_html
+
 def distro_html(distro, distros):
     active = [distro.encode("iso-8859-1")]
     inactive = [x.encode("iso-8859-1") for x in distros if not x == distro]
@@ -163,62 +242,20 @@ def generate_package_header(macro, package_name, opt_distro=None):
         nav.append(get_nav(macro, package_name, list(set(data.get('packages', []))), distro=opt_distro))
   
     metapackages = data.get('metapackages', None)
-
-    if package_type == 'stack':
-        stack_name = package_name
-    else:
-        stack_name = ''
-
     if metapackages:
         for metapackage in metapackages:
             try:
                 metapackage_data = load_package_manifest(metapackage, opt_distro)
-	        nav.append(get_nav(macro, metapackage, list(set(metapackage_data.get('packages', []))), distro=opt_distro))
+                nav.append(get_nav(macro, metapackage, list(set(metapackage_data.get('packages', []))), distro=opt_distro))
                 metapackage_type = metapackage_data.get('package_type', None)
                 if metapackage_type == 'stack':
                     stack_name = metapackage
             except UtilException, e:
                 continue
 
-    #TODO: Get the correct repo name based on local name being written to manifest
-    if stack_name:
-        repo_name = stack_name
-    elif data.has_key('repo_name'):
-        repo_name = data['repo_name']
-    elif data.has_key('vcs_url'):
-        repo_name = os.path.splitext(os.path.basename(data['vcs_url']))[0]
-    else:
-        repo_name = os.path.splitext(os.path.basename(data['vcs_uri']))[0]
+    repo_name = get_repo_name(data, package_name)
 
-    #Try to get the current build status for the doc job
-    status_string = "<b>Doc job status is unknown.</b>"
-    if opt_distro:
-	jenkins_url = 'http://jenkins.willowgarage.com:8080/job/%s' % \
-                      (data.get("doc_job", "doc-%s-%s" % (opt_distro, repo_name)))
-        try:
-            jenkins_stream = urllib2.urlopen('%s/lastBuild/api/json' % \
-	                     (jenkins_url), timeout=1.0)
-	    status_json = json.load(jenkins_stream)
-	    result = status_json.get("result", "UNKNOWN")
-	    timestamp = datetime.datetime.fromtimestamp(int(status_json.get("timestamp", 0)) / 1000.0)
-	    time_str = timestamp.strftime("%B %d, %Y at %I:%M %p")
-	    if result == 'SUCCESS':
-	        status_string = '<i>Documentation generated on %s</i>' % (time_str)
-            elif result is None:
-                status_string = '<i>Documentation is currently being re-generated</i>'
-	    else:
-                if result =='FAILURE' and data.has_key('timestamp'):
-	            last_timestamp = datetime.datetime.fromtimestamp(data['timestamp'])
-	            last_time_str = last_timestamp.strftime("%B %d, %Y at %I:%M %p")
-		    time_str = last_time_str
-
-                link_url = jenkins_url + '/lastBuild/console' if result == 'FAILURE' else jenkins_url + '/lastBuild/testReport/(root)/message_generation_failure_class/message_generation_failureFailure'
-	        status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (Doc job status: %s <a href="%s">details</a>).</span>' % (time_str, result.lower(), link_url)
-        except Exception as e:
-	    status_string = "<b>Could not retreive doc job information, communication with jenkins failed %s, %s</b>" % (e, jenkins_url)
-            pass
-
-    doc_status = '%s<br><br>' % status_string
+    doc_status = '%s<br><br>' % get_doc_status(opt_distro, repo_name)
     desc = get_description(macro, data, 'package')
     links = get_package_links(macro, package_name, data, opt_distro, repo_name=repo_name, metapackage=is_metapackage)
     
