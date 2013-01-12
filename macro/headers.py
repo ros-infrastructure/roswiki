@@ -128,7 +128,7 @@ def li_if_exists(macro, page, sub_page):
     else:
         return ''
 
-def get_doc_status(opt_distro, repo_name):
+def get_doc_status(opt_distro, repo_name, data):
     #Try to get the current build status for the doc job
     status_string = "<b>Doc job status is unknown.</b>"
     if opt_distro:
@@ -159,7 +159,7 @@ def get_doc_status(opt_distro, repo_name):
 
     return status_string
 
-def get_repo_name(data, package_name):
+def get_repo_name(data, package_name, opt_distro):
     package_type = data.get('package_type', 'package')
     if package_type == 'stack':
         stack_name = package_name
@@ -191,25 +191,37 @@ def get_repo_name(data, package_name):
 
 
 def doc_html(distros, package_name):
-    doc_html = '<a href="javascript:toggleDocStatus()">Documentation Status</a>'
-    doc_html += '<div id="doc_status" style="display:none;"><ul>'
+    doc_html = '<div style="text-align:left"><a href="javascript:toggleDocStatus()">Documentation Status</a></div>'
+    doc_html += '<div id="doc_status" style="background:#CCCCCC;display:none;"><ul>'
     for distro in distros:
-        doc_html += '<li><b>%s:</b> '
+        doc_html += '<li><b>%s:</b> ' % distro
         try:
             data = load_package_manifest(package_name, distro)
-            repo_name = get_repo_name(data, package_name)
-            doc_string = get_doc_status(distro, repo_name)
+            repo_name = get_repo_name(data, package_name, distro)
+            doc_string = get_doc_status(distro, repo_name, data)
             doc_html += doc_string
         except UtilException, e:
             name = "name: %s, distro: %s" % (package_name, distro)
             doc_html += CONTRIBUTE_TMPL%locals()
-        doc_html += '</li>'
+        doc_html += '</li><br>'
     doc_html += '</div>'
     return doc_html
 
-def distro_html(distro, distros):
+def get_loaded_distros(name, distros):
+    loaded_distro_names = []
+    for distro in distro_names:
+        try:
+            load_package_manifest(name, distro)
+            loaded_distro_names.append(distro)
+        except UtilException, e:
+            pass
+    return loaded_distro_names
+
+def distro_html(distro, loaded_distro_names):
+    if distro not in loaded_distro_names:
+        return ''
     active = [distro.encode("iso-8859-1")]
-    inactive = [x.encode("iso-8859-1") for x in distros if not x == distro]
+    inactive = [x.encode("iso-8859-1") for x in loaded_distro_names if not x == distro]
     sectionarg = '''{show:%s, hide:%s}''' %(active, inactive)
     html = '''<button id="%s" onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';''' % (distro, sectionarg)
     for inactive_distro in inactive:
@@ -253,9 +265,9 @@ def generate_package_header(macro, package_name, opt_distro=None):
             except UtilException, e:
                 continue
 
-    repo_name = get_repo_name(data, package_name)
+    repo_name = get_repo_name(data, package_name, opt_distro)
 
-    doc_status = '%s<br><br>' % get_doc_status(opt_distro, repo_name)
+    doc_status = '%s<br><br>' % get_doc_status(opt_distro, repo_name, data)
     desc = get_description(macro, data, 'package')
     links = get_package_links(macro, package_name, data, opt_distro, repo_name=repo_name, metapackage=is_metapackage)
     

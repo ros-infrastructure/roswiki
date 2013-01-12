@@ -2,7 +2,7 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_package_manifest, distro_names, CONTRIBUTE_TMPL, UtilException
-from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html
+from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
@@ -44,6 +44,7 @@ def macro_PackageHeader(macro, arg1, arg2=None):
     opt_distro = get_unicode(macro.request, arg2)
     if not opt_distro:
         headers_html = []
+        loaded_distros = get_loaded_distros(package_name, distro_names)
         for distro in distro_names:
             if distro in ['boxturtle', 'cturtle', 'diamondback']:
                 pkg_header_html = generate_old_package_header(macro, package_name, distro)
@@ -51,8 +52,8 @@ def macro_PackageHeader(macro, arg1, arg2=None):
                 pkg_header_html = generate_package_header(macro, package_name, distro)
             headers_html.append('<div class="version %s">' % distro + pkg_header_html + '</div>')
 
-        html = "\n".join([distro_html(distro, distro_names) for distro in distro_names])
-        return macro.formatter.rawHTML(html + "\n".join(headers_html))
+        html = "\n".join([distro_html(distro, loaded_distros) for distro in distro_names])
+        return macro.formatter.rawHTML(html + "\n".join(headers_html) + doc_html(distro_names, package_name))
     else:
         if opt_distro in ['boxturtle', 'cturtle', 'diamondback']:
             return generate_old_package_header(macro, package_name, opt_distro)
