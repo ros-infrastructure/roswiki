@@ -191,7 +191,7 @@ def get_repo_name(data, package_name, opt_distro):
 
 
 def doc_html(distros, package_name):
-    doc_html = '<div style="text-align:left"><a href="javascript:toggleDocStatus()">Documentation Status</a></div>'
+    doc_html = '<span style="text-align:left">&nbsp;&nbsp;<a href="javascript:toggleDocStatus()">Documentation Status</a></span>'
     doc_html += '<div id="doc_status" style="background:#CCCCCC;display:none;"><ul>'
     for distro in distros:
         doc_html += '<li><b>%s:</b> ' % distro
@@ -267,7 +267,6 @@ def generate_package_header(macro, package_name, opt_distro=None):
 
     repo_name = get_repo_name(data, package_name, opt_distro)
 
-    doc_status = '%s<br><br>' % get_doc_status(opt_distro, repo_name, data)
     desc = get_description(macro, data, 'package')
     links = get_package_links(macro, package_name, data, opt_distro, repo_name=repo_name, metapackage=is_metapackage)
     
@@ -275,7 +274,7 @@ def generate_package_header(macro, package_name, opt_distro=None):
     if html:
         html = html + '<br><br>'
     
-    return doc_status + html + links + desc 
+    return html + links + desc 
 
 
 def get_package_links(macro, package_name, data, distro, repo_name=None, metapackage=False):
