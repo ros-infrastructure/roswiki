@@ -192,7 +192,7 @@ def get_repo_name(data, package_name, opt_distro):
 
 def doc_html(distros, package_name):
     doc_html = '<span style="text-align:left">&nbsp;&nbsp;<a href="javascript:toggleDocStatus()">Documentation Status</a></span>'
-    doc_html += '<div id="doc_status" style="background:#CCCCCC;display:none;"><ul>'
+    doc_html += '<div id="doc_status" style="background:#CCCCCC;display:none;margin-top:0px;margin-bottom:0px;padding-top:0px"><ul style="padding-top:5px;margin-top:0px;margin-bottom:0px;padding-bottom:5px;">'
     for distro in distros:
         doc_html += '<li><b>%s:</b> ' % distro
         try:
@@ -273,6 +273,10 @@ def generate_package_header(macro, package_name, opt_distro=None):
     html = '<br><br>'.join([macro.formatter.rawHTML(item) for item in nav])
     if html:
         html = html + '<br><br>'
+
+    deprecated = data.get('deprecated', False)
+    if deprecated:
+        html = '<b>PACKAGE DEPRECATED: %s</b><br><br>' % (deprecated) + html
     
     return html + links + desc 
 
