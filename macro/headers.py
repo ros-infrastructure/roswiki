@@ -132,30 +132,15 @@ def get_doc_status(opt_distro, repo_name, data):
     #Try to get the current build status for the doc job
     status_string = "<b>Doc job status is unknown.</b>"
     if opt_distro:
-        jenkins_url = 'http://jenkins.willowgarage.com:8080/job/%s' % \
+        jenkins_url = 'http://jenkins.willowgarage.com:8080/job/%s/lastBuild' % \
                 (data.get("doc_job", "doc-%s-%s" % (opt_distro, repo_name)))
-        try:
-            jenkins_stream = urllib2.urlopen('%s/lastBuild/api/json' % \
-	                     (jenkins_url), timeout=1.0)
-	    status_json = json.load(jenkins_stream)
-	    result = status_json.get("result", "UNKNOWN")
-	    timestamp = datetime.datetime.fromtimestamp(int(status_json.get("timestamp", 0)) / 1000.0)
-	    time_str = timestamp.strftime("%B %d, %Y at %I:%M %p")
-	    if result == 'SUCCESS':
-	        status_string = '<i>Documentation generated on %s</i>' % (time_str)
-            elif result is None:
-                status_string = '<i>Documentation is currently being re-generated</i>'
-            else:
-                if result =='FAILURE' and data.has_key('timestamp'):
-                    last_timestamp = datetime.datetime.fromtimestamp(data['timestamp'])
-                    last_time_str = last_timestamp.strftime("%B %d, %Y at %I:%M %p")
-                    time_str = last_time_str
+        if data.has_key('timestamp'):
+            timestamp = datetime.datetime.fromtimestamp(data['timestamp'])
+            time_str = timestamp.strftime("%B %d, %Y at %I:%M %p")
+        else:
+            time_str = 'Unknown'
 
-                link_url = jenkins_url + '/lastBuild/console' if result == 'FAILURE' else jenkins_url + '/lastBuild/testReport/(root)/message_generation_failure_class/message_generation_failureFailure'
-                status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (Doc job status: %s <a href="%s">details</a>).</span>' % (time_str, result.lower(), link_url)
-        except Exception as e:
-            status_string = "<b>Could not retreive doc job information, communication with jenkins failed %s, %s</b>" % (e, jenkins_url)
-            pass
+        status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (<a href="%s">job status</a>).</span>' % (time_str, jenkins_url)
 
     return status_string
 
