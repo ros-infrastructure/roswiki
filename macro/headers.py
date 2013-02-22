@@ -272,8 +272,6 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
     em, strong, h, text = f.emphasis, f.strong, f.heading, f.text
     li, ul = f.listitem, f.bullet_list
 
-    review_status = data.get('review_status', 'unreviewed')
-
     external_website = data.get('url', '')  or ''
     if 'ros.org' in external_website or 'willowgarage.com' in external_website:
         external_website = u''
@@ -293,10 +291,7 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
     elif srvs and not msgs:
         msg_doc_title = "Srv API"
     
-    if '3rdparty' in review_status:
-        review_str = ''
-    else:
-        review_str = li(1)+sub_link(macro, package_name, 'Reviews') + text(' ('+review_status+')')+li(0)
+    review_str = li(1)+sub_link(macro, package_name, 'Reviews') +li(0)
     if external_website:
         external_website = li(1)+url(1, url=external_website)+text("%s website"%(package_name))+url(0)+li(0)
 
@@ -363,8 +358,7 @@ def get_stack_links(macro, stack_name, data, packages, is_unary, distro):
         releases_link = changelist_link = ''
     if not is_unary:
         troubleshooting_link = li_if_exists(macro, stack_name, 'Troubleshooting')
-        review_status = data.get('review_status', 'unreviewed')
-        review_link = li(1)+sub_link(macro, stack_name, 'Reviews') + text(' ('+review_status+')')+li(0)
+        review_link = li(1)+sub_link(macro, stack_name, 'Reviews') + li(0)
         tutorials_link=li_if_exists(macro, stack_name, 'Tutorials')
     else:
         troubleshooting_link = review_link = tutorials_link = ''
