@@ -30,7 +30,7 @@ Dependencies = []
 
 systems = ['catkin', 'rosbuild']
 
-DEFAULT_SYSTEM = 'rosbuild'
+DEFAULT_SYSTEM = 'catkin'
 
 buildsystem_js = """\
 <script type="text/javascript">
