@@ -239,7 +239,7 @@ def generate_package_header(macro, package_name, opt_distro=None):
         nav.append(get_nav(macro, package_name, list(set(data.get('packages', []))), distro=opt_distro))
   
     metapackages = data.get('metapackages', None)
-    if metapackages:
+    if metapackages and package_name != 'catkin':
         for metapackage in metapackages:
             try:
                 metapackage_data = load_package_manifest(metapackage, opt_distro)
