@@ -395,7 +395,7 @@ def get_dependency_list(macro, data, css_prefix='',distro=None):
     if depends:
         depends.sort()
         links += strong(1)+\
-                 '<a href="#" onClick="toggleExpandable(\'%sdependencies-list\');">Dependencies</a> (%s)'%(css_prefix, len(depends))+\
+                 '<a href="#" onClick="toggleExpandable(\'%sdependencies-list\'); return false;">Dependencies</a> (%s)'%(css_prefix, len(depends))+\
                  strong(0)+'<br />'+\
                  '<div id="%sdependencies-list" style="display:none">'%(css_prefix)+\
                  ul(1)
@@ -405,7 +405,7 @@ def get_dependency_list(macro, data, css_prefix='',distro=None):
     if depends_on:
         depends_on.sort()
         links += strong(1)+\
-                 '<a href="#" onClick="toggleExpandable(\'%sused-by-list\');">Used by</a> (%s)'%(css_prefix, len(depends_on))+\
+                 '<a href="#" onClick="toggleExpandable(\'%sused-by-list\'); return false;">Used by</a> (%s)'%(css_prefix, len(depends_on))+\
                  strong(0)+"<br />"+\
                  '<div id="%sused-by-list" style="display:none">'%(css_prefix)+ul(1) 
         for d in depends_on:
