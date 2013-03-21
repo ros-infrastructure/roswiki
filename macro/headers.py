@@ -15,7 +15,7 @@ from macroutils import wiki_url, get_repo_li, get_vcs_li, get_bugtracker_li, get
      get_package_versions, CONTRIBUTE_TMPL
 
 def get_nav(macro, stack_name, packages, distro=None):
-    nav = '<script type="text/javascript" src="/js/roswiki.js"></script>'
+    nav = ''
     strong, em, text = macro.formatter.strong, macro.formatter.emphasis, macro.formatter.text
 
     if not stack_name or stack_name == 'sandbox':
@@ -411,6 +411,9 @@ def get_dependency_list(macro, data, css_prefix='',distro=None):
         for d in depends_on:
             links += li(1)+wiki_url(macro,d,shorten=20,querystr=distro_query)+li(0)
         links += ul(0)+div(0)
-        
+
+    if links:
+        links = '<script type="text/javascript" src="/js/roswiki.js"></script>' + links
+
     return links
 
