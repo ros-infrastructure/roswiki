@@ -140,7 +140,7 @@ def get_bugtracker_li(macro, data):
     if 'bugtracker' in data and data['bugtracker']:
         f = macro.formatter
         li = f.listitem
-        return li(1)+f.text("Bugtracker: ")+f.rawHTML(' <a href="%s">%s</a>'%(data['bugtracker'], data['bugtracker']))+li(0)
+        return li(1)+f.text("Bug & feature req. tracker: ")+f.rawHTML(' <a href="%s">%s</a>'%(data['bugtracker'], data['bugtracker']))+li(0)
     else:
         return ''
 
