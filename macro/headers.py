@@ -239,18 +239,18 @@ def generate_package_header(macro, package_name, opt_distro=None):
 
     if is_metapackage:
         nav.append(get_nav(macro, package_name, list(set(data.get('packages', []))), distro=opt_distro))
-  
-    metapackages = data.get('metapackages', None)
-    if metapackages and package_name != 'catkin':
-        for metapackage in metapackages:
-            try:
-                metapackage_data = load_package_manifest(metapackage, opt_distro)
-                nav.append(get_nav(macro, metapackage, list(set(metapackage_data.get('packages', []))), distro=opt_distro))
-                metapackage_type = metapackage_data.get('package_type', None)
-                if metapackage_type == 'stack':
-                    stack_name = metapackage
-            except UtilException, e:
-                continue
+    else:
+        metapackages = data.get('metapackages', None)
+        if metapackages and package_name != 'catkin':
+            for metapackage in metapackages:
+                try:
+                    metapackage_data = load_package_manifest(metapackage, opt_distro)
+                    nav.append(get_nav(macro, metapackage, list(set(metapackage_data.get('packages', []))), distro=opt_distro))
+                    metapackage_type = metapackage_data.get('package_type', None)
+                    if metapackage_type == 'stack':
+                        stack_name = metapackage
+                except UtilException, e:
+                    continue
 
     repo_name = get_repo_name(data, package_name, opt_distro)
 
