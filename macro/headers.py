@@ -43,6 +43,8 @@ def get_nav(macro, stack_name, packages, distro=None):
     packages.sort()
     parts = []
     for pkg in packages:
+        if pkg == 'catkin':
+            continue
         if pkg == page_name:
             parts.append(text(pkg))
         else:
