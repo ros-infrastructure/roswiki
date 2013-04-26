@@ -10,7 +10,7 @@ except:
     sys.stderr.write("Cannot import Moin.  For testing only")
 
 from macroutils import wiki_url, get_repo_li, get_vcs_li, get_bugtracker_li, get_url_li, load_stack_release, \
-     msg_doc_link, load_package_manifest, package_html_link, UtilException, \
+     msg_doc_link, load_package_manifest, package_html_link, package_changelog_html_link, UtilException, \
      load_stack_manifest, sub_link, distro_names, \
      get_package_versions, CONTRIBUTE_TMPL
 
@@ -299,6 +299,10 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
     troubleshoot = li_if_exists(macro, package_name, 'Troubleshooting')
     tutorials = li_if_exists(macro, package_name, 'Tutorials')
 
+    changelog_rst_link = ''
+    if data.get('has_changelog_rst'):
+        changelog_rst_link = li(1)+url(1, url=package_changelog_html_link(package_name, distro))+text("Changelog")+url(0)+li(0)
+
     if repo_name:
         releases_link = li(1)+sub_link(macro, repo_name, 'Releases')+li(0) 
         changelist_link = li(1)+sub_link(macro, repo_name, 'ChangeList', title='Change List')+li(0)
@@ -331,6 +335,7 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
                         tutorials+\
                         troubleshoot+\
                         li(1)+url(1, url='http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:%s/page:1/'%(package_name))+text("FAQ")+url(0)+li(0)+\
+                        changelog_rst_link+\
                         changelist_link+\
                         roadmap_link+\
                         releases_link+\

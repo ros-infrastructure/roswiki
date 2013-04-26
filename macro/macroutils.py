@@ -66,6 +66,12 @@ def package_html_link(package, distro=None):
     else:
         return doc_url + "api/" + package  + '/html/'
     
+def package_changelog_html_link(package, distro):
+    """
+    Generate link to auto-generated package changelog HTML
+    """
+    return doc_url + distro + "/changelogs/" + package + '/changelog.html'
+
 def msg_doc_link(package, link_title, distro=None):
     package_url = package_html_link(package, distro)  
     return ahref('%(package_url)sindex-msg.html'%locals(), link_title)
