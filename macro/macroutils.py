@@ -26,15 +26,6 @@ def ahref(url, text):
     """create HTML link to specified URL with link text"""
     return '<a href="%(url)s">%(text)s</a>'%locals()
 
-def stack_manifest_file(stack, distro=None):
-    """
-    Generate filesystem path to stack.yaml for package
-    """
-    if distro:
-        return os.path.join(doc_path, distro, 'api', stack, "stack.yaml")
-    else:
-        return os.path.join(doc_path, 'api', stack, "stack.yaml")        
-
 def repo_manifest_file(repo):
     """
     Generate filesystem path to stack.yaml for package
@@ -225,4 +216,4 @@ def load_stack_manifest(stack_name, distro=None):
     @return: stack manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    return _load_manifest_file(stack_manifest_file(stack_name, distro), stack_name, 'stack')
+    return _load_manifest_file(package_manifest_file(stack_name, distro), stack_name, 'stack')
