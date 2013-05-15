@@ -4,6 +4,8 @@ import yaml
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
+from macroutils import UtilException
+
 from metrics_common import load_stack_code_quality, load_stack_loc, \
                            get_common_information_html, get_loc_html, get_code_quality_html
 
@@ -32,7 +34,7 @@ def macro_PackageMetrics(macro, arg1, arg2='ja'):
         data = load_stack_code_quality(stack_name, lang)
     except UtilException, e:
         name = stack_name
-        return e
+        return str(e)
     desc += get_common_information_html(macro, data)
     
 
@@ -41,7 +43,7 @@ def macro_PackageMetrics(macro, arg1, arg2='ja'):
         data = load_stack_loc(stack_name, lang)
     except UtilException, e:
         name = stack_name
-        return e
+        return str(e)
     desc += get_loc_html(macro,data)
 
 
@@ -50,7 +52,7 @@ def macro_PackageMetrics(macro, arg1, arg2='ja'):
         data = load_stack_code_quality(stack_name, lang)
     except UtilException, e:
         name = stack_name
-        return e
+        return str(e)
         #return CONTRIBUTE_TMPL%locals() 
     desc += get_code_quality_html(macro,data,'Package')
 
