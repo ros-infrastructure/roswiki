@@ -87,7 +87,8 @@ def get_metric_html(macro, data, container):
     name = data.get('name', 'unknown')
     
     brief = data.get('brief', '')
-    url_prefix_static = macro.request.cfg.url_prefix_static
+    #url_prefix_static = macro.request.cfg.url_prefix_static
+    url_prefix_static = ''
 
     try:
         if type(brief) != unicode:
