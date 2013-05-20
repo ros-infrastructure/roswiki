@@ -16,6 +16,7 @@ distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 
 doc_url = "http://ros.org/doc/"
 
 doc_path = '/var/www/www.ros.org/html/doc/'
+metrics_path = '/var/www/www.ros.org/html/metrics/'
 
 CONTRIBUTE_TMPL = """Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.
 Please see <a href="http://www.ros.org/wiki/Get%%20Involved#Indexing_Your_.2A-ros-pkg_Repository_for_Documentation_Generation">this page</a> for information on how to submit your repository to our index."""
