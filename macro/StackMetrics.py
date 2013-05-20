@@ -10,17 +10,21 @@ from metrics_common import load_stack_code_quality, load_stack_loc, \
                            get_common_information_html, get_loc_html, get_code_quality_html
 
  
-def macro_StackMetrics(macro, arg1, arg2='ja'):
+def macro_StackMetrics(macro, arg1, arg2='groovy', arg3='ja'):
     stack_name = get_unicode(macro.request, arg1)
-    lang = get_unicode(macro.request, arg2)
+    rosdistro = get_unicode(macro.request, arg2)
+    lang = get_unicode(macro.request, arg3)
     if ' ' in stack_name:
         #something changed in the API such that the above arg1, arg2 passing no longer works
         splits = stack_name.split(' ')
-        if len(splits) > 2:
-            return "ERROR in StackCodeQuality. Usage: [[StackHeader(stack_name opt_lang)]]"
-        stack_name, lang = splits
+        if len(splits) > 3:
+            return "ERROR in StackCodeQuality. Usage: [[StackHeader(stack_name opt_rosdistro opt_lang)]]"
+        elif len(splits) == 3:
+            stack_name, rosdistro, lang = splits
+        elif len(splits) == 2:
+            stack_name, rosdistro = splits
     if not stack_name:
-        return "ERROR in StackCodeQuality. Usage: [[StackCodeQuality(stack_name opt_lang)]]"
+        return "ERROR in StackCodeQuality. Usage: [[StackCodeQuality(stack_name opt_rosdistro opt_lang)]]"
     
 
     f = macro.formatter
@@ -31,7 +35,7 @@ def macro_StackMetrics(macro, arg1, arg2='ja'):
 
     # Common Information
     try:
-        data = load_stack_code_quality(stack_name, lang)
+        data = load_stack_code_quality(stack_name, rosdistro, lang)
     except UtilException, e:
         name = stack_name
         return str(e)
@@ -40,7 +44,7 @@ def macro_StackMetrics(macro, arg1, arg2='ja'):
 
     # Lines of Code
     try:
-        data = load_stack_loc(stack_name, lang)
+        data = load_stack_loc(stack_name, rosdistro, lang)
     except UtilException, e:
         name = stack_name
         return str(e)
@@ -49,7 +53,7 @@ def macro_StackMetrics(macro, arg1, arg2='ja'):
 
     # Code Quality
     try:
-        data = load_stack_code_quality(stack_name, lang)
+        data = load_stack_code_quality(stack_name, rosdistro, lang)
     except UtilException, e:
         name = stack_name
         return str(e)

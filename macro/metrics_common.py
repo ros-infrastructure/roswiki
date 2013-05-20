@@ -5,7 +5,7 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_stack_release, \
-     UtilException, doc_path, CONTRIBUTE_TMPL
+     UtilException, metrics_path, CONTRIBUTE_TMPL
 from headers import get_nav, get_stack_links, get_package_links, get_description
 
 import re
@@ -20,7 +20,7 @@ def _load_code_quality_file(filename, name, type_='package'):
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
     if not os.path.exists(filename):
-        raise UtilException('Newly proposed, mistyped, or obsolete %s. Could not find %s "'%(type_, type_) + name + '" in rosdoc')
+        raise UtilException('Newly proposed, mistyped, or obsolete %s. Could not find %s "'%(type_, type_) + name + '" in metrics ' + filename)
 
     try:
         #filename = "/var/www/www.ros.org/html/doc/navigation/code_quality.yaml"
@@ -33,32 +33,32 @@ def _load_code_quality_file(filename, name, type_='package'):
         raise UtilException("Unable to retrieve code quality data. Auto-generated documentation may need to regenerate")
     return data
 
-def stack_code_quality_file(stack):
+def stack_code_quality_file(stack, rosdistro):
     """
     Generate filesystem path to code_quality.yaml for stack
     """
-    return os.path.join(doc_path, stack, "code_quality.yaml")
+    return os.path.join(metrics_path, rosdistro, stack, "code_quality.yaml")
 
 def rosdistro_yaml_file(rosdistro):
     """
     Generate filesystem path to code_quality.yaml for stack
     """
-    return os.path.join(doc_path, "%s.yaml"%rosdistro)
+    return os.path.join(metrics_path, "%s.yaml"%rosdistro)
 
-def stack_loc_file(stack):
+def stack_loc_file(stack, rosdistro):
     """
     Generate filesystem path to code_quality.yaml for stack
     """
-    return os.path.join(doc_path, stack, "code_quantity.yaml")
+    return os.path.join(metrics_path, rosdistro, stack, "code_quantity.yaml")
 
-def load_stack_code_quality(stack_name, lang=None):
+def load_stack_code_quality(stack_name, rosdistro, lang=None):
     """
     Load code_quality.yaml properties into dictionary for package
     @param lang: optional language argument for localization, e.g. 'ja'
     @return: stack code quality properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_code_quality_file(stack_code_quality_file(stack_name), stack_name, 'stack')
+    data = _load_code_quality_file(stack_code_quality_file(stack_name, rosdistro), stack_name, 'stack')
     return data
 
 def load_rosdistro_yaml(rosdistro_name, lang=None):
@@ -71,14 +71,14 @@ def load_rosdistro_yaml(rosdistro_name, lang=None):
     data = _load_code_quality_file(rosdistro_yaml_file(rosdistro_name), rosdistro_name, 'stack')
     return data
 
-def load_stack_loc(stack_name, lang=None):
+def load_stack_loc(stack_name, rosdistro, lang=None):
     """
     Load code_quality.yaml properties into dictionary for package
     @param lang: optional language argument for localization, e.g. 'ja'
     @return: stack code quality properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    data = _load_code_quality_file(stack_loc_file(stack_name), stack_name, 'stack')
+    data = _load_code_quality_file(stack_loc_file(stack_name, rosdistro), stack_name, 'stack')
     return data
 
 
@@ -87,7 +87,9 @@ def get_metric_html(macro, data, container):
     name = data.get('name', 'unknown')
     
     brief = data.get('brief', '')
-    url_prefix_static = macro.request.cfg.url_prefix_static
+    #url_prefix_static = macro.request.cfg.url_prefix_static
+    # static files hosted in apache at the root
+    url_prefix_static = ''
 
     try:
         if type(brief) != unicode:
