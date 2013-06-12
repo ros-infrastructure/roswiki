@@ -9,7 +9,7 @@ try:
 except:
     sys.stderr.write("Cannot import Moin.  For testing only")
 
-from macroutils import wiki_url, get_repo_li, get_vcs_li, get_bugtracker_li, get_url_li, load_stack_release, \
+from macroutils import wiki_url, get_repo_li, get_vcs_li, get_bugtracker_li, get_maintainer_status_li, get_url_li, load_stack_release, \
      msg_doc_link, load_package_manifest, package_html_link, package_changelog_html_link, UtilException, \
      load_stack_manifest, sub_link, distro_names, \
      get_package_versions, CONTRIBUTE_TMPL
