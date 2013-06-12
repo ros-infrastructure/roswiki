@@ -105,12 +105,14 @@ def get_description(macro, data, type_):
         bugtracker_li = get_bugtracker_li(macro, data)
         url_li = get_url_li(macro, data)
         maintainers_li = li(1)+text("Maintainer: "+maintainers)+li(0) if maintainers else ''
+        maintainer_status_li = get_maintainer_status_li(macro, data)
 
         # id=first for package?
         #desc = h(1, 2, id="summary")+text(title)+h(0, 2)+\
         desc = "<h1>"+text(title)+"</h1>"+\
                p(1,id="package-info")+rawHTML(description)+p(0)+\
                p(1,id="package-info")+ul(1)+\
+               maintainer_status_li+\
                maintainers_li+\
                li(1)+text("Author: "+authors)+li(0)+\
                li(1)+text("License: "+license)+li(0)+\

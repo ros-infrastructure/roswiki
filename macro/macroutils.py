@@ -142,6 +142,15 @@ def get_bugtracker_li(macro, data):
     else:
         return ''
 
+def get_maintainer_status_li(macro, data):
+    if 'maintainer_status' in data and data['maintainer_status']:
+        f = macro.formatter
+        li = f.listitem
+        status_description = ' (%s)' % data['maintainer_status_description'] if 'maintainer_status_description' in data and data['maintainer_status_description'] else ''
+        return li(1)+f.text("Maintainer status: ")+data['maintainer_status']+status_description+li(0)
+    else:
+        return ''
+
 def process_distro(stack_name, yaml_str):
     """
     @return: distro properties, stack properties. Stack properties
