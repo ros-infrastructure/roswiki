@@ -120,9 +120,12 @@ def get_vcs_li(macro, stack_data):
             return ''
         if '//github.com/' in uri and uri.endswith('.git'):
             uri = uri[:-4]
+        branch = ''
+        if type_ != 'svn' and 'vcs_version' in stack_data:
+            branch = ' (branch: %s)' % stack_data['vcs_version']
         f = macro.formatter
         li = f.listitem
-        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>'%(uri, uri_display))+li(0)
+        return li(1)+f.text("Source: "+type_)+f.rawHTML(' <a href="%s">%s</a>%s'%(uri, uri_display, branch))+li(0)
     else:
         return ''
 
