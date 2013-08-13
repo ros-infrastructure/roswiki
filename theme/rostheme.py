@@ -77,7 +77,7 @@ pageTracker._trackPageview();
 <script type="text/javascript">
 <!--// Initialize search form
 var f = document.getElementById('searchform');
-f.getElementsByTagName('label')[0].style.display = 'none';
+if(f) f.getElementsByTagName('label')[0].style.display = 'none';
 var e = document.getElementById('searchinput');
 searchChange(e);
 searchBlur(e);
