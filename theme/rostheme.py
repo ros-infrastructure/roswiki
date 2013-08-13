@@ -79,8 +79,10 @@ pageTracker._trackPageview();
 var f = document.getElementById('searchform');
 if(f) f.getElementsByTagName('label')[0].style.display = 'none';
 var e = document.getElementById('searchinput');
-searchChange(e);
-searchBlur(e);
+if(e) {
+  searchChange(e);
+  searchBlur(e);
+}
 
 function handleSubmit() {
   var f = document.getElementById('searchform');
