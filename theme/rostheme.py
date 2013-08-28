@@ -158,7 +158,7 @@ theForm.input.value=theForm.input.value
         src="/_wiki/images/menu_browse_software.png" width="268" height="53" alt="Browse Software" /></a><img
         src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/news"><img border="0"
         src="/_wiki/images/menu_news.png" width="84" height="53" alt="News" /></a><img
-        src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/wiki/ROS/Installation"><img border="0"
+        src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://wiki.ros.org/ROS/Installation"><img border="0"
         src="/_wiki/images/menu_download.png" width="151" height="53" alt="Download" /></a><img
         src="/_wiki/images/menu_right.png" width="60" height="53" /></nobr></td>
 

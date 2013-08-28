@@ -15,11 +15,11 @@ distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 
 #doc_url = "http://ros.org/doc/api/"
 doc_url = "http://ros.org/doc/"
 
-doc_path = '/var/www/www.ros.org/html/doc/'
-metrics_path = '/var/www/www.ros.org/html/metrics/'
+doc_path = '/var/www/www.ros.org/doc/'
+metrics_path = '/var/www/www.ros.org/metrics/'
 
 CONTRIBUTE_TMPL = """Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.
-Please see <a href="http://www.ros.org/wiki/Get%%20Involved#Indexing_Your_.2A-ros-pkg_Repository_for_Documentation_Generation">this page</a> for information on how to submit your repository to our index."""
+Please see <a href="http://wiki.ros.org/Get%%20Involved#Indexing_Your_.2A-ros-pkg_Repository_for_Documentation_Generation">this page</a> for information on how to submit your repository to our index."""
 
 class UtilException(Exception): pass
 
@@ -169,7 +169,7 @@ def load_stack_release(release_name, stack_name):
     try:
         #TODO: figure out how to cache these better, e.g. have a hudson job that rsyncs to wgs32
         if release_name in ['boxturtle', 'cturtle', 'diamondback']:
-            usock = open('/var/www/www.ros.org/html/distros/%s.rosdistro'%release_name)
+            usock = open('/var/www/www.ros.org/distros/%s.rosdistro'%release_name)
         else:
             usock = urllib2.urlopen('http://ros-dry-releases.googlecode.com/svn/trunk/distros/%s.rosdistro'%release_name)
         rosdistro_str = usock.read()

@@ -23,7 +23,7 @@ def _load_code_quality_file(filename, name, type_='package'):
         raise UtilException('Newly proposed, mistyped, or obsolete %s. Could not find %s "'%(type_, type_) + name + '" in metrics ' + filename)
 
     try:
-        #filename = "/var/www/www.ros.org/html/doc/navigation/code_quality.yaml"
+        #filename = "/var/www/www.ros.org/doc/navigation/code_quality.yaml"
         with open(filename) as f:
             data = yaml.load(f)
     except yaml.YAMLError, exc:
