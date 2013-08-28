@@ -108,9 +108,9 @@ function handleSubmit() {
         <tr>
           <td width="300" valign="top"><a href="/"><img border="0" src="/_wiki/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
           <td valign="middle">
-            <a href="/wiki/About%20ros.org">About</a>
+            <a href="/About%20ros.org">About</a>
             |
-            <a href="/wiki/Support">Support</a>
+            <a href="/Support">Support</a>
             |
             <a href="http://answers.ros.org/">answers.ros.org</a>
 
@@ -152,7 +152,7 @@ theForm.input.value=theForm.input.value
          </td>
       </tr>
       <tr>
-        <td colspan="3" height="53" width="1024"><nobr><img src="/_wiki/images/menu_left.png" width="17" height="53" alt=""/><a href="/wiki/"><img
+        <td colspan="3" height="53" width="1024"><nobr><img src="/_wiki/images/menu_left.png" width="17" height="53" alt=""/><a href="/"><img
         border="0" src="/_wiki/images/menu_documentation.png" width="237" height="53" alt="Documentation" /></a><img
         src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/browse/"><img border="0"
         src="/_wiki/images/menu_browse_software.png" width="268" height="53" alt="Browse Software" /></a><img
