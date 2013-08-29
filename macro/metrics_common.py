@@ -243,10 +243,10 @@ def get_metric_html(macro, data, container):
     # Create hprogressbar
     graph += "<div style=\"width:550px;height:256px; float:bottom; margin-bottom: -426px;\" >"+\
 	     "<canvas id='" + canvas2_name + "' width=""600"" height=""75"">[No canvas support]</canvas>"+\
-  	     "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.common.dynamic.js\"></script>"+\
-	     "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.hprogress.js\"></script>"+\
-	     "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.common.tooltips.js\"></script>"+\
-	     "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.line.js\"></script>"+\
+  	     "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.common.dynamic.js\"></script>"+\
+	     "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.hprogress.js\"></script>"+\
+	     "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.common.tooltips.js\"></script>"+\
+	     "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.line.js\"></script>"+\
 	     "<script>"+\
 	     "    var myProgress = new RGraph.HProgress('" + canvas2_name + "', [%s,%s,%s],%s);"%(value_min, value_max,value_rest, numticks)+\
 	     "    myProgress.Set('chart.colors', ['red', 'green', 'red']);"+\
@@ -268,11 +268,11 @@ def get_metric_html(macro, data, container):
 	    "<div style=\"width:600px; height:265px; text-align: left;\">"+\
 	    "<canvas id='" + canvas_name + "' width=""600"" height=""250"">[No canvas support]</canvas>"+\
 	    "</div>"+\
-            "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.common.dynamic.js\"></script>"+\
-            "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.hbar.js\"></script>"+\
-	    "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.hprogress.js\"></script>"+\
-	    "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.common.tooltips.js\"></script>"+\
-	    "<script src=\"" + url_prefix_static + "/common/libraries/RGraph.line.js\"></script>"+\
+            "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.common.dynamic.js\"></script>"+\
+            "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.hbar.js\"></script>"+\
+	    "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.hprogress.js\"></script>"+\
+	    "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.common.tooltips.js\"></script>"+\
+	    "<script src=\"" + url_prefix_static + "/custom/libraries/RGraph.line.js\"></script>"+\
 	    "<script>"+\
             "    var bar = new RGraph.Bar('" + canvas_name + "'," + data_array + ");"+\
             "    bar.Set('chart.labels', " + label_array + ");"+\

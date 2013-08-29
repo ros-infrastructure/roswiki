@@ -106,7 +106,7 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
       <table id="topnav-table">
         <tr>
-          <td width="300" valign="top"><a href="/"><img border="0" src="/_wiki/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
+          <td width="300" valign="top"><a href="/"><img border="0" src="/custom/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
           <td valign="middle">
             <a href="/About%20ros.org">About</a>
             |
@@ -152,15 +152,15 @@ theForm.input.value=theForm.input.value
          </td>
       </tr>
       <tr>
-        <td colspan="3" height="53" width="1024"><nobr><img src="/_wiki/images/menu_left.png" width="17" height="53" alt=""/><a href="/"><img
-        border="0" src="/_wiki/images/menu_documentation.png" width="237" height="53" alt="Documentation" /></a><img
-        src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/browse/"><img border="0"
-        src="/_wiki/images/menu_browse_software.png" width="268" height="53" alt="Browse Software" /></a><img
-        src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/news"><img border="0"
-        src="/_wiki/images/menu_news.png" width="84" height="53" alt="News" /></a><img
-        src="/_wiki/images/menu_spacer.png" width="69" height="53" /><a href="http://wiki.ros.org/ROS/Installation"><img border="0"
-        src="/_wiki/images/menu_download.png" width="151" height="53" alt="Download" /></a><img
-        src="/_wiki/images/menu_right.png" width="60" height="53" /></nobr></td>
+        <td colspan="3" height="53" width="1024"><nobr><img src="/custom/images/menu_left.png" width="17" height="53" alt=""/><a href="/"><img
+        border="0" src="/custom/images/menu_documentation.png" width="237" height="53" alt="Documentation" /></a><img
+        src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/browse/"><img border="0"
+        src="/custom/images/menu_browse_software.png" width="268" height="53" alt="Browse Software" /></a><img
+        src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/news"><img border="0"
+        src="/custom/images/menu_news.png" width="84" height="53" alt="News" /></a><img
+        src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="/ROS/Installation"><img border="0"
+        src="/custom/images/menu_download.png" width="151" height="53" alt="Download" /></a><img
+        src="/custom/images/menu_right.png" width="60" height="53" /></nobr></td>
 
       </tr>
     </table> <!-- topnav-table -->
