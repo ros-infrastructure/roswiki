@@ -422,7 +422,7 @@ def get_dependency_list(macro, data, css_prefix='',distro=None):
         links += ul(0)+div(0)
 
     if links:
-        links = '<script type="text/javascript" src="/js/roswiki.js"></script>' + links
+        links = '<script type="text/javascript" src="/custom/js/roswiki.js"></script>' + links
 
     return links
 
