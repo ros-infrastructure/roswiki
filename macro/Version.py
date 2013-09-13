@@ -28,8 +28,8 @@ def execute(macro, args):
 
     if args:
       version = str(args)    
-      if version.lower() == 'hydro':
-        return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Hydro Turtle</span>'
+      if version.lower() == 'indigo':
+        return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">Expected in Indigo Turtle</span>'
       else:
         return '<span style="background-color:#FFFF00; font-weight:bold; padding: 3px;">New in %s</span>'%version
 
