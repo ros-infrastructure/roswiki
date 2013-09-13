@@ -32,7 +32,7 @@ function toggleDocStatus()
 }
 
 $(document).ready(function() {
-    var activedistro = "groovy"; //CHANGE THIS LINE TO CHANGE THE DISTRO DISPLAYED BY DEFAULT
+    var activedistro = "hydro"; //CHANGE THIS LINE TO CHANGE THE DISTRO DISPLAYED BY DEFAULT
     var url_distro = getURLParameter('distro');
     if(url_distro)
     {
