@@ -22,6 +22,8 @@ def msg_link(package_url, msg):
   return _href('%(package_url)smsg/%(msg)s.html'%locals(), msg)
 def srv_link(package_url, srv):
   return _href('%(package_url)ssrv/%(srv)s.html'%locals(), srv)
+def action_link(package_url, action):
+  return _href('%(package_url)saction/%(action)s.html'%locals(), action)
 def package_link(package):
   return url_base + package 
 def package_html_link(package):
@@ -64,9 +66,11 @@ def macro_MsgSrvDoc(macro, arg1, arg2='true'):
   # - package data keys
   msgs = m.get('msgs', [])
   srvs = m.get('srvs', [])
+  actions = m.get('actions', [])
 
   msgs.sort()
   srvs.sort()
+  actions.sort()
 
   p = macro.formatter.paragraph
   url = macro.formatter.url
@@ -85,18 +89,25 @@ def macro_MsgSrvDoc(macro, arg1, arg2='true'):
 
   # table of msgs/srvs
   msg_str = text('')
-  if msgs or srvs:
+  if msgs or srvs or actions:
     if print_title:
-      if msgs and srvs:
-        msg_str += h(1, 2, id="msg-types")+text('ROS Message and Service Types')+h(0,2)
-      elif msgs:
-        msg_str += h(1, 2, id="msg-types")+text('ROS Message Types')+h(0,2)
-      elif srvs:
-        msg_str += h(1, 2, id="msg-types")+text('ROS Service Types')+h(0,2)
+      types = []
+      if msgs:
+        types.append('Message')
+      if srvs:
+        types.append('Service')
+      if actions:
+        types.append('Action')
+      msg_str += h(1, 2, id="msg-types")+text('ROS %s Types' % ' / '.join(types))+h(0,2)
     msg_str += table(1)
-    if msgs and srvs:
-      msg_str += tr(1)+td(1)+strong(1)+text('ROS Message Types')+strong(0)+td(0)
-      msg_str += td(1)+strong(1)+text('ROS Service Types')+strong(0)+td(0)+tr(0)
+    msg_str += tr(1)
+    if msgs:
+      msg_str += td(1)+strong(1)+text('ROS Message Types')+strong(0)+td(0)
+    if srvs:
+      msg_str += td(1)+strong(1)+text('ROS Service Types')+strong(0)+td(0)
+    if actions:
+      msg_str += td(1)+strong(1)+text('ROS Action Types')+strong(0)+td(0)
+    msg_str += tr(0)
     msg_str += tr(1)
     if msgs:
       msg_str += rawHTML('<td valign="top">')
@@ -107,6 +118,11 @@ def macro_MsgSrvDoc(macro, arg1, arg2='true'):
       msg_str += rawHTML('<td valign="top">')
       for s in srvs:
         msg_str += srv_link(package_url, s)+rawHTML('<br />')
+      msg_str += td(0)
+    if actions:
+      msg_str += rawHTML('<td valign="top">')
+      for a in actions:
+        msg_str += action_link(package_url, a)+rawHTML('<br />')
       msg_str += td(0)
     msg_str += tr(0)+table(0)
   
