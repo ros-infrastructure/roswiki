@@ -9,11 +9,17 @@
     @license: GNU GPL, see COPYING for details.  
 """
 
+from MoinMoin import wikiutil
 from MoinMoin.theme import ThemeBase
 
 class Theme(ThemeBase):
 
     name = "rostheme"
+
+    def html_head(self, d):
+        html = ThemeBase.html_head(self, d)
+        html += '\n<link rel="canonical" href="http://wiki.ros.org/%s" />' % wikiutil.quoteWikinameURL(d['page'].page_name)
+        return html
 
     def wikipanel(self, d):
         """ Create wiki panel """
