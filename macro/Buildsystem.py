@@ -77,7 +77,7 @@ $(document).ready(function() {
     {
         activesystem = url_distro;
     }
-    $("div.version").not("."+activesystem).hide();
+    $("div.buildsystem").not("."+activesystem).hide();
     $("#"+activesystem).click();
     $("input.version:hidden").each(function() {
         var bg = $(this).attr("value").split(":");
