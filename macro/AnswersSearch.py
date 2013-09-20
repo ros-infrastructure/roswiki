@@ -7,5 +7,5 @@ def execute(macro, args_in):
   f = macro.formatter
   text = f.text
   url = f.url
-  base = "http://answers.ros.org/questions/?tags=%s&start_over=true"%(tags)
+  base = "http://answers.ros.org/questions/tags:%s"%(tags)
   return url(1, base) + text(label) + url(0)
