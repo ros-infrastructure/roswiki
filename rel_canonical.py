@@ -6,7 +6,7 @@ import re
 import sys
 
 
-def add_rel_canonical(f, canonical_base = 'http://www.ros.org/wiki'):
+def add_rel_canonical(f, canonical_base = 'http://wiki.ros.org'):
     if not os.path.exists(f):
         print "cannot find %s" %f
         return
