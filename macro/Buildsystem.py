@@ -56,8 +56,8 @@ function Buildsystem(sections) {
     )
 
       // Show or hide according to tag
-      $(".versionshow").removeClass("versionshow").filter("div").show(0)
-      $(".versionhide").removeClass("versionhide").filter("div").hide(0)
+      $(".versionshow").removeClass("versionshow").filter("div").show()
+      $(".versionhide").removeClass("versionhide").filter("div").hide()
 }
 
 function getURLParameter(name) {

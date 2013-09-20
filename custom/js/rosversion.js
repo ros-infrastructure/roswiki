@@ -11,8 +11,8 @@ function Version(sections) {
       $.each(sections.hide, function(){$("div" + dotversion + this).not(".versionshow,.versionhide").addClass("versionhide")})
 
       // Show or hide according to tag
-      $(".versionshow").removeClass("versionshow").filter("span").show().end().filter("div").show(0)
-      $(".versionhide").removeClass("versionhide").filter("span").hide().end().filter("div").hide(0)
+      $(".versionshow").removeClass("versionshow").filter("span").show().end().filter("div").show()
+      $(".versionhide").removeClass("versionhide").filter("span").hide().end().filter("div").hide()
       }
 
 function getURLParameter(name) {
