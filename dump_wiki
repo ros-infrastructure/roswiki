@@ -1,0 +1,31 @@
+#!/bin/bash
+
+export_dir=`mktemp -d`
+mkdir -p $export_dir/roswiki
+
+cp -a /var/www/wiki.ros.org/moin_static/* $export_dir/roswiki
+python /var/www/wiki.ros.org/venv/lib/python2.6/site-packages/MoinMoin/script/moin.py \
+--config-dir=/var/www/wiki.ros.org/conf/ \
+--wiki-url=wiki.ros.org/ export dump \
+--target-dir=$export_dir/roswiki/
+
+sed -i 's+http://www.ros.org/doc/+doc/+g' $export_dir/roswiki/*.html
+sed -i 's+http://ros.org/doc/+doc/+g' $export_dir/roswiki/*.html
+sed -i 's+www.ros.org/++g' $export_dir/roswiki/*.html
+
+find $export_dir/roswiki/ -name \*.bag -exec rm -f {} \;
+find $export_dir/roswiki/ -type d -exec chmod 755 {} \;
+find $export_dir/roswiki/ -type f -exec chmod 644 {} \;
+
+#add rel="canonical" links to all pages using the backlink string
+python /var/www/wiki.ros.org/rel_canonical.py $export_dir/roswiki
+
+tar czf $export_dir/roswiki.tar.gz -C $export_dir/ roswiki
+
+tar czf $export_dir/doc.tar.gz -C /var/www/www.ros.org/ doc
+
+dump_dir=/var/www/www.ros.org/wiki_dump
+cp $export_dir/roswiki.tar.gz $dump_dir
+cp $export_dir/doc.tar.gz $dump_dir
+
+rm -rf $export_dir
