@@ -12,8 +12,7 @@ except ImportError:
 distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable']
 distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable'] #boxturtle and cturtle not indexed
 
-#doc_url = "http://ros.org/doc/api/"
-doc_url = "http://ros.org/doc/"
+doc_url = "http://docs.ros.org/"
 
 doc_path = '/var/www/www.ros.org/doc/'
 metrics_path = '/var/www/www.ros.org/metrics/'
@@ -130,7 +129,7 @@ def get_vcs_li(macro, stack_data):
         return ''
 
 def get_url_li(macro, data):
-    if 'url' in data and data['url'] and 'ros.org/wiki' not in data['url']:
+    if 'url' in data and data['url'] and 'ros.org/wiki' not in data['url'] and 'wiki.ros.org' not in data['url']:
         f = macro.formatter
         li = f.listitem
         return li(1)+f.text("External website: ")+f.rawHTML(' <a href="%s">%s</a>'%(data['url'], data['url']))+li(0)

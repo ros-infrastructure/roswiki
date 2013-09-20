@@ -10,7 +10,7 @@ except ImportError, e:
 
 from macroutils import load_stack_release, load_stack_manifest, UtilException, sub_link, distro_names
 
-url_base = "http://ros.org/doc/api/"
+url_base = "http://docs.org/api/"
 generates_headings = True
 dependencies = []
 

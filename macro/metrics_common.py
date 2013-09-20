@@ -23,7 +23,6 @@ def _load_code_quality_file(filename, name, type_='package'):
         raise UtilException('Newly proposed, mistyped, or obsolete %s. Could not find %s "'%(type_, type_) + name + '" in metrics ' + filename)
 
     try:
-        #filename = "/var/www/www.ros.org/doc/navigation/code_quality.yaml"
         with open(filename) as f:
             data = yaml.load(f)
     except yaml.YAMLError, exc:
@@ -311,7 +310,7 @@ def get_metric_html(macro, data, container):
 	       "<ul>"+\
 	       "<li><p title='%s'>Distro average:</br> %s </p>"%(stack_list, rosdistro_average_rnd)+\
 	       "<li><p>%s average:</br> %s </p>"%(container,metric_average_rnd)+\
-	       "<li><p title='Recommended values'><a href='http://ros.org/wiki/code_quality#Thresholds'>Thresholds</a>:&nbsp;&nbsp;</br> %s < x < %s </p>"%(recommendedMin, recommendedMax)+\
+	       "<li><p title='Recommended values'><a href='http://wiki.ros.org/code_quality#Thresholds'>Thresholds</a>:&nbsp;&nbsp;</br> %s < x < %s </p>"%(recommendedMin, recommendedMax)+\
 	       "<li><p>In range:</br> %s &#37</p>"%(percentage_inRange)+\
 	     "</table>"+\
 	     "</ul>"+\
@@ -413,7 +412,7 @@ def get_common_information_html(macro, data):
     desc += 'The metrics are classified into file-, function-, and class-metrics. '
     desc += 'Only C++ files are considered during analysis. '
     desc += 'Information about the code quantity are provided in section Lines of Code. '
-    desc += 'For more information please visit the <a href=http://ros.org/wiki/code_quality>code quality main page</a>. '
+    desc += 'For more information please visit the <a href=http://wiki.ros.org/code_quality>code quality main page</a>. '
 
     desc += '<ul>'
     desc += '<li>Status: <a href="http://jenkins.willowgarage.com:8080/">job status</a></li>'

@@ -19,8 +19,8 @@ def execute(macro, args):
         return "invalid arguments: GetCode(uri,spec[,start_line,end_line])"
 
     uri = args[0]
-    if 'ros.org/wiki' in uri or 'ros.org/doc' in uri:
-        return "GetCode cannot be used with www.ros.org URLs"
+    if 'ros.org/wiki' in uri or 'wiki.ros.org' in uri or 'ros.org/doc' in uri or 'docs.ros.org' in uri:
+        return "GetCode cannot be used with ros.org URLs"
 
     specline = args[1]
     if specline[:2] != '#!':

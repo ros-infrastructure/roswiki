@@ -319,7 +319,7 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
     #We don't want to display the Code API link for a metapackage
     if metapackage:
         code_api = ''
-    elif 'ros.org/doc/api' in api_documentation:
+    elif 'ros.org/doc/api' in api_documentation or 'docs.ros.org/api' in api_documentation:
         code_api = li(1)+strong(1)+url(1, url=package_html_link(package_name, distro))+text("Code API")+url(0)+strong(0)+li(0)
     else:
         code_api = li(1)+strong(1)+url(1, url=api_documentation)+text("Code API")+url(0)+strong(0)+li(0)

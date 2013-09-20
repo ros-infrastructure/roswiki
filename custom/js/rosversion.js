@@ -38,11 +38,10 @@ $(document).ready(function() {
     {
         activedistro=url_distro;
     }
-    //$("div.version").not("."+activedistro).hide();
     $("div.version").hide();
     if($("#"+activedistro).length > 0)
     {
-      $("#"+activedistro).click();//CHANGE THIS LINE TO THE DISTRO DISPLAYED BY DEFAULT
+      $("#"+activedistro).click();
     }
     else
     {

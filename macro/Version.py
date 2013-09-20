@@ -1,5 +1,5 @@
 #To change the set of active distros:
-# 1) Change which distro is open by default in RosVersion.js (on the ros.org wiki, this should be at /usr/share/moin/htdocs/common/js, but ymmv
+# 1) Change which distro is opened by default in custom/js/rosversion.js
 #
 # 2) Restart the server
 

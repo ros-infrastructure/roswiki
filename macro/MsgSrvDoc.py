@@ -8,7 +8,7 @@ generates_headings = True
 
 ## This is basically a fork of PackageHeader. Apologies for the
 ## untidiness - kwc
-url_base = "http://ros.org/doc/api/" 
+url_base = "http://docs.org/api/"
 
 def _href(url, text):
   return '<a href="%(url)s">%(text)s</a>'%locals()
