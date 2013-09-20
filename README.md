@@ -13,3 +13,6 @@ Apache configuration:
     WSGIScriptAlias / /var/www/wiki.ros.org/cgi-bin/moin.wsgi
     WSGIDaemonProcess wgmoin user=apache group=apache home=/var/www/wiki.ros.org/data/ processes=50 threads=1 maximum-requests=1000 umask=0007 python-path=/var/www/wiki.ros.org/venv/lib/python2.6/site-packages/
     WSGIProcessGroup wgmoin
+
+Setup a cron job to dump the Wiki content.
+The script as well as the cron configuration can be found on the "wiki_dump_script" branch in this repo.
