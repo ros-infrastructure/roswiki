@@ -43,6 +43,8 @@ def execute(macro, args):
         html += '''return false"> %s </button>''' % (distro)
         return html
 
-    html = "\n".join([distro_html(distro, distros) for distro in distros])
+    html = '<span id="rosversion_selector">\n'
+    html += "\n".join([distro_html(distro, distros) for distro in distros])
+    html += +'\n</span>'
     return macro.formatter.rawHTML(html)
 

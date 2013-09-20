@@ -45,7 +45,7 @@ $(document).ready(function() {
     }
     else
     {
-      $("button:first").click();
+      $("#rosversion_selector button:last").click();
     }
     $("input.version:hidden").each(function(){var bg = $(this).attr("value").split(":"); $("div.version." + bg[0]).css("background-color",bg[1]).removeClass(bg[0])});
 })
