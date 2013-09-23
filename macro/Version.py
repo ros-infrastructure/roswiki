@@ -45,6 +45,6 @@ def execute(macro, args):
 
     html = '<span id="rosversion_selector">\n'
     html += "\n".join([distro_html(distro, distros) for distro in distros])
-    html += +'\n</span>'
+    html += '\n</span>'
     return macro.formatter.rawHTML(html)
 
