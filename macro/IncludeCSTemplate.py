@@ -54,20 +54,18 @@ def execute(macro, args):
         line = line[2:].strip()
         parts = line.split("=", 1)
         if len(parts) == 2:
-          val = parts[1].strip()
-          #val = parts[1].strip().encode('utf-8')  # swh
-          hdf.setValue(parts[0].strip(), val)
+          key = parts[0].strip()
+          val = parts[1].strip().encode('utf-8')
+          hdf.setValue(key, val)
 
     hdf.setValue("Config.WhiteSpaceStrip ", "0")
 
     cs = neo_cs.CS(hdf)
     cs.parseStr(cstemplate)
 
-    body = cs.render()
+    body = cs.render().decode('utf-8')
 
     body = wikiutil.renderText(request, WikiParser, body)
-
-    open("/tmp/out.html", "w").write(body)
 
     return body
 
