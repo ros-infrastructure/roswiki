@@ -51,7 +51,10 @@ def execute(macro, args):
         return "invalid arguments: no code uri specified"
     cache = getattr(macro.request.cfg, 'get_tag_cache', {})
     if uri not in cache:
-        cache[uri] = urlopen(uri).readlines()
+        try:
+            cache[uri] = urlopen(uri).readlines()
+        except EOFError:
+            return "GetTaggedCode can not fetch data from url '%s'" % uri
     lines = cache[uri]
     macro.request.cfg.get_tag_cache = dict(cache)
 
