@@ -106,11 +106,11 @@ def execute(macro, first_tutorial):
         content = ''
         content += f.number_list(1)
         for link, title, desc in tutorial_list:
-            desc = str(desc or 'No Description')
+            desc = desc or 'No Description'
             content += ''.join([
                 f.listitem(1),
                 f.pagelink(1, str(link or '#BadLink')),
-                str(title or 'No Title'),
+                title or 'No Title',
                 f.pagelink(0),
                 "<p>",
                 wikiutil.renderText(request, WikiParser, desc),
