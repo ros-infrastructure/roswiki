@@ -163,7 +163,7 @@ def get_repo_name(data, package_name, opt_distro):
         stack_name = ''
 
     metapackages = data.get('metapackages', None)
-    if metapackages:
+    if metapackages and package_name != 'catkin':
         for metapackage in metapackages:
             try:
                 metapackage_data = load_package_manifest(metapackage, opt_distro)
