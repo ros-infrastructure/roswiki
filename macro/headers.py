@@ -1,3 +1,4 @@
+import re
 import sys
 import urllib2
 import os
@@ -66,6 +67,12 @@ def is_stack_released(stack_name):
             _, stack_props = load_stack_release(release_name, stack_name)
     return bool(stack_props)
     
+def obfuscate_email(data):
+    subs = {'@': ' AT ', '.': ' DOT '}
+    for k, v in subs.items():
+        data = re.sub('(<[^>]+)%s([^<]+>)' % re.escape(k), r'\1%s\2' % v, data)
+    return data
+
 def get_description(macro, data, type_):
     # keys
     authors = data.get('authors', 'unknown')
@@ -104,7 +111,7 @@ def get_description(macro, data, type_):
         vcs_li = get_vcs_li(macro, data)
         bugtracker_li = get_bugtracker_li(macro, data)
         url_li = get_url_li(macro, data)
-        maintainers_li = li(1)+text("Maintainer: "+maintainers)+li(0) if maintainers else ''
+        maintainers_li = li(1)+text("Maintainer: "+obfuscate_email(maintainers))+li(0) if maintainers else ''
         maintainer_status_li = get_maintainer_status_li(macro, data)
 
         # id=first for package?
@@ -114,7 +121,7 @@ def get_description(macro, data, type_):
                p(1,id="package-info")+ul(1)+\
                maintainer_status_li+\
                maintainers_li+\
-               li(1)+text("Author: "+authors)+li(0)+\
+               li(1)+text("Author: "+obfuscate_email(authors))+li(0)+\
                li(1)+text("License: "+license)+li(0)+\
                url_li+\
                repo_li+\
