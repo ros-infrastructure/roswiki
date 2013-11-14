@@ -14,7 +14,7 @@ distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 
 
 doc_url = "http://docs.ros.org/"
 
-doc_path = '/var/www/www.ros.org/doc/'
+doc_path = '/home/rosbot/docs/'
 metrics_path = '/var/www/www.ros.org/metrics/'
 
 CONTRIBUTE_TMPL = """Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.
