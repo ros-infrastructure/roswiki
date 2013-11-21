@@ -22,10 +22,7 @@ find $export_dir/roswiki/ -type f -exec chmod 644 {} \;
 
 tar czf $export_dir/roswiki.tar.gz -C $export_dir/ roswiki
 
-tar czf $export_dir/doc.tar.gz -C /var/www/www.ros.org/ doc
-
 dump_dir=/var/www/www.ros.org/wiki_dump
 cp $export_dir/roswiki.tar.gz $dump_dir
-cp $export_dir/doc.tar.gz $dump_dir
 
 rm -rf $export_dir
