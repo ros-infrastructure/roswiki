@@ -18,7 +18,7 @@ find $export_dir/roswiki/ -type d -exec chmod 755 {} \;
 find $export_dir/roswiki/ -type f -exec chmod 644 {} \;
 
 #add rel="canonical" links to all pages using the backlink string
-#python /var/www/wiki.ros.org/rel_canonical.py $export_dir/roswiki
+python /var/www/wiki.ros.org/rel_canonical.py $export_dir/roswiki
 
 tar czf $export_dir/roswiki.tar.gz -C $export_dir/ roswiki
 
