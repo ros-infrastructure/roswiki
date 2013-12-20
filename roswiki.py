@@ -103,16 +103,16 @@ class Config(FarmConfig):
 
     surge_action_limits = { # allow max. <count> <action> requests per <dt> secs
     # action: (count, dt)
-       'all': (300, 30),
-       'show': (300, 60),
+       'all': (30, 30),
+       'show': (30, 60),
        'recall': (50, 60),
-       'raw': (200, 40),  # some people use this for css
-       'AttachFile': (900, 60),
-       'diff': (300, 60),
-       'fullsearch': (50, 60),
-       'edit': (100, 120),
-       'rss_rc': (10, 60),
-       'default': (300, 60),
+       'raw': (20, 40),  # some people use this for css
+       'AttachFile': (60, 60),
+       'diff': (30, 60),
+       'fullsearch': (5, 60),
+       'edit': (10, 60),
+       'rss_rc': (2, 60),
+       'default': (30, 60),
    }
 
 
@@ -149,3 +149,14 @@ class Config(FarmConfig):
 <script src="/custom/libraries/RGraph.common.core.js" ></script>
 <script src="/custom/libraries/RGraph.bar.js" ></script>
 """
+
+    #extend the list of spiders 
+    #http://moinmo.in/MoinMoinPatch/BingbotUaSpider
+    ua_spiders = 'archiver|baiduspider|bingbot|cfetch|charlotte|crawler|gigabot|googlebot|heritrix|holmes|htdig|httrack|httpunit|' + \
+        'intelix|jeeves|larbin|leech|libwww-perl|linkbot|linkmap|linkwalk|litefinder|mercator|' +\
+        'microsoft.url.control|mirror| mj12bot|msnbot|msrbot|neomo|nutbot|omniexplorer|puf|robot|scooter|seekbot|'+\
+        'sherlock|slurp|sitecheck|sogou|snoopy|spider|teleport|twiceler|voilabot|voyager|webreaper|wget|yeti'
+
+    #http://moinmo.in/HelpOnConfiguration
+    # makes robots.txt "Disallow: /action/" work
+    url_prefix_action = 'action'
