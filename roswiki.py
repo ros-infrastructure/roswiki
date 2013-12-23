@@ -111,7 +111,7 @@ class Config(FarmConfig):
        'diff': (30, 60),
        'fullsearch': (5, 60),
        'edit': (10, 60),
-       'rss_rc': (2, 60),
+       'rss_rc': (1, 60),
        'default': (30, 60),
    }
 
@@ -152,11 +152,17 @@ class Config(FarmConfig):
 
     #extend the list of spiders 
     #http://moinmo.in/MoinMoinPatch/BingbotUaSpider
-    ua_spiders = 'archiver|baiduspider|bingbot|cfetch|charlotte|crawler|gigabot|googlebot|heritrix|holmes|htdig|httrack|httpunit|' + \
-        'intelix|jeeves|larbin|leech|libwww-perl|linkbot|linkmap|linkwalk|litefinder|mercator|' +\
-        'microsoft.url.control|mirror| mj12bot|msnbot|msrbot|neomo|nutbot|omniexplorer|puf|robot|scooter|seekbot|'+\
-        'sherlock|slurp|sitecheck|sogou|snoopy|spider|teleport|twiceler|voilabot|voyager|webreaper|wget|yeti'
-
+    ua_spiders = ('archiver|baiduspider|bingbot|cfetch|charlotte|crawler|gigabot|googlebot|heritrix|holmes|htdig|httrack|httpunit|'
+                  'intelix|jeeves|larbin|leech|libwww-perl|linkbot|linkmap|linkwalk|litefinder|mercator|'
+                  'microsoft.url.control|mirror|mj12bot|msnbot|msrbot|neomo|nutbot|omniexplorer|puf|robot|scooter|seekbot|'
+                  'sherlock|slurp|sitecheck|sogou|snoopy|spider|teleport|twiceler|voilabot|voyager|webreaper|wget|yeti')
+    
     #http://moinmo.in/HelpOnConfiguration
     # makes robots.txt "Disallow: /action/" work
     url_prefix_action = 'action'
+
+    # don't link to rss from each page
+    # bingbot is following these a lot and they are essentially a full wiki search
+    rss_show_page_history_link = False
+    # turn off rss_rc
+    actions_excluded = ['rss_rc']
