@@ -89,8 +89,9 @@ class Config(FarmConfig):
     theme_default = "rostheme"
 
     navi_bar = [
-        u'ROS',
-        u'StackList',
+        u'Distributions',
+        u'ROS/Installation',
+        u'ROS/Tutorials',
         u'RecentChanges',
     ]
 
