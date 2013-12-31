@@ -104,8 +104,10 @@ def get_description(macro, data, type_):
 
     if type_ == 'stack':
         title = 'Stack Summary'
+        badges = ''
     else:
         title = 'Package Summary'
+        badges = get_badges(macro, data)
     try:
         repo_li = get_repo_li(macro, data)
         vcs_li = get_vcs_li(macro, data)
@@ -117,6 +119,7 @@ def get_description(macro, data, type_):
         # id=first for package?
         #desc = h(1, 2, id="summary")+text(title)+h(0, 2)+\
         desc = "<h1>"+text(title)+"</h1>"+\
+               badges+\
                p(1,id="package-info")+rawHTML(description)+p(0)+\
                p(1,id="package-info")+ul(1)+\
                maintainer_status_li+\
@@ -132,6 +135,23 @@ def get_description(macro, data, type_):
         desc = h(1, 2)+text(title)+h(0,2)+p(1)+text('Error retrieving '+title)+p(0)
     return desc
     
+def get_badges(macro, data):
+    badges = []
+    if data.get('release_jobs', []):
+        badges.append('Released')
+    if data.get('devel_jobs', []):
+        badges.append('Continuous integration')
+    if data.get('doc_job', None):
+        badges.append('Documented')
+
+    html = ''
+    if badges:
+        p = macro.formatter.paragraph
+        html += p(1)
+        html += '\n'.join(['<span class="badge" style="background-color: #5cb85c;"><span class="glyphicon glyphicon-ok" style="color: white;"></span> %s</span>' % badge for badge in badges])
+        html += p(0)
+    return html
+
 def li_if_exists(macro, page, sub_page):
     li = macro.formatter.listitem
     if Page(macro.request, '%s/%s'%(page, sub_page)).exists():
