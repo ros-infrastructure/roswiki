@@ -356,6 +356,7 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
         package_links = div(1, css_class="package-links")
   
     package_links += get_dependency_list(macro, data, css_prefix=distro, distro=distro)
+    package_links += get_jenkins_list(macro, data, css_prefix='stack-%s'%distro, distro=distro)
     package_links+=div(0)
     return package_links
 
@@ -433,3 +434,38 @@ def get_dependency_list(macro, data, css_prefix='',distro=None):
 
     return links
 
+
+def get_jenkins_list(macro, data, css_prefix='', distro=None):
+    f = macro.formatter
+    li, ul, strong, div = f.listitem, f.bullet_list, f.strong, f.div
+
+    release_jobs = data.get('release_jobs', [])
+    devel_jobs = data.get('devel_jobs', [])
+    doc_job = data.get('doc_job', None)
+
+    links = ''
+    if doc_job or release_jobs:
+        links += strong(1)
+        links += '<a href="#" onClick="toggleExpandableJenkins(\'%sjenkins-list\'); return false;">Jenkins jobs</a> (%d)' % (css_prefix, len(release_jobs) + len(devel_jobs) + (1 if doc_job else 0))
+        links += strong(0) + '<br />'
+        links += '<div id="%sjenkins-list" style="display:none">' % css_prefix
+        links += ul(1)
+        for release_job in release_jobs:
+            links += li(1)
+            jobtype = release_job.split('_', 1)[1].replace('_', ' ')
+            links += '<a href="http://jenkins.ros.org/job/%s">%s</a>' % (release_job, jobtype)
+            links += li(0)
+        for devel_job in devel_jobs:
+            links += li(1)
+            links += '<a href="http://jenkins.ros.org/job/%s">devel</a>' % devel_job
+            links += li(0)
+        if doc_job:
+            links += li(1)
+            links += '<a href="http://jenkins.ros.org/job/%s">doc</a>' % doc_job
+            links += li(0)
+        links += ul(0) + div(0)
+
+    if links:
+        links = '<script type="text/javascript" src="/custom/js/roswiki.js"></script>' + links
+
+    return links
