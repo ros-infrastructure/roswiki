@@ -120,6 +120,7 @@ class Config(FarmConfig):
     html_head='''
 <meta name="google-site-verification" content="CjkdY6BqKWAVmQ78_iSq6J7ZZ9AoL7-CjFVBYGg9FU4" />
 <link rel="shortcut icon" href="/custom/favicon.ico" type="image/ico" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
 <script type="text/javascript" src="/custom/js/sorttable.js"></script>
 <script type="text/javascript" src="/custom/js/ASCIIMathML.js"></script>
 <script type="text/javascript" src="/custom/libraries/jquery.min.js"></script>                         
