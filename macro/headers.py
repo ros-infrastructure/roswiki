@@ -287,12 +287,10 @@ def generate_package_header(macro, package_name, opt_distro=None):
     links = get_package_links(macro, package_name, data, opt_distro, repo_name=repo_name, metapackage=is_metapackage)
     
     html = '<br><br>'.join([macro.formatter.rawHTML(item) for item in nav])
-    if html:
-        html = html + '<br><br>'
 
     deprecated = data.get('deprecated', False)
     if deprecated:
-        html = '<b>PACKAGE DEPRECATED: %s</b><br><br>' % (deprecated) + html
+        html = '<b>PACKAGE DEPRECATED: %s</b>' % (deprecated) + html
     
     return html + links + desc 
 
