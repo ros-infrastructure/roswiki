@@ -37,13 +37,13 @@ def execute(macro, args):
         active = [distro.encode("iso-8859-1")]
         inactive = [x.encode("iso-8859-1") for x in distros if not x == distro]
         sectionarg = '''{show:%s, hide:%s}''' %(active, inactive)
-        html = '''<button id="%s" onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';''' % (distro, sectionarg)
+        html = '''<button id="%s" class="btn btn-default" onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';''' % (distro, sectionarg)
         for inactive_distro in inactive:
             html += '''document.getElementById('%s').style.background='#e6e6e6';document.getElementById('%s').style.color='#3e4f6e';''' % (inactive_distro, inactive_distro)
         html += '''return false"> %s </button>''' % (distro)
         return html
 
-    html = '<span id="rosversion_selector">\n'
+    html = '<span id="rosversion_selector" class="btn-group">\n'
     html += "\n".join([distro_html(distro, distros) for distro in distros])
     html += '\n</span>'
     return macro.formatter.rawHTML(html)
