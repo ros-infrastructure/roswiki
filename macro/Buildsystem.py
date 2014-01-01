@@ -95,7 +95,7 @@ def distro_html(system, systems):
     inactive = [x.encode("iso-8859-1") for x in systems if not x == system]
     sectionarg = '''{show:%s, hide:%s}''' % (active, inactive)
     html = '''\
-<button id="%s" onClick="Buildsystem(%s);this.style.color='#e6e6e6';\
+<button id="%s" class="btn btn-default" onClick="Buildsystem(%s);this.style.color='#e6e6e6';\
 this.style.background='#3e4f6e';\
 ''' % (system, sectionarg)
     for inactive_distro in inactive:
@@ -121,5 +121,7 @@ def execute(macro, args):
     html = ''
     html += buildsystem_js
     macro.request.cfg.buildsystem_macro = True
+    html += '<span class="btn-group">\n'
     html += "\n".join([distro_html(system, systems) for system in systems])
+    html += '\n</span>'
     return macro.formatter.rawHTML(html)
