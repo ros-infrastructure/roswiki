@@ -52,7 +52,7 @@ def macro_PackageHeader(macro, arg1, arg2=None):
                 pkg_header_html = generate_package_header(macro, package_name, distro)
             headers_html.append('<div class="version %s">' % distro + pkg_header_html + '</div>')
 
-        html = '<span id="rosversion_selector">\n'
+        html = '<span id="rosversion_selector" class="btn-group">\n'
         html += "\n".join([distro_html(distro, loaded_distros) for distro in distro_names])
         html += '\n</span>'
         html += doc_html(distro_names, package_name)
