@@ -136,6 +136,15 @@ def get_description(macro, data, type_):
     return desc
     
 def get_badges(macro, data):
+    p = macro.formatter.paragraph
+    html = ''
+
+    deprecated = data.get('deprecated', False)
+    if deprecated:
+        html += p(1)
+        html += '<span class="badge" style="background-color: #f0ad4e;"><span class="glyphicon glyphicon-warning-sign" style="color: white;"></span> Package deprecated</span> %s' % deprecated
+        html += p(0)
+
     badges = []
     if data.get('release_jobs', []):
         badges.append('Released')
@@ -144,9 +153,7 @@ def get_badges(macro, data):
     if data.get('doc_job', None):
         badges.append('Documented')
 
-    html = ''
     if badges:
-        p = macro.formatter.paragraph
         html += p(1)
         html += '\n'.join(['<span class="badge" style="background-color: #5cb85c;"><span class="glyphicon glyphicon-ok" style="color: white;"></span> %s</span>' % badge for badge in badges])
         html += p(0)
@@ -288,12 +295,8 @@ def generate_package_header(macro, package_name, opt_distro=None):
     
     html = '<br><br>'.join([macro.formatter.rawHTML(item) for item in nav])
     if html:
-        html = html + '<br><br>'
+        html = html + '<br>'
 
-    deprecated = data.get('deprecated', False)
-    if deprecated:
-        html = '<b>PACKAGE DEPRECATED: %s</b><br><br>' % (deprecated) + html
-    
     return html + links + desc 
 
 
