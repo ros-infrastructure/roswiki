@@ -290,7 +290,7 @@ def generate_package_header(macro, package_name, opt_distro=None):
 
     deprecated = data.get('deprecated', False)
     if deprecated:
-        html = '<b>PACKAGE DEPRECATED: %s</b>' % (deprecated) + html
+        html = '<br><b>PACKAGE DEPRECATED: %s</b>' % (deprecated) + html
     
     return html + links + desc 
 
