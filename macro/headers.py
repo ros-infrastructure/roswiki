@@ -295,7 +295,7 @@ def generate_package_header(macro, package_name, opt_distro=None):
     
     html = '<br><br>'.join([macro.formatter.rawHTML(item) for item in nav])
     if html:
-        html = html + '<br><br>'
+        html = html + '<br>'
 
     return html + links + desc 
 
