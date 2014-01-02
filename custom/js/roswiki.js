@@ -1,5 +1,5 @@
 function toggleExpandable(id) {
-  d = document.getElementById(id);
+  var d = document.getElementById(id);
   d.style.display = (d.style.display != 'none' ? 'none' : '' );
 }
 
@@ -10,7 +10,7 @@ function toggleExpandableJenkins(id) {
     $('#' + id).attr('build_status_image', true);
     $('#' + id + ' a').each(function() {
       var href = this.href;
-      var n = href.lastIndexOf('/')
+      var n = href.lastIndexOf('/');
       if (n != -1) {
         var jobname = href.substring(n +1);
         $('<br />&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://jenkins.ros.org/buildStatus/icon?job=' + jobname + '"/>').insertAfter(this);

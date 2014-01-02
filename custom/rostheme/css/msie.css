@@ -18,8 +18,8 @@ a.interwiki { padding-left: 14px; background: url(../img/moin-inter.png) left ce
 #message .error { padding-left: 20px; background: url(../img/icon-error.png) left center no-repeat; }
 
 #pagetrail li, #pagelocation li {
-    border-left: 1px solid #AAA;
-    padding: 0 0.3em;
+  border-left: 1px solid #AAA;
+  padding: 0 0.3em;
 }
 
 /* Spans for line-anchors - needed for IE6 and IE7 where omitting the "display: none" triggers rendering bugs. */
