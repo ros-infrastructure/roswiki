@@ -41,4 +41,4 @@ class latex:
 
 
 def execute(macro, args):
-    return latex(macro, args).renderInPage()
+    return '<script type="text/javascript" src="/custom/js/ASCIIMathML.js"></script>' + latex(macro, args).renderInPage()
