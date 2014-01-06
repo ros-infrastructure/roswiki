@@ -118,6 +118,8 @@ function handleSubmit() {
             |
             <a href="/Support">Support</a>
             |
+            <a href="http://status.ros.org/">Status</a>
+            |
             <a href="http://answers.ros.org/">answers.ros.org</a>
 
 <!--   <a href="http://roscon.ros.org/?page_id=109"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/roscon_wiki_header.png" width="133" height="38" alt="roscon" /></a> -->
