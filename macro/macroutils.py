@@ -9,8 +9,8 @@ try:
 except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
-distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable']
-distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable'] #boxturtle and cturtle not indexed
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'unstable']
+distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'unstable'] #boxturtle and cturtle not indexed
 
 doc_url = "http://docs.ros.org/"
 
