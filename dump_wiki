@@ -2,11 +2,10 @@
 
 export_dir=`mktemp -d`
 
-cp -a /var/www/wiki.ros.org/moin_static197/* $export_dir
 cp -a /var/www/wiki.ros.org/data/plugin/custom $export_dir
 
 #hack for default template
-cp $export_dir/custom/image/ros_org.png $export_dir/logo.png
+cp $export_dir/custom/images/ros_org.png $export_dir/logo.png
 
 #move the theme where we want it
 mv $export_dir/custom/rostheme $export_dir
@@ -25,10 +24,16 @@ find $export_dir/ -name \*.bag -exec rm -f {} \;
 find $export_dir/ -type d -exec chmod 755 {} \;
 find $export_dir/ -type f -exec chmod 644 {} \;
 
-#fix references to custom from absolute to relative
-find $export_dir -name \*.html -exec sed -i 's+src="/custom+src="\./custom+' {} \;
+# fix references to custom from absolute to relative
+find $export_dir -name \*.html -exec sed -i 's+src="/custom/+src="\./custom/+' {} \;
 
-#add rel="canonical" links to all pages using the backlink string
+# fix references to rostheme resources
+find $export_dir -name \*.html -exec sed -i 's+src="/moin_static197/rostheme/+src="\./rostheme/+' {} \;
+
+# add jquery to all pages
+find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javascript" src="\./custom/libraries/jquery\.min\.js"></script></head>+' {} \;
+
+# add rel="canonical" links to all pages using the backlink string
 python /var/www/wiki.ros.org/rel_canonical.py $export_dir
 
 # copy export into the available directory, with cleanup
