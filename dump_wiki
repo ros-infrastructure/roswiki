@@ -2,6 +2,11 @@
 
 export_dir=`mktemp -d`
 
+now=$(date +"%Y-%m-%d %H:%M")
+echo "$now" > wikidump.timestamp
+
+cp /var/www/wiki.ros.org/mirror.htaccess $export_dir/.htaccess
+
 cp -a /var/www/wiki.ros.org/data/plugin/custom $export_dir
 
 #hack for default template
