@@ -20,11 +20,9 @@ function checkMirrorStatus(link, url) {
       console.log('checkMirrorStatus() url: ' + url + ', status: ' + this.status);
       if (this.status >= 200 && this.status < 300) {
         setMirrorStatus(link, this.responseText);
-      } else if (this.status == 0) {
-        // not allowed due to missing Access-Control-Allow-Origin header
-        setMirrorStatus(link, 'could not fetch timestamp due to missing "Access-Control-Allow-Origin" header');
-      } else if (this.status == 404) {
+      } else if (this.status == 0 || this.status == 404) {
         // old dump without timestamp file
+        // or not allowed due to missing Access-Control-Allow-Origin header
         setMirrorStatus(link, 'outdated');
       } else {
         console.log('checkMirrorStatus() url: ' + url + ', status: ' + this.status + ', response: ' + this.responseText);
