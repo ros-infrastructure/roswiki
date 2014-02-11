@@ -1,5 +1,5 @@
 <FilesMatch "\.timestamp$">
   <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "wiki.ros.org"
+    Header set Access-Control-Allow-Origin "http://wiki.ros.org"
   </IfModule>
 </FilesMatch>
