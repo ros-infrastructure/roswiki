@@ -1,6 +1,7 @@
 function setMirrorStatus(link, msg) {
+  msg = msg.trim();
   console.log('setMirrorStatus() msg: ' + msg);
-  var re = new RegExp('^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})$', 'g');
+  var re = new RegExp('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$', 'g');
   var isTimestamp = msg.match(re);
   $(link).css('background-color', isTimestamp ? '#5cb85c' : '#f0ad4e');
   $(link).text(msg);
@@ -21,7 +22,7 @@ function checkMirrorStatus(link, url) {
         setMirrorStatus(link, this.responseText);
       } else if (this.status == 0) {
         // not allowed due to missing Access-Control-Allow-Origin header
-        setMirrorStatus(link, 'unknown');
+        setMirrorStatus(link, 'could not fetch timestamp due to missing "Access-Control-Allow-Origin" header');
       } else if (this.status == 404) {
         // old dump without timestamp file
         setMirrorStatus(link, 'outdated');
