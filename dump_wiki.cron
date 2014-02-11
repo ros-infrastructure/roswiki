@@ -1,1 +1,1 @@
-13 12 * * sat /var/www/www.ros.org/dump_wiki > /dev/null 2> /dev/null
+13 12 * * 6 /var/www/www.ros.org/cron/dump_wiki > /dev/null 2> /dev/null

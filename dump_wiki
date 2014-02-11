@@ -5,7 +5,7 @@ export_dir=`mktemp -d`
 now=$(date +"%Y-%m-%d %H:%M")
 echo "$now" > $export_dir/wikidump.timestamp
 
-cp /var/www/wiki.ros.org/mirror.htaccess $export_dir/.htaccess
+cp /var/www/wiki.ros.org/cron/mirror.htaccess $export_dir/.htaccess
 
 cp -a /var/www/wiki.ros.org/data/plugin/custom $export_dir
 
@@ -39,9 +39,9 @@ find $export_dir -name \*.html -exec sed -i 's+src="/moin_static197/rostheme/+sr
 find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javascript" src="\./custom/libraries/jquery\.min\.js"></script></head>+' {} \;
 
 # add rel="canonical" links to all pages using the backlink string
-python /var/www/wiki.ros.org/rel_canonical.py $export_dir
+python /var/www/wiki.ros.org/cron/rel_canonical.py $export_dir
 
 # copy export into the available directory, with cleanup
-rsync -av $export_dir/ /var/www/wiki.ros.org/wiki_dump --delete
+rsync -av $export_dir/ /var/www/wiki.ros.org/cron/wiki_dump --delete
 
 rm -rf $export_dir
