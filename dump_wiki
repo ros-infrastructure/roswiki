@@ -30,13 +30,13 @@ find $export_dir/ -type d -exec chmod 755 {} \;
 find $export_dir/ -type f -exec chmod 644 {} \;
 
 # fix references to custom from absolute to relative
-find $export_dir -name \*.html -exec sed -i 's+src="/custom/+src="\./custom/+' {} \;
+find $export_dir -name \*.html -exec sed -i 's+src="/custom/+src="\./custom/+g' {} \;
 
 # fix references to rostheme resources
-find $export_dir -name \*.html -exec sed -i 's+src="/moin_static197/rostheme/+src="\./rostheme/+' {} \;
+find $export_dir -name \*.html -exec sed -i 's+src="/moin_static197/rostheme/+src="\./rostheme/+g' {} \;
 
 # add jquery to all pages
-find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javascript" src="\./custom/libraries/jquery\.min\.js"></script></head>+' {} \;
+find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javascript" src="\./custom/libraries/jquery\.min\.js"></script></head>+g' {} \;
 
 # add rel="canonical" links to all pages using the backlink string
 python /var/www/wiki.ros.org/cron/rel_canonical.py $export_dir
