@@ -3,7 +3,7 @@
 export_dir=`mktemp -d`
 
 now=$(date +"%Y-%m-%d %H:%M")
-echo "$now" > wikidump.timestamp
+echo "$now" > $export_dir/wikidump.timestamp
 
 cp /var/www/wiki.ros.org/mirror.htaccess $export_dir/.htaccess
 
