@@ -42,6 +42,6 @@ find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javasc
 python /var/www/wiki.ros.org/cron/rel_canonical.py $export_dir
 
 # copy export into the available directory, with cleanup
-rsync -av $export_dir/ /var/www/wiki.ros.org/cron/wiki_dump --delete
+rsync -av $export_dir/ /var/www/wiki.ros.org/wiki_dump --delete
 
 rm -rf $export_dir
