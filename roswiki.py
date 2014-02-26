@@ -125,8 +125,8 @@ class Config(FarmConfig):
 <script type="text/javascript" src="/custom/libraries/jquery.min.js"></script>                         
 <script type="text/javascript" src="/custom/js/seesaw.js"></script> 
 <script type="text/javascript" src="/custom/js/rosversion.js"></script> 
-<script type="text/javascript" src="/custom/libraries/RGraph.common.core.js" ></script>
-<script type="text/javascript" src="/custom/libraries/RGraph.bar.js" ></script>
+<!--script type="text/javascript" src="/custom/libraries/RGraph.common.core.js" ></script Used for metrics only, should be conditional, not at the top-->
+<!--script type="text/javascript" src="/custom/libraries/RGraph.bar.js" ></script same as above -->
 
 <script type="text/javascript">
 
