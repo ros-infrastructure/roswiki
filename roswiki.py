@@ -184,4 +184,4 @@ class Config(FarmConfig):
     # bingbot is following these a lot and they are essentially a full wiki search
     rss_show_page_history_link = False
     # turn off rss_rc
-    actions_excluded = ['rss_rc']
+    actions_excluded = ['rss_rc', 'fullsearch']
