@@ -157,6 +157,12 @@ def get_badges(macro, data):
         html += p(1)
         html += '\n'.join(['<span class="badge" style="background-color: #5cb85c;"><span class="glyphicon glyphicon-ok" style="color: white;"></span> %s</span>' % badge for badge in badges])
         html += p(0)
+
+    if not data.get('doc_job', None):
+        html += p(1)
+        html += '<span class="badge" style="background-color: #b94a48;"><span class="glyphicon glyphicon-remove" style="color: white;"></span> No API documentation</span>'
+        html += p(0)
+
     return html
 
 def li_if_exists(macro, page, sub_page):
