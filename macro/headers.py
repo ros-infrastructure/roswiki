@@ -312,8 +312,10 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
     # let external docs override
     if 'external_documentation' in data:
         api_documentation = data['external_documentation']
-    else:
+    elif 'api_documentation' in data:
         api_documentation = data['api_documentation']
+    else:
+        api_documentation = None
         
     msgs = data.get('msgs', [])
     srvs = data.get('srvs', [])
@@ -347,7 +349,7 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
 	roadmap_link = ''
         
     #We don't want to display the Code API link for a metapackage
-    if metapackage:
+    if metapackage or not api_documentation:
         code_api = ''
     elif 'ros.org/doc/api' in api_documentation or 'docs.ros.org/api' in api_documentation:
         code_api = li(1)+strong(1)+url(1, url=package_html_link(package_name, distro))+text("Code API")+url(0)+strong(0)+li(0)
