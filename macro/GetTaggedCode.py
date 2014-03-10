@@ -6,10 +6,12 @@
 """
 
 import re
-from urllib import urlopen
+from urllib2 import urlopen
 import StringIO
 
 from MoinMoin.parser import text_moin_wiki as wiki
+
+import macroutils
 
 Dependencies = ["namespace"]
 
@@ -52,7 +54,7 @@ def execute(macro, args):
     cache = getattr(macro.request.cfg, 'get_tag_cache', {})
     if uri not in cache:
         try:
-            cache[uri] = urlopen(uri).readlines()
+            cache[uri] = urlopen(uri, timeout=macroutils.NETWORK_TIMEOUT).readlines()
         except EOFError:
             return "GetTaggedCode can not fetch data from url '%s'" % uri
     lines = cache[uri]
