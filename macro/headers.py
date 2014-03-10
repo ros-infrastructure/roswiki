@@ -13,7 +13,7 @@ except:
 from macroutils import wiki_url, get_repo_li, get_vcs_li, get_bugtracker_li, get_maintainer_status_li, get_url_li, load_stack_release, \
      msg_doc_link, load_package_manifest, package_html_link, package_changelog_html_link, UtilException, \
      load_stack_manifest, sub_link, distro_names, \
-     get_package_versions, CONTRIBUTE_TMPL
+     get_package_versions, CONTRIBUTE_TMPL, GET_INVOLVED
 
 def get_nav(macro, stack_name, packages, distro=None):
     nav = ''
@@ -182,7 +182,7 @@ def get_doc_status(opt_distro, repo_name, data):
             jenkins_url = 'http://jenkins.ros.org/job/%s/lastBuild' % data['doc_job']
             status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (<a href="%s">job status</a>).</span>' % (time_str, jenkins_url)
         else:
-            status_string = '<i>Only showing information from the released package extracted on %s. No API documentation available</i>' % time_str
+            status_string = '<i>Only showing information from the released package extracted on %s. No API documentation available. %s</i>' % (time_str, GET_INVOLVED)
 
     return status_string
 
