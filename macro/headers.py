@@ -146,21 +146,21 @@ def get_badges(macro, data):
         html += p(0)
 
     badges = []
+    color = '5cb85c'
+    icon = 'ok'
     if data.get('release_jobs', []):
-        badges.append('Released')
+        badges.append(['Released', color, icon])
     if data.get('devel_jobs', []):
-        badges.append('Continuous integration')
+        badges.append(['Continuous integration', color, icon])
     if data.get('doc_job', None):
-        badges.append('Documented')
+        badges.append(['Documented', color, icon])
+
+    if not data.get('doc_job', None):
+        badges.append(['No API documentation', 'b94a48', 'remove'])
 
     if badges:
         html += p(1)
-        html += '\n'.join(['<span class="badge" style="background-color: #5cb85c;"><span class="glyphicon glyphicon-ok" style="color: white;"></span> %s</span>' % badge for badge in badges])
-        html += p(0)
-
-    if not data.get('doc_job', None):
-        html += p(1)
-        html += '<span class="badge" style="background-color: #b94a48;"><span class="glyphicon glyphicon-remove" style="color: white;"></span> No API documentation</span>'
+        html += '\n'.join(['<span class="badge" style="background-color: #%s;"><span class="glyphicon glyphicon-%s" style="color: white;"></span> %s</span>' % (badge[1], badge[2], badge[0]) for badge in badges])
         html += p(0)
 
     return html
