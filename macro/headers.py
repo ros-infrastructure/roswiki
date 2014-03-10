@@ -176,11 +176,11 @@ def get_doc_status(opt_distro, repo_name, data):
         else:
             time_str = 'Unknown'
 
-        if 'doc_job' in data:
+        if opt_distro in ['electric', 'fuerte']:
+            status_string = '<i>Documentation generated on %s</i>' % time_str
+        elif 'doc_job' in data:
             jenkins_url = 'http://jenkins.ros.org/job/%s/lastBuild' % data['doc_job']
             status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (<a href="%s">job status</a>).</span>' % (time_str, jenkins_url)
-        elif opt_distro in ['electric', 'fuerte']:
-            status_string = '<i>Documentation generated on %s</i>' % time_str
         else:
             status_string = '<i>Only showing information from the released package extracted on %s. No API documentation available</i>' % time_str
 
