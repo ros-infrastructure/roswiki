@@ -9,7 +9,7 @@ try:
 except ImportError:
     print >> sys.stderr, "WARNING: Cannot load MoinMoin plugins, continuing load for testing only"
 
-NETWORK_TIMEOUT = 30
+NETWORK_TIMEOUT = 3
 
 distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'unstable']
 distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'unstable'] #boxturtle and cturtle not indexed
