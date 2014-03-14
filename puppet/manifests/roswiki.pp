@@ -43,7 +43,7 @@ node default {
         notify => Service['apache2'],
     }
 
-    file { '/etc/apache2/site-enabled/000-default':
+    file { '/etc/apache2/sites-enabled/000-default':
         ensure => absent,
         notify => Service['apache2'],
         require => Package['apache2'],
