@@ -5,8 +5,11 @@
 
 """
 
-from urllib import urlopen
+from urllib2 import urlopen
 import StringIO
+import socket
+
+import macroutils
 
 from MoinMoin.parser import text_moin_wiki as wiki
 
@@ -31,7 +34,10 @@ def execute(macro, args):
         return "invalid arguments: no code uri specified"
     cache = getattr(macro.request.cfg, 'get_tag_cache', {})
     if uri not in cache:
-        cache[uri] = urlopen(uri).readlines()
+        try:
+            cache[uri] = urlopen(uri, timeout=macroutils.NETWORK_TIMEOUT).readlines()
+        except socket.timeout as e:
+            raise UtilException("Timed out while trying to access %s" % uri)
     lines = cache[uri]
     macro.request.cfg.get_tag_cache = dict(cache)
 
