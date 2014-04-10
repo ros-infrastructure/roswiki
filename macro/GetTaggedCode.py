@@ -6,7 +6,7 @@
 """
 
 import re
-from urllib2 import urlopen
+from urllib2 import HTTPError, urlopen
 import StringIO
 import socket
 
@@ -58,8 +58,10 @@ def execute(macro, args):
             cache[uri] = urlopen(uri, timeout=macroutils.NETWORK_TIMEOUT).readlines()
         except EOFError:
             return "GetTaggedCode can not fetch data from url '%s'" % uri
+        except HTTPError as e:
+            raise macroutils.UtilException("Could not fetch external code from '%s': %s" % (uri, e))
         except socket.timeout as e:
-            raise UtilException("Timed out while trying to access %s" % uri)
+            raise macroutils.UtilException("Timed out while trying to access '%s'" % uri)
     lines = cache[uri]
     macro.request.cfg.get_tag_cache = dict(cache)
 
