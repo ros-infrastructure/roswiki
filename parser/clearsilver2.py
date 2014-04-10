@@ -97,13 +97,13 @@ class Parser:
         cs_template = Page(self.request, cs_template_page).getPageText()
 
         hdf = neo_util.HDF()
-        hdf.readString(self.raw)
+        hdf.readString(self.raw.encode('utf8'))
         hdf.setValue("Config.WhiteSpaceStrip", "0")
 
         cs = neo_cs.CS(hdf)
         cs.parseStr(cs_template)
         body = cs.render()
-        body = wikiutil.renderText(self.request, WikiParser, body) 
+        body = wikiutil.renderText(self.request, WikiParser, body.decode('utf8'))
         self.request.write(formatter.rawHTML(body))
 
         # the end
