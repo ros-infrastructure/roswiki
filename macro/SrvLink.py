@@ -6,6 +6,6 @@ def execute(macro, args):
   type_ = args.split()[0]
   splits = type_.split('/')
   if len(splits) != 2:
-    return "invalid message type for MsgLink(srv/type)"
+    return "invalid message type for SrvLink(srv/type)"
   pkg, base = splits  
   return macro.formatter.url(1, "http://docs.ros.org/api/%s/html/srv/%s.html"%(pkg, base)) + macro.formatter.text(type_)+ macro.formatter.url(0)
