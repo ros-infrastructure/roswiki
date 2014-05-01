@@ -113,27 +113,24 @@ function handleSubmit() {
     <div class="alert alert-info alert-dismissable">
 <script>
 jQuery(function( $ ){
-    state = localStorage.getItem('roskong_early_registration_notice_state');
+    state = localStorage.getItem('roswiki_indigo_shirt_notice_state');
     if (!state) {
-      localStorage.setItem('roskong_early_registration_notice_state', 'open');
+      localStorage.setItem('roswiki_indigo_shirt_notice_state', 'open');
     }
-    state = localStorage.getItem('roskong_early_registration_notice_state');
+    state = localStorage.getItem('roswiki_indigo_shirt_notice_state');
     if (state == 'closed') {
         $( '#topnav .alert' ).hide();
     }
     $( '.close' ).click(function () {
 	console.log('in .close.click');
-        localStorage.setItem('roskong_early_registration_notice_state', 'closed');
+        localStorage.setItem('roswiki_indigo_shirt_notice_state', 'closed');
         $( '#topnav .alert' ).hide();
   });
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <strong>Hey!</strong> <a href="https://events.osrfoundation.org/ros-kong-2014/">ROSKong Early Registration ends April 30th</a> Register early and get the early discount as well as a guaranteed shirt. 
-    </div>
-<!--
       <strong>Hey!</strong> The new <a href="http://www.ros.org/news/2014/04/ros-indigo-igloo-logo-and-release-t-shirt.html">Indigo Logo</a> has been announced, and from now until May 13th you can buy a <a href="http://teespring.com/ros-indigo">T-Shirt</a> as well!
-    </div-->
+    </div>
       <table id="topnav-table">
         <tr>
           <td width="300" valign="top"><a href="/"><img border="0" src="/custom/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
