@@ -306,7 +306,8 @@ theForm.input.value=theForm.input.value
     page_footer2 = """
 
 <div class="footer">
-Except where otherwise noted, the ROS wiki is licensed under <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>. <a href="https://plus.google.com/113789706402978299308" rel="publisher">Find us on Google+</a>
+Except where otherwise noted, the ROS wiki is licensed under <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>. <a href="https://plus.google.com/113789706402978299308" rel="publisher">Find us on Google+</a><hr>
+<a href="http://www.osrfoundation.org"><img src="/custom/images/BroughtToYouByOSRFPurpleHoriz400.png"/></a>
 </div>
 
   </div></div> <!-- /#dpage-inner, /#dpage -->
