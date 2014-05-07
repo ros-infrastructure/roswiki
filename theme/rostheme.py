@@ -312,7 +312,7 @@ Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="
 <hr style="margin-top: 10px;">
 <div class="row">
   <div class="col-md-4 col-md-offset-4">
-<a href="http://www.osrfoundation.org"><p style="line-height: 20px;">Brought to you by the <img height="20px" style="margin-top: -1px;" src="http://osrfoundation.org/assets/images/osrf-pos-horz.png"></p></a>
+<a href="http://www.osrfoundation.org"><img style="margin-top: -1px;" src="/custom/images/brought_by_horiz.png"></p></a>
   </div>
 </div>
 </div>
