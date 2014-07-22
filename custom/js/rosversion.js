@@ -37,7 +37,7 @@ function toggleDocStatus()
 }
 
 $(document).ready(function() {
-  var activedistro = "hydro"; //CHANGE THIS LINE TO CHANGE THE DISTRO DISPLAYED BY DEFAULT
+  var activedistro = "indigo"; //CHANGE THIS LINE TO CHANGE THE DISTRO DISPLAYED BY DEFAULT
   var url_distro = getURLParameter('distro');
   if (url_distro) {
     activedistro=url_distro;
