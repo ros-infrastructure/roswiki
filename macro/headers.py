@@ -350,11 +350,9 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
         changelog_rst_link = li(1)+url(1, url=package_changelog_html_link(package_name, distro))+text("Changelog")+url(0)+li(0)
 
     if repo_name:
-        releases_link = li(1)+sub_link(macro, repo_name, 'Releases')+li(0) 
         changelist_link = li(1)+sub_link(macro, repo_name, 'ChangeList', title='Change List')+li(0)
 	roadmap_link = li_if_exists(macro, repo_name, 'Roadmap')
     else:
-        releases_link = ''
         changelist_link = ''
 	roadmap_link = ''
         
@@ -384,7 +382,6 @@ def get_package_links(macro, package_name, data, distro, repo_name=None, metapac
                         changelog_rst_link+\
                         changelist_link+\
                         roadmap_link+\
-                        releases_link+\
                         review_str+\
                         ul(0)
     except UnicodeDecodeError:
@@ -404,10 +401,9 @@ def get_stack_links(macro, stack_name, data, packages, is_unary, distro):
   
     # - links
     if is_released:
-        releases_link = li(1)+sub_link(macro, stack_name, 'Releases')+li(0) 
         changelist_link = li(1)+sub_link(macro, stack_name, 'ChangeList', title='Change List')+li(0)
     else:
-        releases_link = changelist_link = ''
+        changelist_link = ''
     if not is_unary:
         troubleshooting_link = li_if_exists(macro, stack_name, 'Troubleshooting')
         review_link = li(1)+sub_link(macro, stack_name, 'Reviews') + li(0)
@@ -421,7 +417,6 @@ def get_stack_links(macro, stack_name, data, packages, is_unary, distro):
                 ul(1)+\
                 tutorials_link+\
                 troubleshooting_link+\
-                releases_link+\
                 changelist_link+\
                 roadmap_link+\
                 review_link+\
