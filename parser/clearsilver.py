@@ -97,7 +97,12 @@ class Parser:
         cs_template = Page(self.request, cs_template_page).getPageText()
 
         hdf = neo_util.HDF()
-        hdf.readString(self.raw.encode('utf8'))
+        try:
+            hdf.readString(self.raw.encode('utf8'))
+        except Exception as ex:
+            import cgi
+            self.request.write(formatter.rawHTML('<span class="label label-danger">Exception Parsing Clearsilver: %s</span>' % cgi.escape(str(ex))))
+            return
         hdf.setValue("Config.WhiteSpaceStrip", "0")
 
         cs = neo_cs.CS(hdf)
