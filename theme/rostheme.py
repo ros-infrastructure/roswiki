@@ -206,6 +206,34 @@ theForm.input.value=theForm.input.value
     </div> <!-- /#topav -->
   </div> <!-- /#header -->
 
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+    google.load("feeds", "1");
+
+    function initialize() {
+      var feed = new google.feeds.Feed("http://planet.ros.org/rss20.xml");
+      feed.load(function(result) {
+        if (!result.error) {
+          var container = document.getElementById("feed");
+          for (var i = 0; i < result.feed.entries.length; i++) {
+            var entry = result.feed.entries[i];
+            var div = document.createElement("div");
+            var a = document.createElement("a");
+            var link_text = document.createTextNode(entry.title);
+            a.appendChild(link_text);
+            a.title = entry.title;
+            a.href = entry.link;
+            div.appendChild(a);
+            container.appendChild(div);
+          }
+        }
+      });
+    }
+    google.setOnLoadCallback(initialize);
+
+    </script>
 """
 
     def header(self, d):
@@ -241,6 +269,7 @@ theForm.input.value=theForm.input.value
             self.pagepanel(d),
             self.userpanel(d),
 #            self.trailpanel(d),
+            u'<div id="feed"><center><a href="http://planet.ros.org">Planet ROS</a></center><hr></div>'
             u'</div>',
 
             self.msg(d),
