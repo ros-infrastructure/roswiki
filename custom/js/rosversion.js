@@ -23,7 +23,10 @@ function Version(sections) {
   $(".versionhide").removeClass("versionhide").filter("span").hide().end().filter("div").hide();
 
   if (sections.show[0]) {
-    $(".rosversion_name").text(sections.show[0]);
+    var name = sections.show[0];
+    var capitalized_name = name.charAt(0).toUpperCase() + name.slice(1);
+    $(".rosversion_name").text(name);
+    $(".rosversion_name_cap").text(capitalized_name);
   }
 }
 
@@ -45,6 +48,15 @@ $(document).ready(function() {
   var url_distro = getURLParameter('distro');
   if (url_distro) {
     activedistro=url_distro;
+  }
+  // Make the %ROSDISTRO%/%rosdistro% syntax work by wrapping them in spans. This is
+  // necessary vs. MoinMoin macros because macros are not expanded in code blocks.
+  var original = $("#page").html();
+  var replaced = original.
+    replace(/%ROSDISTRO%/g,'<span class="rosversion_name_cap">%ROSDISTRO%</span>').
+    replace(/%rosdistro%/g,'<span class="rosversion_name">%rosdistro%</span>');
+  if (original != replaced) {
+    $("#page").html(replaced);
   }
   $("div.version").hide();
   if ($("#"+activedistro).length > 0) {
