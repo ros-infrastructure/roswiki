@@ -111,29 +111,30 @@ function handleSubmit() {
   <div id="dpage-inner">
     <div id="header"><div id="topnav">
 
-<!-- Alert box 
-    <div class="alert alert-info alert-dismissable">
+<!-- Alert box -->
+
+    <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
-    state = localStorage.getItem('roswiki_indigo_shirt_notice_state');
+    state = localStorage.getItem('roswiki_osrf2014');
     if (!state) {
-      localStorage.setItem('roswiki_indigo_shirt_notice_state', 'open');
+      localStorage.setItem('roswiki_osrf2014', 'open');
     }
-    state = localStorage.getItem('roswiki_indigo_shirt_notice_state');
+    state = localStorage.getItem('roswiki_osrf2014');
     if (state == 'closed') {
         $( '#topnav .alert' ).hide();
     }
     $( '.close' ).click(function () {
 	console.log('in .close.click');
-        localStorage.setItem('roswiki_indigo_shirt_notice_state', 'closed');
+        localStorage.setItem('roswiki_osrf2014', 'closed');
         $( '#topnav .alert' ).hide();
   });
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <strong>Hey!</strong> The new <a href="http://www.ros.org/news/2014/04/ros-indigo-igloo-logo-and-release-t-shirt.html">Indigo Logo</a> has been announced, and from now until May 13th you can buy a <a href="http://teespring.com/ros-indigo">T-Shirt</a> as well!
+      <strong>Hey!</strong> Please support OSRF by <a href="https://events.osrfoundation.org/osrf2014">donating</a> to our <a href="http://www.osrfoundation.org/support-osrf.html">year-end campaign</a>.
     </div>
--->
+<!-- End Alert box -->
 
       <table id="topnav-table">
         <tr>
