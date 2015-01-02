@@ -112,7 +112,7 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
-
+<!-- DISABLING 
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
@@ -134,6 +134,7 @@ jQuery(function( $ ){
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       <strong>Hey!</strong> Please support OSRF by <a href="https://events.osrfoundation.org/osrf2014">donating</a> to our <a href="http://www.osrfoundation.org/support-osrf.html">year-end campaign</a>.
     </div>
+-->
 <!-- End Alert box -->
 
       <table id="topnav-table">
