@@ -46,6 +46,26 @@ $(document).ready(function() {
   if (url_distro) {
     activedistro=url_distro;
   }
+  // Make the $ROS_DISTRO replacement work by wrapping it in a span. This is
+  // necessary vs. MoinMoin macros because macros are not expanded inside of
+  // code blocks, where this replacement is most useful. Using a function for
+  // the replacement allows supporting escapes, so that the following transformations
+  // are done:
+  //   $ROS_DISTRO -> hydro, indigo, etc.
+  //   \$ROS_DISTRO -> $ROS_DISTRO
+  //   \\$ROS_DISTRO -> \$ROS_DISTRO
+  var original = $("#page").html();
+  var replaced = original.replace(/\\?\$ROS_DISTRO/g,
+    function(match) {
+      if (match[0] == "\\") {
+        return "$ROS_DISTRO";
+      } else {
+        return "<span class=\"rosversion_name\">$ROS_DISTRO</span>";
+      }
+    });
+  if (original != replaced) {
+    $("#page").html(replaced);
+  }
   $("div.version").hide();
   if ($("#"+activedistro).length > 0) {
     $("#"+activedistro).click();
