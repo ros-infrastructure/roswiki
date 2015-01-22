@@ -54,18 +54,17 @@ $(document).ready(function() {
   //   $ROS_DISTRO -> hydro, indigo, etc.
   //   \$ROS_DISTRO -> $ROS_DISTRO
   //   \\$ROS_DISTRO -> \$ROS_DISTRO
-  var original = $("#page").html();
-  var replaced = original.replace(/\\?\$ROS_DISTRO/g,
-    function(match) {
-      if (match[0] == "\\") {
-        return "$ROS_DISTRO";
-      } else {
-        return "<span class=\"rosversion_name\">$ROS_DISTRO</span>";
-      }
-    });
-  if (original != replaced) {
-    $("#page").html(replaced);
-  }
+  $("#page p:contains($ROS_DISTRO), #page pre:contains($ROS_DISTRO)").each(function() {
+    $(this).html($(this).html().replace(/\\?\$ROS_DISTRO/g,
+      function(match) {
+        if (match[0] == "\\") {
+          return "$ROS_DISTRO";
+        } else {
+          return "<span class=\"rosversion_name\">$ROS_DISTRO</span>";
+        }
+      })
+    );
+  });
   $("div.version").hide();
   if ($("#"+activedistro).length > 0) {
     $("#"+activedistro).click();
