@@ -185,8 +185,8 @@ def get_doc_status(opt_distro, repo_name, data):
         if opt_distro in ['electric', 'fuerte']:
             status_string = '<i>Documentation generated on %s</i>' % time_str
         elif 'doc_job' in data:
-            jenkins_url = 'http://jenkins.ros.org/job/%s/lastBuild' % data['doc_job']
-            status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (<a href="%s">job status</a>).</span>' % (time_str, jenkins_url)
+            job_url = get_job_url(data['doc_job'], 'doc job')
+            status_string = '<i>Documentation generated on %s</i><span style="font-size:10px"> (%s).</span>' % (time_str, job_url)
         else:
             status_string = '<i>Only showing information from the released package extracted on %s. No API documentation available. %s</i>' % (time_str, GET_INVOLVED)
 
@@ -482,16 +482,28 @@ def get_jenkins_list(macro, data, css_prefix='', distro=None):
         links += ul(1)
         for release_job in release_jobs:
             links += li(1)
-            jobtype = release_job.split('_', 1)[1].replace('_', ' ')
-            links += '<a href="http://jenkins.ros.org/job/%s">%s</a>' % (release_job, jobtype)
+            if '__' in release_job:
+                # job names on docker-based buildfarm
+                parts = release_job.split('__')
+                label = '%s %s' % (parts[-1], parts[-2].replace('_', ' '))
+            else:
+                # job names on old buildfarm
+                label = release_job.split('_', 1)[1].replace('_', ' ')
+            links += get_job_url(release_job, label)
             links += li(0)
         for devel_job in devel_jobs:
             links += li(1)
-            links += '<a href="http://jenkins.ros.org/job/%s">devel</a>' % devel_job
+            if '__' in devel_job:
+                # job names on docker-based buildfarm
+                parts = devel_job.split('__')
+                label = parts[-1].replace('_', ' ')
+            else:
+                label = 'devel'
+            links += get_job_url(devel_job, label)
             links += li(0)
         if doc_job:
             links += li(1)
-            links += '<a href="http://jenkins.ros.org/job/%s">doc</a>' % doc_job
+            links += get_job_url(doc_job, 'doc')
             links += li(0)
         links += ul(0) + div(0)
 
@@ -499,3 +511,9 @@ def get_jenkins_list(macro, data, css_prefix='', distro=None):
         links = '<script type="text/javascript" src="/custom/js/roswiki.js"></script>' + links
 
     return links
+
+
+def get_job_url(job_url, label):
+    if not job_url.startswith('http'):
+        job_url = 'http://jenkins.ros.org/job/%s/' % job_url
+    return '<a href="%s">%s</a>' % (job_url, label)
