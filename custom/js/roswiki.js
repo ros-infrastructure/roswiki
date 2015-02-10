@@ -10,7 +10,7 @@ function toggleExpandableJenkins(id) {
     $('#' + id).attr('build_status_image', true);
     $('#' + id + ' a').each(function() {
       var href = this.href;
-      var n = href.lastIndexOf('/');
+      var n = href.lastIndexOf('/', href.length - 1);
       if (n != -1) {
         var jobname = href.substring(n +1);
         $('<br />&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://jenkins.ros.org/buildStatus/icon?job=' + jobname + '"/>').insertAfter(this);
