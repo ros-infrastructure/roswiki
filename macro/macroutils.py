@@ -20,7 +20,7 @@ doc_path = '/home/rosbot/docs/'
 metrics_path = '/var/www/www.ros.org/metrics/'
 
 MISSING_DOC_TMPL = 'Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.'
-GET_INVOLVED = 'Please see <a href="http://wiki.ros.org/Get%20Involved#Indexing_Your_.2A-ros-pkg_Repository_for_Documentation_Generation">this page</a> for information on how to submit your repository to our index.'
+GET_INVOLVED = 'Please see <a href="http://wiki.ros.org/rosdistro/Tutorials/Indexing%20Your%20ROS%20Repository%20for%20Documentation%20Generation">this page</a> for information on how to submit your repository to our index.'
 
 CONTRIBUTE_TMPL = MISSING_DOC_TMPL + ' ' + GET_INVOLVED.replace('%', '%%')
 
