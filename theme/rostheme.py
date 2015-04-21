@@ -112,7 +112,6 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
-<!-- DISABLING 
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
@@ -132,9 +131,8 @@ jQuery(function( $ ){
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <strong>Hey!</strong> Please support OSRF by <a href="https://events.osrfoundation.org/osrf2014">donating</a> to our <a href="http://www.osrfoundation.org/support-osrf.html">year-end campaign</a>.
+      ROS Jade Turtle T-shirts are <a href="http://teespring.com/ros-jade-turtle">available</a> for a limited time, until May 11th.
     </div>
--->
 <!-- End Alert box -->
 
       <table id="topnav-table">
