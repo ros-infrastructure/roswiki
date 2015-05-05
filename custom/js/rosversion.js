@@ -3,19 +3,31 @@ function Version(sections) {
   var dotversion = ".version.";
 
   // Tag shows unless already tagged
-  $.each(sections.show, function() {
-    $("span.version." + this).not(".versionshow,.versionhide").filter(".hidepart").addClass("versionshow").end().filter(".showpart").addClass("versionhide");
+  $.each(sections.show, function(index, value) {
+    $("span" + dotversion + value).not(".versionshow,.versionhide")
+                                  .filter(".hidepart")
+                                  .addClass("versionshow")
+                                  .end()
+                                  .filter(".showpart")
+                                  .addClass("versionhide");
   });
-  $.each(sections.show, function() {
-    $("div" + dotversion + this).not(".versionshow,.versionhide").addClass("versionshow");
+  $.each(sections.show, function(index, value) {
+    $("div" + dotversion + value).not(".versionshow,.versionhide")
+                                 .addClass("versionshow");
   });
 
   // Tag hides unless already tagged
-  $.each(sections.hide, function() {
-    $("span.version." + this).not(".versionshow,.versionhide").filter(".showpart").addClass("versionshow").end().filter(".hidepart").addClass("versionhide");
+  $.each(sections.hide, function(index, value) {
+    $("span" + dotversion + value).not(".versionshow,.versionhide")
+                                  .filter(".showpart")
+                                  .addClass("versionshow")
+                                  .end()
+                                  .filter(".hidepart")
+                                  .addClass("versionhide");
   });
-  $.each(sections.hide, function() {
-    $("div" + dotversion + this).not(".versionshow,.versionhide").addClass("versionhide");
+  $.each(sections.hide, function(index, value) {
+    $("div" + dotversion + value).not(".versionshow,.versionhide")
+                                 .addClass("versionhide");
   });
 
   // Show or hide according to tag
@@ -28,7 +40,10 @@ function Version(sections) {
 }
 
 function getURLParameter(name) {
-  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+  return decodeURIComponent(
+    (
+      new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [,""]
+    )[1].replace(/\+/g, '%20')) || null;
 }
 
 function toggleDocStatus()
