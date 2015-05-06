@@ -34,9 +34,7 @@ function Version(sections) {
   $(".versionshow").removeClass("versionshow").filter("span").show().end().filter("div").show();
   $(".versionhide").removeClass("versionhide").filter("span").hide().end().filter("div").hide();
 
-  if (sections.show[0]) {
-    $(".rosversion_name").text(sections.show[0]);
-  }
+  $(".rosversion_name").text(sections.target_ros_distro);
 }
 
 function getURLParameter(name) {
