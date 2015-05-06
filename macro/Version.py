@@ -70,7 +70,8 @@ def execute(macro, args):
         inactive += [(d + '_and_older') for d in preceding_distros]
         inactive += [d for d in distros if d != distro]
         inactive = [d.encode("iso-8859-1") for d in inactive]
-        sectionarg = '{show:%s, hide:%s}' % (active, inactive)
+        sectionarg = "{show:%s, hide:%s, target_ros_distro:'%s'}" % \
+            (active, inactive, distro)
         html = (
             '''<button id="%s" class="btn btn-default" '''
             '''onClick="Version(%s);this.style.color='#e6e6e6';'''
