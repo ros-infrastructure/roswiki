@@ -304,20 +304,42 @@ def get_loaded_distros(name, distros):
     return loaded_distro_names
 
 
-def distro_html(distro, loaded_distro_names):
-    if distro not in loaded_distro_names:
+def distro_html(distro, distros):
+    if distro not in distros:
         return ''
-    active = [distro.encode("iso-8859-1")]
-    inactive = [x.encode("iso-8859-1") for x in loaded_distro_names if not x == distro]
-    sectionarg = '''{show:%s, hide:%s}''' % (active, inactive)
+    sorted_distros = sorted(distros)
+    # distro is guaranteed to be in distros
+    assert(distro in distros)
+    distro_index = sorted_distros.index(distro)
+    preceding_distros = sorted_distros[:distro_index + 1]
+    proceeding_distros = sorted_distros[distro_index:]
+
+    active = [(d + '_and_newer') for d in preceding_distros]
+    active += [(d + '_and_older') for d in proceeding_distros]
+    active.append(distro)
+    active = [d.encode("iso-8859-1") for d in active]
+    inactive = [(d + '_and_newer') for d in proceeding_distros]
+    inactive += [(d + '_and_older') for d in preceding_distros]
+    inactive += [d for d in distros if d != distro]
+    inactive = [d.encode("iso-8859-1") for d in inactive]
+    sectionarg = "{show:%s, hide:%s, target_ros_distro:'%s'}" % \
+        (active, inactive, distro)
     html = (
         '''<button id="%s" class="btn btn-default" '''
-        '''onClick="Version(%s);this.style.color='#e6e6e6';this.style.background='#3e4f6e';''' % (distro, sectionarg)
+        '''onClick="Version(%s);this.style.color='#e6e6e6';'''
+        '''this.style.background='#3e4f6e';''' %
+        (distro, sectionarg)
     )
     for inactive_distro in inactive:
+        if (
+            inactive_distro.endswith('_and_newer') or
+            inactive_distro.endswith('_and_older')
+        ):
+            continue
         html += (
             '''document.getElementById('%s').style.background='#e6e6e6';'''
-            '''document.getElementById('%s').style.color='#3e4f6e';''' % (inactive_distro, inactive_distro)
+            '''document.getElementById('%s').style.color='#3e4f6e';''' %
+            (inactive_distro, inactive_distro)
         )
     html += '''return false"> %s </button>''' % (distro)
     return html
