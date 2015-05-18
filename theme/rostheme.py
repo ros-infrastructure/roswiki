@@ -112,6 +112,7 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
+<!-- 
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
@@ -133,6 +134,7 @@ jQuery(function( $ ){
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       ROS Jade Turtle T-shirts are <a href="http://teespring.com/ros-jade-turtle">available</a> for a limited time, until May 11th.
     </div>
+-->
 <!-- End Alert box -->
 
       <table id="topnav-table">
