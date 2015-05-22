@@ -215,7 +215,7 @@ def get_doc_status(opt_distro, repo_name, data):
         else:
             time_str = 'Unknown'
 
-        if opt_distro in ['electric', 'fuerte']:
+        if opt_distro in ['electric', 'fuerte', 'groovy']:
             status_string = '<i>Documentation generated on %s</i>' % time_str
         elif 'doc_job' in data:
             job_url = get_job_url(data['doc_job'], 'doc job')
