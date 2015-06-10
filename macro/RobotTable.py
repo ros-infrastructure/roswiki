@@ -38,7 +38,7 @@ def execute(macro, args):
                                          style=image_style)
         else:
             result += f.image(src=entry['image'], style=image_style)
-        result += f.div(1, css_class='caption')
+        result += f.div(1, css_class='caption', style="text-align: center")
         result += f.text(entry['name'])
         result += f.div(0)
         result += f.url(0)
