@@ -112,15 +112,14 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
-<!-- 
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
     state = localStorage.getItem('roswiki_osrf2014');
     if (!state) {
-      localStorage.setItem('roswiki_osrf2014', 'open');
+      localStorage.setItem('roswiki_roscon2015cfp', 'open');
     }
-    state = localStorage.getItem('roswiki_osrf2014');
+    state = localStorage.getItem('roswiki_roscon2015cfp');
     if (state == 'closed') {
         $( '#topnav .alert' ).hide();
     }
@@ -132,9 +131,8 @@ jQuery(function( $ ){
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      ROS Jade Turtle T-shirts are <a href="http://teespring.com/ros-jade-turtle">available</a> for a limited time, until May 11th.
+      The <a href="http://roscon.ros.org/2015/#call-for-proposals">ROSCon 2015 CFP</a> is open until July 7th. Submit your proposal <a href="http://roscon.ros.org/review">here</a>.
     </div>
--->
 <!-- End Alert box -->
 
       <table id="topnav-table">
@@ -149,9 +147,7 @@ jQuery(function( $ ){
             |
             <a href="http://answers.ros.org/">answers.ros.org</a>
 
-<!--
-<a href="http://roscon.ros.org/2014/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/roscon_wiki_header.png" width="133" height="38" alt="ROSCon 2014" /></a> 
--->
+<a href="http://roscon.ros.org/2015/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/roscon_wiki_header.jpg" width="133" height="38" alt="ROSCon 2015" /></a> 
 
 <!-- <a href="https://events.osrfoundation.org/ros-kong-2014/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/ros_kong_2014_badge.png" width="133" height="38" alt="roskong" /></a>
 -->
