@@ -112,6 +112,8 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
+<!-- To enable the alert box uncomment the block below. Change the getItem and setItem calls to a new name. Then update the content below the button. -->
+<!-- Disabling alert box
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
@@ -133,6 +135,7 @@ jQuery(function( $ ){
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       The <a href="http://roscon.ros.org/2015/#call-for-proposals">ROSCon 2015 CFP</a> is open until July 7th. Submit your proposal <a href="http://roscon.ros.org/review">here</a>.
     </div>
+End disabling alert box -->
 <!-- End Alert box -->
 
       <table id="topnav-table">
