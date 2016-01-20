@@ -601,7 +601,7 @@ def get_jenkins_list(macro, data, css_prefix='', distro=None):
     doc_job = data.get('doc_job', None)
 
     links = ''
-    if doc_job or release_jobs:
+    if devel_jobs or doc_job or release_jobs:
         links += strong(1)
         links += (
             '<a href="#" onClick="toggleExpandableJenkins(\'%sjenkins-list\'); return false;">'
