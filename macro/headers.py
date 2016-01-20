@@ -601,7 +601,7 @@ def get_jenkins_list(macro, data, css_prefix='', distro=None):
     doc_job = data.get('doc_job', None)
 
     links = ''
-    if doc_job or release_jobs:
+    if devel_jobs or doc_job or release_jobs:
         links += strong(1)
         links += (
             '<a href="#" onClick="toggleExpandableJenkins(\'%sjenkins-list\'); return false;">'
@@ -627,7 +627,7 @@ def get_jenkins_list(macro, data, css_prefix='', distro=None):
             if '__' in devel_job:
                 # job names on docker-based buildfarm
                 parts = devel_job.split('__')
-                label = parts[-1].replace('_', ' ')
+                label = 'devel ' + parts[-1].replace('_', ' ')
             else:
                 label = 'devel'
             links += get_job_url(devel_job, label)
