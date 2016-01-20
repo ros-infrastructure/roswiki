@@ -13,7 +13,7 @@ function toggleExpandableJenkins(id) {
       var n = href.lastIndexOf('/', href.length - 2);
       if (n != -1) {
         var jobname = href.substring(n +1);
-        $('<br />&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://jenkins.ros.org/buildStatus/icon?job=' + jobname + '"/>').insertAfter(this);
+        $('<br />&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://build.ros.org/buildStatus/icon?job=' + jobname + '"/>').insertAfter(this);
       }
     });
   }
