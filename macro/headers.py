@@ -10,6 +10,7 @@ except:
 
 from macroutils import CONTRIBUTE_TMPL
 from macroutils import distro_names
+from macroutils import distro_names_buildfarm
 from macroutils import get_bugtracker_li
 from macroutils import GET_INVOLVED
 from macroutils import get_maintainer_status_li
@@ -593,6 +594,10 @@ def get_dependency_list(macro, data, css_prefix='', distro=None):
 
 
 def get_jenkins_list(macro, data, css_prefix='', distro=None):
+    # only generate links for distro which still have a build farm
+    if distro not in distro_names_buildfarm:
+        return ''
+
     f = macro.formatter
     li, ul, strong, div = f.listitem, f.bullet_list, f.strong, f.div
 
