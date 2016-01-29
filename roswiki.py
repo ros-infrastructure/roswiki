@@ -61,30 +61,35 @@ class Config(FarmConfig):
     #textchas_disabled_group = u'Known' #no logged in user should see this
     textchas = {
         'en': {
-#being spammed regularly            u"What does the R in ROS stand for?": ur"(robot|Robot|ROBOT)",
-            u"What does the S in ROS stand for?": ur"(system|System|SYSTEM)",
+#being spammed regularly
+#            u"What does the R in ROS stand for?": ur"(robot|Robot|ROBOT)",
+#            u"What does the S in ROS stand for?": ur"(system|System|SYSTEM)",
 #            u"Is a robot a living being?": ur"(no|No|NO)",
-#            u"How many fingers do most people have on one hand?": ur"(5|five|Five|FIVE)",
-#            u"What is the total of number of fingers and toes that most people have?": ur"(20|twenty|Twenty|TWENTY)",
-#            u"Is a truck a form of animal, plant, car, building, or building?": ur"(car|Car|CAR)",
-#            u"Is this a website, person, robot, or plant?": ur"(website|Website|WEBSITE)",
+#            u"How many fingers do most people have on one hand?": ur"(5|five|Fve|FIVE)",
+#            u"What is the total of number of fingers and toes that most peoplehave?": ur"(20|twenty|Twenty|TWENTY)",
+#            u"Is a truck a form of animal, plant, car, building, or building?" ur"(car|Car|CAR)",
+#            u"Is this a website, person, robot, or plant?": ur"(website|Websit|WEBSITE)",
 #            u"Is this a blog, or wiki?": ur"(wiki|Wiki|WIKI)",
-#            u"Are you on the planet Mars, Earth, Jupiter, or Neptune?": ur"(earth|Earth|EARTH)",
-#            u"Is the Sun an asteroid, star, galaxy, or planet?": ur"(star|Star|STAR)",
+#            u"Are you on the planet Mars, Earth, Jupiter, or Neptune?": ur"(eath|Earth|EARTH)",
+#            u"Is the Sun an asteroid, star, galaxy, or planet?": ur"(star|StarSTAR)",
 #            u"Are you a piece of software or human?": ur"(human|Human|HUMAN)",
-#            u"A compass points in what magnetic direction?": ur"(north|North|NORTH)",
+#            u"A compass points in what magnetic direction?": ur"(north|North|NRTH)",
 #            u"Do boats drive, fly, or float?": ur"(float|Float|FLOAT)",
 #            u"What are oceans mostly made of?": ur"(water|Water|WATER)",
-#            u"Is an ant a wall, cell, vechile, plant, animal, or insect?": ur"(insect|Insect|INSECT)",
-#            u"Is ROS a form of hardware, paper, software, or language?": ur"(software|Software|SOFTWARE)",
-#            u"Is ROS for chemicals, robots, atoms, paperclips, or philosophies?": ur"(robots|Robots|ROBOTS)",
+#            u"Is an ant a wall, cell, vechile, plant, animal, or insect?": ur"insect|Insect|INSECT)",
+#            u"Is ROS a form of hardware, paper, software, or language?": ur"(sftware|Software|SOFTWARE)",
+#            u"Is ROS for chemicals, robots, atoms, paperclips, or philosophies": ur"(robots|Robots|ROBOTS)",
 #            u"": ur"()",
+            u"Textcha disabled please see: status.ros.org for more info": ur"(ksjabdgjdjabgbdfgljbdhfagjbdhfgljbdhfgadfbglabgfjgflja)",
         },
     }
 
-    captchaEnabled = True
-    captchaPublicKey = '6LfV3QcAAAAAAKDO4J13JjpZinfN7nDUOd_nHgtI'
-    captchaPrivateKey = '6LfV3QcAAAAAALNYBtZzPevt_1sEeTGPg4hTZKMN'
+#    recaptcha_public_key = '6LfNSRUTAAAAAFYKAgQgk1PE5nPHdciMgxsNyvCt'
+#    recaptcha_private_key = '6LfNSRUTAAAAAHusDyAqJSemsmT_ZVOxsa-iYRI6'
+
+    #captchaEnabled = True
+    #captchaPublicKey = '6LfV3QcAAAAAAKDO4J13JjpZinfN7nDUOd_nHgtI'
+    #captchaPrivateKey = '6LfV3QcAAAAAALNYBtZzPevt_1sEeTGPg4hTZKMN'
 
     theme_default = "rostheme"
 
@@ -121,6 +126,8 @@ class Config(FarmConfig):
 <meta name="google-site-verification" content="CjkdY6BqKWAVmQ78_iSq6J7ZZ9AoL7-CjFVBYGg9FU4" />
 <link rel="shortcut icon" href="/custom/favicon.ico" type="image/ico" />
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/custom/js/sorttable.js"></script>
 <script type="text/javascript" src="/custom/libraries/jquery.min.js"></script>                         
 <script type="text/javascript" src="/custom/js/seesaw.js"></script> 
