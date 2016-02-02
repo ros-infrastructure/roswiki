@@ -219,6 +219,17 @@ theForm.input.value=theForm.input.value
         """
         _ = self.request.getText
 
+        help_to_edit_string = ""
+        page = d['page']
+        acl = page.getACL(self.request).getString()
+        # Logic: when a user is logged in (valid) but can't write a page (may.write), but that page is in principle editable (isWritable) and there's no page-specific ACL (acl; this will be set on globally immutable pages, like BadContent), then print a help statement about how to get edit permission
+        if self.request.user.valid and not self.request.user.may.write(page.page_name) and page.isWritable() and not acl:
+                help_to_edit_string = self.emit_custom_html( """<div class="alert alert-info" role="alert">
+  <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+  <span class="sr-only">Note:</span>
+Hi there, %s! In an effort to combat spam, we require that users be added to a whitelist to gain edit permissions. To gain edit permissions for yourself, please comment on <a href=\"https://github.com/ros-infrastructure/roswiki/issues/139\" class="alert-link">this GitHub ticket</a> with your wiki UserName, '%s', to be added to the whitelist. Thanks for your patience and support.
+</div>""" % (self.request.user.name, self.request.user.name))
+
         html = [
             # Custom html above header
 #            self.emit_custom_html(self.cfg.page_header1),
@@ -248,6 +259,7 @@ theForm.input.value=theForm.input.value
             
             # Page
             self.startPage(),
+            help_to_edit_string,
             ]
         return u'\n'.join(html)
     
