@@ -57,8 +57,8 @@ class Config(FarmConfig):
 
     trail_size = 15
 
-    #textchas_disabled_group = u'UserGroup' #no logged in user should see this
-    textchas_disabled_group = u'Known' #no logged in user should see this
+    textchas_disabled_group = u'UserGroup' # the whitelisted group
+    #textchas_disabled_group = u'Known' #no logged in user should see this
     textchas = {
         'en': {
 #being spammed regularly
