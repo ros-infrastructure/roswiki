@@ -49,21 +49,21 @@ class Config(FarmConfig):
     #ACL lists
     #acl_rights_default = 'All:read,write'
     acl_rights_default = \
-      "TrustedGroup:read,write,delete,revert \
-       Employee:read,write,delete,revert \
-       Known:read,write,delete,revert \
+      "UserGroup:read,write,delete,revert \
        All:read"
     #acl_rights_default = "All:read"
+#       Known:read,write,delete,revert \
+#       Employee:read,write,delete,revert \
 
     trail_size = 15
 
-    textchas_disabled_group = u'UserGroup' #no logged in user should see this
-    #textchas_disabled_group = u'Known' #no logged in user should see this
+    #textchas_disabled_group = u'UserGroup' #no logged in user should see this
+    textchas_disabled_group = u'Known' #no logged in user should see this
     textchas = {
         'en': {
 #being spammed regularly
 #            u"What does the R in ROS stand for?": ur"(robot|Robot|ROBOT)",
-#            u"What does the S in ROS stand for?": ur"(system|System|SYSTEM)",
+            u"What does the S in ROS stand for?": ur"(system|System|SYSTEM)",
 #            u"Is a robot a living being?": ur"(no|No|NO)",
 #            u"How many fingers do most people have on one hand?": ur"(5|five|Fve|FIVE)",
 #            u"What is the total of number of fingers and toes that most peoplehave?": ur"(20|twenty|Twenty|TWENTY)",
@@ -80,7 +80,7 @@ class Config(FarmConfig):
 #            u"Is ROS a form of hardware, paper, software, or language?": ur"(sftware|Software|SOFTWARE)",
 #            u"Is ROS for chemicals, robots, atoms, paperclips, or philosophies": ur"(robots|Robots|ROBOTS)",
 #            u"": ur"()",
-            u"Textcha disabled please see: status.ros.org for more info": ur"(ksjabdgjdjabgbdfgljbdhfagjbdhfgljbdhfgadfbglabgfjgflja)",
+#            u"Textcha disabled please see: status.ros.org for more info": ur"(ksjabdgjdjabgbdfgljbdhfagjbdhfgljbdhfgadfbglabgfjgflja)",
         },
     }
 
