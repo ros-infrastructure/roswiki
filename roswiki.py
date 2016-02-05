@@ -42,8 +42,8 @@ class Config(FarmConfig):
     mail_smarthost = "smtp.osuosl.org"
     mail_from = "Moin <moin@ros.osuosl.org>"
 
-    superuser = [u"ScottHassan",u"osladmin"]
-#    acl_rights_before = u"ScottHassan:read,write,delete,revert,admin"
+    #superuser = [u"ScottHassan",u"osladmin"]
+    #acl_rights_before = u"ScottHassan:read,write,delete,revert,admin"
     acl_rights_before = u"+Known:admin"
 
     #ACL lists
