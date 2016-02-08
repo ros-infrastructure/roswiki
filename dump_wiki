@@ -15,6 +15,8 @@ cp $export_dir/custom/images/ros_org.png $export_dir/logo.png
 #move the theme where we want it
 mv $export_dir/custom/rostheme $export_dir
 
+# Enable the venv
+. /var/www/wiki.ros.org/venv/bin/activate
 
 python /var/www/wiki.ros.org/venv/lib/python2.6/site-packages/MoinMoin/script/moin.py \
 --config-dir=/var/www/wiki.ros.org/conf/ \
