@@ -8,14 +8,11 @@ from headers import get_nav, get_description, get_package_links, generate_packag
 generates_headings = True
 dependencies = []
 
-if 'boxturtle' in distro_names:
-    distro_names.remove('boxturtle')
-if 'cturtle' in distro_names:
-    distro_names.remove('cturtle')
-if 'diamondback' in distro_names:
-    distro_names.remove('diamondback')
-if 'unstable' in distro_names:
-    distro_names.remove('unstable')
+hidden_distros = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'unstable']
+
+for hidden_distro in hidden_distros if hidden_distro in distro_names:
+    distro_names.remove(hidden_distro)
+
 
 def generate_old_stack_header(macro, stack_name, opt_distro=None):
     try:

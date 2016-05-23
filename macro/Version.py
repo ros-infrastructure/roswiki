@@ -47,11 +47,11 @@ if 'unstable' in distros:
 def execute(macro, args):
     if args:
         version = str(args)
-        if version.lower() == 'l-turtle':
+        if version.lower() == 'lunar':
             # TODO Change when l-turtle name is decided
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
-                    'Expected in L-Turtle</span>')
+                    'Expected in Lunar</span>')
         else:
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
