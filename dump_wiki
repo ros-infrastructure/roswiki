@@ -38,7 +38,7 @@ find $export_dir -name \*.html -exec sed -i 's+src="/custom/+src="\./custom/+g' 
 find $export_dir -name \*.html -exec sed -i 's+src="/moin_static197/rostheme/+src="\./rostheme/+g' {} \;
 
 # add jquery to all pages
-find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javascript" src="\./custom/libraries/jquery\.min\.js"></script></head>+g' {} \;
+find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javascript" src="\./custom/libraries/jquery\.min\.js"></script><script type="text/javascript" src="\./custom/js/rosversion.js"></script><script type="text/javascript" src="\./custom/js/seesaw.js"></script><script type="text/javascript" src="\./custom/js/sorttable.js"></script></head>+g' {} \;
 
 # add rel="canonical" links to all pages using the backlink string
 python /var/www/wiki.ros.org/cron/rel_canonical.py $export_dir
