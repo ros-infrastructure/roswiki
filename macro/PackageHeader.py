@@ -7,7 +7,7 @@ from headers import get_nav, get_description, get_package_links, generate_packag
 generates_headings = True
 dependencies = []
 
-hidden_distros = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'unstable']
+hidden_distros = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable']
 
 for hidden_distro in hidden_distros if hidden_distro in distro_names:
     distro_names.remove(hidden_distro)
