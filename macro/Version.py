@@ -36,12 +36,9 @@ from headers import distro_html
 Dependencies = []
 
 # configure the active set of distros
-from macroutils import distro_names as distros
+from macroutils import distro_names, distro_names_hidden
 
-if 'boxturtle' in distros:
-    distros.remove('boxturtle')
-if 'unstable' in distros:
-    distros.remove('unstable')
+distros = [d for d in distro_names if d not in distro_names_hidden]
 
 
 def execute(macro, args):
