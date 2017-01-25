@@ -9,9 +9,7 @@ dependencies = []
 
 hidden_distros = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable']
 
-for hidden_distro in hidden_distros if hidden_distro in distro_names:
-    distro_names.remove(hidden_distro)
-
+distro_names = [d for d in distro_names if d not in hidden_distros]
 
 def generate_old_package_header(macro, package_name, opt_distro=None):
     if not package_name:
