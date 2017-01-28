@@ -1,20 +1,13 @@
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import load_package_manifest, distro_names, CONTRIBUTE_TMPL, UtilException
+from macroutils import load_package_manifest, distro_names, distro_names_hidden, CONTRIBUTE_TMPL, UtilException
 from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
 
-if 'boxturtle' in distro_names:
-    distro_names.remove('boxturtle')
-if 'cturtle' in distro_names:
-    distro_names.remove('cturtle')
-if 'diamondback' in distro_names:
-    distro_names.remove('diamondback')
-if 'unstable' in distro_names:
-    distro_names.remove('unstable')
+distro_names = [d for d in distro_names if d not in distro_names_hidden]
 
 def generate_old_package_header(macro, package_name, opt_distro=None):
     if not package_name:

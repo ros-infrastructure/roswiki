@@ -14,10 +14,12 @@ NETWORK_TIMEOUT = 3
 distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'unstable']
 distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'unstable'] #boxturtle and cturtle not indexed
 distro_names_buildfarm = ['indigo', 'jade', 'kinetic']
+distro_names_hidden = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'unstable']
 
 doc_url = "http://docs.ros.org/"
 
 doc_path = '/home/rosbot/docs/'
+
 metrics_path = '/var/www/www.ros.org/metrics/'
 
 MISSING_DOC_TMPL = 'Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.'
