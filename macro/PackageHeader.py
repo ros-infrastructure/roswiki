@@ -7,7 +7,9 @@ from headers import get_nav, get_description, get_package_links, generate_packag
 generates_headings = True
 dependencies = []
 
-distro_names = [d for d in distro_names if d not in distro_names_hidden]
+# Side effect to alter imported `distro_names` list is required for proper behavior
+for d in distro_names_hidden:
+    distro_names.remove(d)
 
 def generate_old_package_header(macro, package_name, opt_distro=None):
     if not package_name:
