@@ -10,7 +10,8 @@ dependencies = []
 
 # Side effect to alter imported `distro_names` list is required for proper behavior
 for d in distro_names_hidden:
-    distro_names.remove(d)
+    if d in distro_names:
+        distro_names.remove(d)
 
 def generate_old_stack_header(macro, stack_name, opt_distro=None):
     try:
