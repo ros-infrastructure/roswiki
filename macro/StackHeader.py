@@ -2,16 +2,20 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import load_stack_manifest, load_package_manifest, distro_names, distro_names_hidden, CONTRIBUTE_TMPL, UtilException
+from macroutils import load_stack_manifest, load_package_manifest, distro_names, CONTRIBUTE_TMPL, UtilException
 from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html, get_stack_links, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
 
-# Side effect to alter imported `distro_names` list is required for proper behavior
-for d in distro_names_hidden:
-    if d in distro_names:
-        distro_names.remove(d)
+if 'boxturtle' in distro_names:
+    distro_names.remove('boxturtle')
+if 'cturtle' in distro_names:
+    distro_names.remove('cturtle')
+if 'diamondback' in distro_names:
+    distro_names.remove('diamondback')
+if 'unstable' in distro_names:
+    distro_names.remove('unstable')
 
 def generate_old_stack_header(macro, stack_name, opt_distro=None):
     try:
