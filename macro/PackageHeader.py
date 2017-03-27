@@ -20,7 +20,7 @@ def generate_old_package_header(macro, package_name, opt_distro=None):
 
     try:
         data = load_package_manifest(package_name, opt_distro)
-    except UtilException, e:
+    except UtilException as e:
         name = "name: %s, distro: %s" % (package_name, opt_distro)
         return CONTRIBUTE_TMPL%locals()
   

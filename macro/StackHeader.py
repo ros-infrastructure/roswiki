@@ -12,7 +12,7 @@ dependencies = []
 def generate_old_stack_header(macro, stack_name, opt_distro=None):
     try:
         data = load_stack_manifest(stack_name, opt_distro)
-    except UtilException, e:
+    except UtilException as e:
         name = "name: %s, distro: %s" % (stack_name, opt_distro)
         return CONTRIBUTE_TMPL%locals()
   
