@@ -320,6 +320,8 @@ def distro_html(distro, distros):
     inactive += [(d + '_and_older') for d in preceding_distros]
     inactive += [d for d in distros if d != distro]
     inactive = [d.encode("iso-8859-1") for d in inactive]
+    if distro not in distro_names_buildfarm:
+        return ''
     sectionarg = "{show:%s, hide:%s, target_ros_distro:'%s'}" % \
         (active, inactive, distro)
     html = (
