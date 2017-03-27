@@ -296,7 +296,7 @@ def doc_html(distros, package_name):
 
 def get_loaded_distros(name, distros):
     loaded_distro_names = []
-    for distro in distro_names:
+    for distro in distros:
         try:
             load_package_manifest(name, distro)
             loaded_distro_names.append(distro)
@@ -306,18 +306,15 @@ def get_loaded_distros(name, distros):
 
 
 def distro_html(distro, distros):
-    if distro not in distros:
-        return ''
-    sorted_distros = sorted(distros)
-    # distro is guaranteed to be in distros
-    assert(distro in distros)
+    sorted_distros = sorted(distro_names)
     distro_index = sorted_distros.index(distro)
     preceding_distros = sorted_distros[:distro_index + 1]
     proceeding_distros = sorted_distros[distro_index:]
 
     active = [(d + '_and_newer') for d in preceding_distros]
     active += [(d + '_and_older') for d in proceeding_distros]
-    active.append(distro)
+    if distro in distros:
+        active.append(distro)
     active = [d.encode("iso-8859-1") for d in active]
     inactive = [(d + '_and_newer') for d in proceeding_distros]
     inactive += [(d + '_and_older') for d in preceding_distros]

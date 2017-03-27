@@ -36,13 +36,7 @@ from headers import distro_html
 Dependencies = []
 
 # configure the active set of distros
-from macroutils import distro_names as distros
-
-if 'boxturtle' in distros:
-    distros.remove('boxturtle')
-if 'unstable' in distros:
-    distros.remove('unstable')
-
+from macroutils import distro_names, distro_names_buildfarm
 
 def execute(macro, args):
     if args:
@@ -58,6 +52,6 @@ def execute(macro, args):
                     'New in %s</span>' % version)
 
     html = '<span id="rosversion_selector" class="btn-group">\n'
-    html += "\n".join([distro_html(distro, distros) for distro in distros])
+    html += "\n".join([distro_html(distro, distro_names_buildfarm) for distro in distro_names])
     html += '\n</span>'
     return macro.formatter.rawHTML(html)

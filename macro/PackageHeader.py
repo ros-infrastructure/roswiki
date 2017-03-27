@@ -1,20 +1,12 @@
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import load_package_manifest, distro_names, CONTRIBUTE_TMPL, UtilException
+from macroutils import load_package_manifest, distro_names, distro_names_buildfarm, CONTRIBUTE_TMPL, UtilException
 from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
 
-if 'boxturtle' in distro_names:
-    distro_names.remove('boxturtle')
-if 'cturtle' in distro_names:
-    distro_names.remove('cturtle')
-if 'diamondback' in distro_names:
-    distro_names.remove('diamondback')
-if 'unstable' in distro_names:
-    distro_names.remove('unstable')
 
 def generate_old_package_header(macro, package_name, opt_distro=None):
     if not package_name:
@@ -44,8 +36,8 @@ def macro_PackageHeader(macro, arg1, arg2=None):
     opt_distro = get_unicode(macro.request, arg2)
     if not opt_distro:
         headers_html = []
-        loaded_distros = get_loaded_distros(package_name, distro_names)
-        for distro in distro_names:
+        loaded_distros = get_loaded_distros(package_name, distro_names_buildfarm)
+        for distro in distro_names_buildfarm:
             if distro in ['boxturtle', 'cturtle', 'diamondback']:
                 pkg_header_html = generate_old_package_header(macro, package_name, distro)
             else:
@@ -53,9 +45,9 @@ def macro_PackageHeader(macro, arg1, arg2=None):
             headers_html.append('<div class="version %s">' % distro + pkg_header_html + '</div>')
 
         html = '<span id="rosversion_selector" class="btn-group">\n'
-        html += "\n".join([distro_html(distro, loaded_distros) for distro in distro_names])
+        html += "\n".join([distro_html(distro, loaded_distros) for distro in distro_names_buildfarm])
         html += '\n</span>'
-        html += doc_html(distro_names, package_name)
+        html += doc_html(distro_names_buildfarm, package_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:
         if opt_distro in ['boxturtle', 'cturtle', 'diamondback']:

@@ -2,20 +2,12 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import load_stack_manifest, load_package_manifest, distro_names, CONTRIBUTE_TMPL, UtilException
+from macroutils import load_stack_manifest, load_package_manifest, distro_names, distro_names_buildfarm, CONTRIBUTE_TMPL, UtilException
 from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html, get_stack_links, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
 
-if 'boxturtle' in distro_names:
-    distro_names.remove('boxturtle')
-if 'cturtle' in distro_names:
-    distro_names.remove('cturtle')
-if 'diamondback' in distro_names:
-    distro_names.remove('diamondback')
-if 'unstable' in distro_names:
-    distro_names.remove('unstable')
 
 def generate_old_stack_header(macro, stack_name, opt_distro=None):
     try:
@@ -54,8 +46,8 @@ def macro_StackHeader(macro, arg1, arg2=None):
 
     if not opt_distro:
         headers_html = []
-        loaded_distros = get_loaded_distros(stack_name, distro_names)
-        for distro in distro_names:
+        loaded_distros = get_loaded_distros(stack_name, distro_names_buildfarm)
+        for distro in distro_names_buildfarm:
             if distro in ['boxturtle', 'cturtle', 'diamondback']:
                 stack_header_html = generate_old_stack_header(macro, stack_name, distro)
             else:
@@ -63,14 +55,12 @@ def macro_StackHeader(macro, arg1, arg2=None):
             headers_html.append('<div class="version %s">' % distro + stack_header_html + '</div>')
 
         html = '<span id="rosversion_selector" class="btn-group">\n'
-        html += "\n".join([distro_html(distro, loaded_distros) for distro in distro_names])
+        html += "\n".join([distro_html(distro, loaded_distros) for distro in distro_names_buildfarm])
         html += '\n</span>'
-        html += doc_html(distro_names, stack_name)
+        html += doc_html(distro_names_buildfarm, stack_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:
         if opt_distro in ['boxturtle', 'cturtle', 'diamondback']:
             return generate_old_stack_header(macro, stack_name, opt_distro)
         else:
             return generate_package_header(macro, stack_name, opt_distro)
-
-  
