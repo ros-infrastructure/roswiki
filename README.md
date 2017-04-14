@@ -2,6 +2,12 @@ Checkout the *master* branch of this repo at `(/var/www/wiki.ros.org/)data/plugi
 
 Checkout the *conf* branch of this repo at `(/var/www/wiki.ros.org/)conf`.
 
+**Deploying changes once merged:**
+
+`git pull` in `(/var/www/wiki.ros.org/)data/plugin` and/or `(/var/www/wiki.ros.org/)conf`.
+
+Reload the server with `sudo service httpd reload`.
+
 **Apache configuration:**
 
 *Alias for custom resources:*
