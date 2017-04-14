@@ -1,0 +1,28 @@
+<VirtualHost *:8080>
+  ServerName wiki.ros.org
+  ServerAlias wiki.ros.osuosl.org
+
+  DocumentRoot /var/www/wiki.ros.org/data
+  RewriteEngine On
+
+  Redirect permanent /ros /ROS
+
+  <Directory "/var/www/wiki.ros.org/data">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  Alias /custom/ "/var/www/wiki.ros.org/data/plugin/custom/"
+  Alias /moin_static197/rostheme/ "/var/www/wiki.ros.org/data/plugin/custom/rostheme/"
+  Alias /moin_static197/ "/var/www/wiki.ros.org/venv/lib/python2.7/site-packages/MoinMoin/web/static/htdocs/"
+
+  WSGIScriptAlias / /var/www/wiki.ros.org/conf/moin.wsgi
+  WSGIDaemonProcess wgmoin user=www-data group=www-data display-name='%{GROUP}' home=/var/www/wiki.ros.org/data/ processes=10 threads=1 maximum-requests=1000 umask=0007 python-path=/var/www/wiki.ros.org/venv/lib/python2.7/site-packages/
+  WSGIProcessGroup wgmoin
+
+  LogFormat "%h %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-agent}i\"" simple
+  CustomLog "|/usr/sbin/rotatelogs /var/log/apache2/wiki.ros.org/access/%Y%m%d.log 86400" simple
+  ErrorLog "|/usr/sbin/rotatelogs /var/log/apache2/wiki.ros.org/error/%Y%m%d.log 86400"
+</VirtualHost>
