@@ -142,14 +142,16 @@ jQuery(function( $ ){
       <table id="topnav-table">
         <tr>
           <td width="300" valign="top"><a href="/"><img border="0" src="/custom/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
-          <td valign="middle">
+          <td width="500" valign="middle">
             <a href="http://www.ros.org/about-ros">About</a>
             |
             <a href="/Support">Support</a>
             |
-            <a href="http://status.ros.org/">Status</a>
+            <a href="http://discourse.ros.org/">Discussion Forum</a>
             |
-            <a href="http://answers.ros.org/">answers.ros.org</a>
+            <a href="http://status.ros.org/">Service Status</a>
+            |
+            <a href="http://answers.ros.org/">Q&A answers.ros.org</a>
 
 <!--<a href="http://roscon.ros.org/2016/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/roscon_wiki_header.jpg" width="133" height="65" alt="ROSCon 2016" /></a>
 -->
