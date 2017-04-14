@@ -142,7 +142,7 @@ jQuery(function( $ ){
       <table id="topnav-table">
         <tr>
           <td width="300" valign="top"><a href="/"><img border="0" src="/custom/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
-          <td valign="middle">
+          <td width="500" valign="middle">
             <a href="http://www.ros.org/about-ros">About</a>
             |
             <a href="/Support">Support</a>
