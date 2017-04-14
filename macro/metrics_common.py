@@ -158,7 +158,7 @@ def get_metric_html(macro, data, container):
 	    	branch = str(uri_info).strip('[]').strip("''")
 	    	uri_0 = uri[0]
 	    	uri_cut = uri_0[6:-4]  	    
-	    	file_link = 'https://' + uri_cut + '/blob' + '/' + branch + '/' + val_string
+	    	file_link = 'https://' + uri_cut + '/blob' + '/' + 'master' + '/' + val_string
 
 	    ## svn
 	    elif 'svn' in vcs_type:
