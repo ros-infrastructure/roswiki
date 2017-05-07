@@ -1,4 +1,4 @@
- -*- coding: iso-8859-1 -*-
+  -*- coding: iso-8859-1 -*-
 """
     MoinMoin - rightsidebar theme
 
@@ -113,7 +113,7 @@ function handleSubmit() {
 
 <!-- Alert box -->
 <!-- To enable the alert box uncomment the block below. Change the alert_box_name to a new name. Then update the content below the button. -->
-<!-- Disabling alert box-->
+<!-- Disabling alert box -->
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
