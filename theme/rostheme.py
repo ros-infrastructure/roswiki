@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+ -*- coding: iso-8859-1 -*-
 """
     MoinMoin - rightsidebar theme
 
@@ -113,11 +113,11 @@ function handleSubmit() {
 
 <!-- Alert box -->
 <!-- To enable the alert box uncomment the block below. Change the alert_box_name to a new name. Then update the content below the button. -->
-<!-- Disabling alert box
+<!-- Disabling alert box-->
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
-    alert_box_name = 'roswiki_roscon2016_early_registration_last_day'
+    alert_box_name = 'roswiki_lunar_teeshirt'
     state = localStorage.getItem(alert_box_name);
     if (!state) {
       localStorage.setItem(alert_box_name, 'open');
@@ -134,9 +134,11 @@ jQuery(function( $ ){
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Early registration for <a href="http://roscon.ros.org/2016">ROSCon 2016</a> ends today, August 26th! <br><a href="https://events.osrfoundation.org/roscon-2016-registration/">Register now</a> to get the early registration discount. And <a href="http://conradhotels.hilton.com/en/ch/groups/personalized/S/SELCICI-GROSA-20161003/index.jhtml?WT.mc_id=POG">book you discounted hotel rooms</a> at our <a href="http://roscon.ros.org/2016/#location">discounted rates</a>.
+ROS Lunar Loggerhead Tshirts and Hoodies are available worldwide! You can order from fulfillment centers in the <a href="https://teespring.com/ros-lunar-loggerhead">US</a> or <a href="https://teespring.com/ros-lunar-loggerhead-eu">Europe</a>.
+<br>
+Ordering closes May 8th!  And there are <a href="https://www.stickermule.com/user/1070828488/stickers">stickers too.</a>
     </div>
- End disabling alert box -->
+<!-- End disabling alert box -->
 <!-- End Alert box -->
 
       <table id="topnav-table">
