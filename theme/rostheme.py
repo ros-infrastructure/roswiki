@@ -1,4 +1,4 @@
-  -*- coding: iso-8859-1 -*-
+# -*- coding: iso-8859-1 -*-
 """
     MoinMoin - rightsidebar theme
 
