@@ -50,7 +50,7 @@ def execute(macro, args):
         if version.lower() == 'melodic':
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
-                    'Expected in Melodic Morenia</span>')
+                    'Expected in M-Turtle</span>')
         else:
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
