@@ -47,11 +47,11 @@ if 'unstable' in distros:
 def execute(macro, args):
     if args:
         version = str(args)
-        if version.lower() == 'm-turtle':
+        if version.lower() == 'melodic':
             # TODO Change when m-turtle name is decided
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
-                    'Expected in M-Turtle</span>')
+                    'Expected in Melodic Morenia</span>')
         else:
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
