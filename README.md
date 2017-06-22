@@ -28,3 +28,7 @@ Reload the server with `sudo service httpd reload`.
 **Setup a cron job to dump the Wiki content:**
 
 The script as well as the cron configuration can be found on the "wiki_dump_script" branch in this repo.
+
+**Test ROS wiki functionality locally (without the actual content):**
+
+Please see the following repository: https://github.com/ros-infrastructure/roswiki_vagrant
