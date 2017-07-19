@@ -6,7 +6,7 @@
     Later it was rewritten by Nir Soffer for MoinMoin release 1.3.
 
     @copyright: 2005 by Nir Soffer
-    @license: GNU GPL, see COPYING for details.  
+    @license: GNU GPL, see COPYING for details.
 """
 
 from MoinMoin import wikiutil
@@ -31,7 +31,7 @@ class Theme(ThemeBase):
             u'</div>',
             ]
         return u'\n'.join(html)
-    
+
     def pagepanel(self, d):
         """ Create page panel """
         _ = self.request.getText
@@ -43,12 +43,12 @@ class Theme(ThemeBase):
                 u'</div>',
                 ]
             return u'\n'.join(html)
-        return ''   
-        
+        return ''
+
     def trailpanel(self, d):
         """ Create trail panel """
         _ = self.request.getText
-        
+
         html = [
             u'<div class="sidepanel">',
             u'<h1>%s</h1>' %  _("Recent"),
@@ -56,7 +56,7 @@ class Theme(ThemeBase):
             u'</div>'
             ]
         return u'\n'.join(html)
-        
+
     def userpanel(self, d):
         """ Create user panel """
         _ = self.request.getText
@@ -94,7 +94,7 @@ function handleSubmit() {
   var f = document.getElementById('searchform');
   var t = document.getElementById('searchinput');
   var r = document.getElementById('real_searchinput');
-  
+
   //alert("handleSubmit "+ t.value);
   if(t.value.match(/review/)) {
     r.value = t.value;
@@ -216,7 +216,7 @@ theForm.input.value=theForm.input.value
     def header(self, d):
         """
         Assemble page header
-        
+
         @param d: parameter dictionary
         @rtype: string
         @return: page header html
@@ -247,7 +247,7 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
 
             u'</div>',
             u'</div>',
-            
+
             # Custom html below header (not recomended!)
             self.emit_custom_html(self.cfg.page_header2),
 
@@ -260,17 +260,17 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             u'</div>',
 
             self.msg(d),
-            
+
             # Page
             self.startPage(),
             help_to_edit_string,
             ]
         return u'\n'.join(html)
-    
+
     def editorheader(self, d):
         """
         Assemble page header for editor
-        
+
         @param d: parameter dictionary
         @rtype: string
         @return: page header html
@@ -287,7 +287,7 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             #self.searchform(d),
             #self.logo(),
             #u'</div>',
-            
+
             # Custom html below header (not recomended!)
             self.emit_custom_html(self.cfg.page_header2),
 
@@ -299,16 +299,16 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             u'</div>',
 
             self.msg(d),
-            
+
             # Page
             self.startPage(),
             #self.title(d),
             ]
         return u'\n'.join(html)
-    
+
     def footer(self, d, **keywords):
         """ Assemble wiki footer
-        
+
         @param d: parameter dictionary
         @keyword ...:...
         @rtype: unicode
@@ -320,10 +320,10 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             u'</div>',
             self.endPage(),
             self.pageinfo(page),
-            
+
             # Pre footer custom html (not recommended!)
             self.emit_custom_html(self.cfg.page_footer1),
-            
+
             # Post footer custom html
             self.emit_custom_html(self.page_footer2),
             ]
@@ -347,10 +347,9 @@ Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="
 
 def execute(request):
     """ Generate and return a theme object
-        
+
     @param request: the request object
     @rtype: MoinTheme
     @return: Theme object
     """
     return Theme(request)
-
