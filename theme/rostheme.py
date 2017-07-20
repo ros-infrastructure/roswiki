@@ -112,12 +112,12 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
-<!-- To enable the alert box uncomment the block below. Change the alert_box_name to a new name. Then update the content below the button. -->
+<!-- To enable/disable the alert box, uncomment/comment the block below and update the content below the button. -->
 <!-- Disabling alert box
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
-    alert_box_name = 'roswiki_roscon2016_early_registration_last_day'
+    alert_box_name = 'roswiki_roscon_early_registration_last_day'
     state = localStorage.getItem(alert_box_name);
     if (!state) {
       localStorage.setItem(alert_box_name, 'open');
@@ -134,7 +134,8 @@ jQuery(function( $ ){
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Early registration for <a href="http://roscon.ros.org/2016">ROSCon 2016</a> ends today, August 26th! <br><a href="https://events.osrfoundation.org/roscon-2016-registration/">Register now</a> to get the early registration discount. And <a href="http://conradhotels.hilton.com/en/ch/groups/personalized/S/SELCICI-GROSA-20161003/index.jhtml?WT.mc_id=POG">book you discounted hotel rooms</a> at our <a href="http://roscon.ros.org/2016/#location">discounted rates</a>.
+      Early registration for <a href="http://roscon.ros.org">ROSCon 2017</a> ends August 1st! <br>
+      Register now to get the early registration discount and take advantage of discounted hotel rates</a>.
     </div>
  End disabling alert box -->
 <!-- End Alert box -->
