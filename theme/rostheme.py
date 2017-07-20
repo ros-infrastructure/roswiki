@@ -113,7 +113,6 @@ function handleSubmit() {
 
 <!-- Alert box -->
 <!-- To enable/disable the alert box, uncomment/comment the block below and update the content below the button. -->
-<!-- Disabling alert box
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
@@ -137,7 +136,6 @@ jQuery(function( $ ){
       Early registration for <a href="http://roscon.ros.org">ROSCon 2017</a> ends August 1st! <br>
       Register now to get the early registration discount and take advantage of discounted hotel rates</a>.
     </div>
- End disabling alert box -->
 <!-- End Alert box -->
 
       <table id="topnav-table">
