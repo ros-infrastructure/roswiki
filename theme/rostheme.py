@@ -116,7 +116,7 @@ function handleSubmit() {
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
-    alert_box_name = 'roswiki_roscon_early_registration_last_day'
+    alert_box_name = 'roswiki_roscon'
     state = localStorage.getItem(alert_box_name);
     if (!state) {
       localStorage.setItem(alert_box_name, 'open');
@@ -133,8 +133,8 @@ jQuery(function( $ ){
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Early registration for <a href="http://roscon.ros.org">ROSCon 2017</a> ends August 1st! <br>
-      Register now to get the early registration discount and take advantage of discounted hotel rates</a>.
+      <a href="http://roscon.ros.org">ROSCon 2017</a> will be in Vancouver, September 21-22! <br>
+      The last few years have sold out: register now and take advantage of discounted hotel rates</a>.
     </div>
 <!-- End Alert box -->
 
