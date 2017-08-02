@@ -113,6 +113,7 @@ function handleSubmit() {
 
 <!-- Alert box -->
 <!-- To enable/disable the alert box, uncomment/comment the block below and update the content below the button. -->
+<!--
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
@@ -136,6 +137,7 @@ jQuery(function( $ ){
       <a href="http://roscon.ros.org">ROSCon 2017</a> will be in Vancouver, September 21-22! <br>
       The last few years have sold out: register now and take advantage of discounted hotel rates</a>.
     </div>
+-->
 <!-- End Alert box -->
 
       <table id="topnav-table">
