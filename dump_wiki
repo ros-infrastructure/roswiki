@@ -1,5 +1,7 @@
 #!/bin/bash
 
+BWLIMIT=400
+
 export_dir=`mktemp -d`
 
 now=$(date +"%Y-%m-%d %H:%M")
@@ -18,7 +20,7 @@ mv $export_dir/custom/rostheme $export_dir
 # Enable the venv
 . /var/www/wiki.ros.org/venv/bin/activate
 
-python /var/www/wiki.ros.org/venv/lib/python2.6/site-packages/MoinMoin/script/moin.py \
+ionice -c2 -n7 python /var/www/wiki.ros.org/venv/lib/python2.6/site-packages/MoinMoin/script/moin.py \
 --config-dir=/var/www/wiki.ros.org/conf/ \
 --wiki-url=wiki.ros.org/ export dump \
 --target-dir=$export_dir/
@@ -44,6 +46,9 @@ find $export_dir -name \*.html -exec sed -i 's+</head>+<script type="text/javasc
 python /var/www/wiki.ros.org/cron/rel_canonical.py $export_dir
 
 # copy export into the available directory, with cleanup
-rsync -av $export_dir/ /var/www/wiki.ros.org/wiki_dump --delete
+#rsync -av $export_dir/ /var/www/wiki.ros.org/wiki_dump --delete
+ionice -c2 -n7 rsync -ave "ssh -i /home/ros/.ssh/mirror_upload/mirror_upload" $export_dir/ ros@ftp-osl.osuosl.org:~/data/ros_wiki_mirror/ --delete --bwlimit $BWLIMIT --progress
 
 rm -rf $export_dir
+
+ionice -c2 -n7 rsync -ave "ssh -i /home/ros/.ssh/mirror_upload/mirror_upload" /data/docs/ ros@ftp-osl.osuosl.org:~/data/ros_docs_mirror/ --delete --bwlimit $BWLIMIT --progress
