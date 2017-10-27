@@ -572,7 +572,7 @@ def get_dependency_list(macro, data, css_prefix='', distro=None):
             ul(1)
         )
         for d in depends:
-            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query) + li(0)
+            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query, raw=True) + li(0)
         links += ul(0)+div(0)
     if depends_on:
         depends_on.sort()
@@ -584,7 +584,7 @@ def get_dependency_list(macro, data, css_prefix='', distro=None):
             strong(0) + "<br />" +
             '<div id="%sused-by-list" style="display:none">' % (css_prefix) + ul(1))
         for d in depends_on:
-            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query) + li(0)
+            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query, raw=True) + li(0)
         links += ul(0) + div(0)
 
     if links:
