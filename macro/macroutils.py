@@ -11,9 +11,9 @@ except ImportError:
 
 NETWORK_TIMEOUT = 3
 
-distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'unstable']
-distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'unstable'] #boxturtle and cturtle not indexed
-distro_names_buildfarm = ['indigo', 'jade', 'kinetic', 'lunar']
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'unstable']
+distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'unstable'] #boxturtle and cturtle not indexed
+distro_names_buildfarm = ['indigo', 'jade', 'kinetic', 'lunar', 'melodic']
 
 doc_url = "http://docs.ros.org/"
 
