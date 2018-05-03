@@ -296,7 +296,7 @@ def doc_html(distros, package_name):
 
 def get_loaded_distros(name, distros):
     loaded_distro_names = []
-    for distro in distros:
+    for distro in distro_names:
         try:
             load_package_manifest(name, distro)
             loaded_distro_names.append(distro)
@@ -306,22 +306,23 @@ def get_loaded_distros(name, distros):
 
 
 def distro_html(distro, distros):
-    sorted_distros = sorted(distro_names)
+    if distro not in distros:
+        return ''
+    sorted_distros = sorted(distros)
+    # distro is guaranteed to be in distros
+    assert(distro in distros)
     distro_index = sorted_distros.index(distro)
     preceding_distros = sorted_distros[:distro_index + 1]
     proceeding_distros = sorted_distros[distro_index:]
 
     active = [(d + '_and_newer') for d in preceding_distros]
     active += [(d + '_and_older') for d in proceeding_distros]
-    if distro in distros:
-        active.append(distro)
+    active.append(distro)
     active = [d.encode("iso-8859-1") for d in active]
     inactive = [(d + '_and_newer') for d in proceeding_distros]
     inactive += [(d + '_and_older') for d in preceding_distros]
     inactive += [d for d in distros if d != distro]
     inactive = [d.encode("iso-8859-1") for d in inactive]
-    if distro not in distro_names_buildfarm:
-        return ''
     sectionarg = "{show:%s, hide:%s, target_ros_distro:'%s'}" % \
         (active, inactive, distro)
     html = (
@@ -571,7 +572,7 @@ def get_dependency_list(macro, data, css_prefix='', distro=None):
             ul(1)
         )
         for d in depends:
-            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query) + li(0)
+            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query, raw=True) + li(0)
         links += ul(0)+div(0)
     if depends_on:
         depends_on.sort()
@@ -583,7 +584,7 @@ def get_dependency_list(macro, data, css_prefix='', distro=None):
             strong(0) + "<br />" +
             '<div id="%sused-by-list" style="display:none">' % (css_prefix) + ul(1))
         for d in depends_on:
-            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query) + li(0)
+            links += li(1) + wiki_url(macro, d, shorten=20, querystr=distro_query, raw=True) + li(0)
         links += ul(0) + div(0)
 
     if links:
