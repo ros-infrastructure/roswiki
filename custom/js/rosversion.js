@@ -44,6 +44,16 @@ function getURLParameter(name) {
     )[1].replace(/\+/g, '%20')) || null;
 }
 
+function showEolVersionSelector(val)
+{
+  if (val) {
+    $("#rosversions_eol").slideDown();
+  } else {
+    $("#rosversions_eol").slideUp();
+  }
+  document.getElementById("rosversions_eol_checkbox").checked=val
+}
+
 function toggleDocStatus()
 {
   if ($("#doc_status").is(":hidden")) {
@@ -59,6 +69,13 @@ $(document).ready(function() {
   if (url_distro) {
     activedistro=url_distro;
   }
+
+  // The EOL distro selector is hidden by default.
+  // Show it if an EOL distro is selected.
+  if ($("#rosversion_selector_eol").has("#"+activedistro).length > 0) {
+    showEolVersionSelector(true);
+  }
+
   // Make the $ROS_DISTRO replacement work by wrapping it in a span. This is
   // necessary vs. MoinMoin macros because macros are not expanded inside of
   // code blocks, where this replacement is most useful. Using a function for
