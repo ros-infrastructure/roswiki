@@ -54,7 +54,6 @@ def macro_PackageHeader(macro, arg1, arg2=None):
         html = distro_selector_html(
             distros_displayed_by_default,
             distros_hidden_by_default,
-            distros_to_support_macros_for=distro_names
         )
         html += doc_html(loaded_distros, package_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))

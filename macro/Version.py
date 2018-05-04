@@ -32,7 +32,7 @@ Example:
 """
 
 from headers import distro_selector_html
-from macroutils import distro_names, distro_names_buildfarm, distro_names_eol
+from macroutils import distro_names_buildfarm, distro_names_eol
 
 Dependencies = []
 
@@ -51,6 +51,5 @@ def execute(macro, args):
     html = distro_selector_html(
         distros_displayed_by_default=distro_names_buildfarm,
         distros_hidden_by_default=distro_names_eol,
-        distros_to_support_macros_for=distro_names
     )
     return macro.formatter.rawHTML(html)
