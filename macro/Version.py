@@ -49,8 +49,8 @@ def execute(macro, args):
                     'New in %s</span>' % version)
 
     html = distro_selector_html(
-        distros_default_displayed=distro_names_buildfarm,
-        distros_default_hidden=distro_names_eol,
+        distros_displayed_by_default=distro_names_buildfarm,
+        distros_hidden_by_default=distro_names_eol,
         distros_to_support_macros_for=distro_names
     )
     return macro.formatter.rawHTML(html)
