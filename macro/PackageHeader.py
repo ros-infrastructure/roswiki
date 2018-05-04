@@ -46,9 +46,14 @@ def macro_PackageHeader(macro, arg1, arg2=None):
                 pkg_header_html = generate_package_header(macro, package_name, distro)
             headers_html.append('<div class="version %s">' % distro + pkg_header_html + '</div>')
 
+        distros_default_displayed = loaded_distros_buildfarm
+        distros_default_hidden = loaded_distros_eol
+        if not loaded_distros_buildfarm:
+            distros_default_displayed = loaded_distros_eol
+            distros_default_hidden = None
         html = distro_selector_html(
-            distros_default_displayed=loaded_distros_buildfarm,
-            distros_default_hidden=loaded_distros_eol,
+            distros_default_displayed,
+            distros_default_hidden,
             distros_to_support_macros_for=distro_names
         )
         html += doc_html(loaded_distros, package_name)

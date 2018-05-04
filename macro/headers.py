@@ -664,6 +664,8 @@ def distro_selector_html(distros_default_displayed, distros_default_hidden, dist
     html = '<span id="rosversion_selector" class="btn-group">\n'
     html += "\n".join([distro_html(distro, distros_to_support_macros_for) for distro in distros_default_displayed])
     html += '\n</span>'
+    if not distros_default_hidden:
+        return html
 
     # Checkbox that allows the distros that are hidden by default to be seen
     html += (
@@ -671,18 +673,18 @@ def distro_selector_html(distros_default_displayed, distros_default_hidden, dist
         '&nbsp;&nbsp;'
         '<i>Show EOL distros</i>'
         '&nbsp;'
-        '<input type="checkbox" id="rosversions_eol_checkbox" onchange="showEolVersionSelector(this.checked)">'
+        '<input type="checkbox" id="rosversions_hidden_checkbox" onchange="showHiddenVersionSelector(this.checked)">'
         '</span>'
     )
 
     # Div that gets displayed/hidden by the checkbox
     html += (
-        '<div id="rosversions_eol" '
+        '<div id="rosversions_hidden" '
         'style="display:none">'
     )
 
     # Selector for distros hidden by default
-    html += '<span id="rosversion_selector_eol" class="btn-group">\n'
+    html += '<span id="rosversion_selector_hidden" class="btn-group">\n'
     html += "\n".join([distro_html(distro, distros_to_support_macros_for) for distro in distros_default_hidden])
     html += '\n</span>'
 

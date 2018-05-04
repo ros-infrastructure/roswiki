@@ -44,14 +44,14 @@ function getURLParameter(name) {
     )[1].replace(/\+/g, '%20')) || null;
 }
 
-function showEolVersionSelector(val)
+function showHiddenVersionSelector(val)
 {
   if (val) {
-    $("#rosversions_eol").slideDown();
+    $("#rosversions_hidden").slideDown();
   } else {
-    $("#rosversions_eol").slideUp();
+    $("#rosversions_hidden").slideUp();
   }
-  document.getElementById("rosversions_eol_checkbox").checked=val
+  document.getElementById("rosversions_hidden_checkbox").checked=val
 }
 
 function toggleDocStatus()
@@ -70,10 +70,10 @@ $(document).ready(function() {
     activedistro=url_distro;
   }
 
-  // The EOL distro selector is hidden by default.
-  // Show it if an EOL distro is selected.
-  if ($("#rosversion_selector_eol").has("#"+activedistro).length > 0) {
-    showEolVersionSelector(true);
+  // There's a distro selector that is hidden by default (e.g. for EOL distros).
+  // Show it if one of those distros is active.
+  if ($("#rosversion_selector_hidden").has("#"+activedistro).length > 0) {
+    showHiddenVersionSelector(true);
   }
 
   // Make the $ROS_DISTRO replacement work by wrapping it in a span. This is
