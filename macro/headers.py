@@ -11,6 +11,7 @@ except:
 from macroutils import CONTRIBUTE_TMPL
 from macroutils import distro_names
 from macroutils import distro_names_buildfarm
+from macroutils import distro_names_eol
 from macroutils import get_bugtracker_li
 from macroutils import GET_INVOLVED
 from macroutils import get_maintainer_status_li
@@ -337,10 +338,14 @@ def distro_html(distro, distros):
             inactive_distro.endswith('_and_older')
         ):
             continue
+        # Some inactive distros have macro support for content embedding, but not selector buttons
         html += (
-            '''document.getElementById('%s').style.background='#e6e6e6';'''
-            '''document.getElementById('%s').style.color='#3e4f6e';''' %
-            (inactive_distro, inactive_distro)
+            '''var distro_button = document.getElementById('%s');'''
+            '''if (distro_button) {'''
+            '''  distro_button.style.background='#e6e6e6';'''
+            '''  distro_button.style.color='#3e4f6e';'''
+            '''}'''
+            % (inactive_distro)
         )
     html += '''return false"> %s </button>''' % (distro)
     return html
@@ -653,3 +658,38 @@ def get_job_url(job_url, label):
     if not job_url.startswith('http'):
         job_url = 'http://jenkins.ros.org/job/%s/' % job_url
     return '<a href="%s">%s</a>' % (job_url, label)
+
+def get_distro_selector():
+    distros_default_displayed = distro_names_buildfarm
+    distros_default_hidden = distro_names_eol
+    distros_to_support_macros_for = distro_names
+
+    # Selector for distros displayed by default
+    html = '<span id="rosversion_selector" class="btn-group">\n'
+    html += "\n".join([distro_html(distro, distros_to_support_macros_for) for distro in distros_default_displayed])
+    html += '\n</span>'
+
+    # Checkbox that allows the distros that are hidden by default to be seen
+    html += (
+        '<span style="text-align:left">'
+        '&nbsp;&nbsp;'
+        '<i>Show EOL distros</i>'
+        '&nbsp;'
+        '<input type="checkbox" id="rosversions_eol_checkbox" onchange="showEolVersionSelector(this.checked)">'
+        '</span>'
+    )
+
+    # Div that gets displayed/hidden by the checkbox
+    html += (
+        '<div id="rosversions_eol" '
+        'style="display:none">'
+    )
+
+    # Selector for distros hidden by default
+    html += '<span id="rosversion_selector_eol" class="btn-group">\n'
+    html += "\n".join([distro_html(distro, distros_to_support_macros_for) for distro in distros_default_hidden])
+    html += '\n</span>'
+
+    html += '\n</div>'
+    return html
+

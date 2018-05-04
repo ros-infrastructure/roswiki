@@ -31,12 +31,9 @@ Example:
 
 """
 
-from headers import distro_html
+from headers import get_distro_selector
 
 Dependencies = []
-
-from macroutils import distro_names as distros
-from macroutils import distro_names_buildfarm
 
 def execute(macro, args):
     if args:
@@ -50,26 +47,4 @@ def execute(macro, args):
                     'font-weight:bold; padding: 3px;">'
                     'New in %s</span>' % version)
 
-    default_distros = [distro for distro in distros if distro in distro_names_buildfarm]
-    other_distros = [distro for distro in distros if distro not in distro_names_buildfarm]
-
-    html = '<span id="rosversion_selector" class="btn-group">\n'
-    html += "\n".join([distro_html(distro, distros) for distro in default_distros])
-    html += '\n</span>'
-    html += (
-        '<span style="text-align:left">'
-        '&nbsp;&nbsp;'
-        '<i>Show EOL distros</i>'
-        '&nbsp;'
-        '<input type="checkbox" id="rosversions_eol_checkbox" onchange="showEolVersionSelector(this.checked)">'
-        '</span>'
-    )
-    html += (
-        '<div id="rosversions_eol" '
-        'style="display:none">'
-        '<span id="rosversion_selector_eol" class="btn-group">'
-    )
-    for distro in other_distros:
-        html += distro_html(distro, distros)
-    html += '</span></div>'
-    return macro.formatter.rawHTML(html)
+    return macro.formatter.rawHTML(get_distro_selector())
