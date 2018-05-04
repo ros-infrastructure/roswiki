@@ -11,9 +11,9 @@ except ImportError:
 
 NETWORK_TIMEOUT = 3
 
-distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'unstable']
-distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'unstable'] #boxturtle and cturtle not indexed
-distro_names_buildfarm = ['indigo', 'jade', 'kinetic', 'lunar']
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'unstable']
+distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'unstable'] #boxturtle and cturtle not indexed
+distro_names_buildfarm = ['indigo', 'jade', 'kinetic', 'lunar', 'melodic']
 
 doc_url = "http://docs.ros.org/"
 
@@ -92,14 +92,20 @@ def sub_link(macro, page, sub, title=None):
         title = sub
     return Page(macro.request, '%s/%s'%(page, sub)).link_to(macro.request, text=title)
 
-def wiki_url(macro, page,shorten=None,querystr=None):
+def wiki_url(macro, page,shorten=None,querystr=None, relative=False, raw=False):
     """
     Create link to ROS wiki page
+    @param raw: Return a raw html link instead of a wiki link. (This will avoid moin moin link checking.)
     """
     if not shorten or len(page) < shorten:
         page_text = page
     else:
         page_text = page[:shorten]+'...'
+    if raw:
+        ret = '<a href="'
+        ret += Page(macro.request, page).url(macro.request, querystr=querystr, relative=relative)
+        ret += '">%s</a>' % page_text
+        return ret
     return Page(macro.request, page).link_to(macro.request, text=page_text, querystr=querystr)
 
 def get_repo_li(macro, props):

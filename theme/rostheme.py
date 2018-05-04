@@ -6,7 +6,7 @@
     Later it was rewritten by Nir Soffer for MoinMoin release 1.3.
 
     @copyright: 2005 by Nir Soffer
-    @license: GNU GPL, see COPYING for details.  
+    @license: GNU GPL, see COPYING for details.
 """
 
 from MoinMoin import wikiutil
@@ -31,7 +31,7 @@ class Theme(ThemeBase):
             u'</div>',
             ]
         return u'\n'.join(html)
-    
+
     def pagepanel(self, d):
         """ Create page panel """
         _ = self.request.getText
@@ -43,12 +43,12 @@ class Theme(ThemeBase):
                 u'</div>',
                 ]
             return u'\n'.join(html)
-        return ''   
-        
+        return ''
+
     def trailpanel(self, d):
         """ Create trail panel """
         _ = self.request.getText
-        
+
         html = [
             u'<div class="sidepanel">',
             u'<h1>%s</h1>' %  _("Recent"),
@@ -56,7 +56,7 @@ class Theme(ThemeBase):
             u'</div>'
             ]
         return u'\n'.join(html)
-        
+
     def userpanel(self, d):
         """ Create user panel """
         _ = self.request.getText
@@ -94,7 +94,7 @@ function handleSubmit() {
   var f = document.getElementById('searchform');
   var t = document.getElementById('searchinput');
   var r = document.getElementById('real_searchinput');
-  
+
   //alert("handleSubmit "+ t.value);
   if(t.value.match(/review/)) {
     r.value = t.value;
@@ -112,12 +112,12 @@ function handleSubmit() {
     <div id="header"><div id="topnav">
 
 <!-- Alert box -->
-<!-- To enable the alert box uncomment the block below. Change the alert_box_name to a new name. Then update the content below the button. -->
-<!-- Disabling alert box
+<!-- To enable/disable the alert box, uncomment/comment the block below and update the content below the button. -->
+<!--
     <div class="alert alert-info alert-dismissable" style="text-align: center;">
 <script>
 jQuery(function( $ ){
-    alert_box_name = 'roswiki_roscon2016_early_registration_last_day'
+    alert_box_name = 'roswiki_roscon'
     state = localStorage.getItem(alert_box_name);
     if (!state) {
       localStorage.setItem(alert_box_name, 'open');
@@ -134,22 +134,25 @@ jQuery(function( $ ){
 });
 </script>
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Early registration for <a href="http://roscon.ros.org/2016">ROSCon 2016</a> ends today, August 26th! <br><a href="https://events.osrfoundation.org/roscon-2016-registration/">Register now</a> to get the early registration discount. And <a href="http://conradhotels.hilton.com/en/ch/groups/personalized/S/SELCICI-GROSA-20161003/index.jhtml?WT.mc_id=POG">book you discounted hotel rooms</a> at our <a href="http://roscon.ros.org/2016/#location">discounted rates</a>.
+      <a href="http://roscon.ros.org">ROSCon 2017</a> will be in Vancouver, September 21-22! <br>
+      The last few years have sold out: register now and take advantage of discounted hotel rates</a>.
     </div>
- End disabling alert box -->
+-->
 <!-- End Alert box -->
 
       <table id="topnav-table">
         <tr>
           <td width="300" valign="top"><a href="/"><img border="0" src="/custom/images/ros_org.png" alt="ros.org" width="238" height="51"/></a></td>
-          <td valign="middle">
+          <td width="500" valign="middle">
             <a href="http://www.ros.org/about-ros">About</a>
             |
             <a href="/Support">Support</a>
             |
-            <a href="http://status.ros.org/">Status</a>
+            <a href="http://discourse.ros.org/">Discussion Forum</a>
             |
-            <a href="http://answers.ros.org/">answers.ros.org</a>
+            <a href="http://status.ros.org/">Service Status</a>
+            |
+            <a href="http://answers.ros.org/">Q&A answers.ros.org</a>
 
 <!--<a href="http://roscon.ros.org/2016/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/roscon_wiki_header.jpg" width="133" height="65" alt="ROSCon 2016" /></a>
 -->
@@ -214,7 +217,7 @@ theForm.input.value=theForm.input.value
     def header(self, d):
         """
         Assemble page header
-        
+
         @param d: parameter dictionary
         @rtype: string
         @return: page header html
@@ -245,7 +248,7 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
 
             u'</div>',
             u'</div>',
-            
+
             # Custom html below header (not recomended!)
             self.emit_custom_html(self.cfg.page_header2),
 
@@ -258,17 +261,17 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             u'</div>',
 
             self.msg(d),
-            
+
             # Page
             self.startPage(),
             help_to_edit_string,
             ]
         return u'\n'.join(html)
-    
+
     def editorheader(self, d):
         """
         Assemble page header for editor
-        
+
         @param d: parameter dictionary
         @rtype: string
         @return: page header html
@@ -285,7 +288,7 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             #self.searchform(d),
             #self.logo(),
             #u'</div>',
-            
+
             # Custom html below header (not recomended!)
             self.emit_custom_html(self.cfg.page_header2),
 
@@ -297,16 +300,16 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             u'</div>',
 
             self.msg(d),
-            
+
             # Page
             self.startPage(),
             #self.title(d),
             ]
         return u'\n'.join(html)
-    
+
     def footer(self, d, **keywords):
         """ Assemble wiki footer
-        
+
         @param d: parameter dictionary
         @keyword ...:...
         @rtype: unicode
@@ -318,10 +321,10 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
             u'</div>',
             self.endPage(),
             self.pageinfo(page),
-            
+
             # Pre footer custom html (not recommended!)
             self.emit_custom_html(self.cfg.page_footer1),
-            
+
             # Post footer custom html
             self.emit_custom_html(self.page_footer2),
             ]
@@ -345,10 +348,9 @@ Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="
 
 def execute(request):
     """ Generate and return a theme object
-        
+
     @param request: the request object
     @rtype: MoinTheme
     @return: Theme object
     """
     return Theme(request)
-

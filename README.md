@@ -2,6 +2,12 @@ Checkout the *master* branch of this repo at `(/var/www/wiki.ros.org/)data/plugi
 
 Checkout the *conf* branch of this repo at `(/var/www/wiki.ros.org/)conf`.
 
+**Deploying changes once merged:**
+
+`git pull` in `(/var/www/wiki.ros.org/)data/plugin` and/or `(/var/www/wiki.ros.org/)conf`.
+
+Reload the server with `sudo service httpd reload`.
+
 **Apache configuration:**
 
 *Alias for custom resources:*
@@ -22,3 +28,7 @@ Checkout the *conf* branch of this repo at `(/var/www/wiki.ros.org/)conf`.
 **Setup a cron job to dump the Wiki content:**
 
 The script as well as the cron configuration can be found on the "wiki_dump_script" branch in this repo.
+
+**Test ROS wiki functionality locally (without the actual content):**
+
+Please see the following repository: https://github.com/ros-infrastructure/roswiki_vagrant
