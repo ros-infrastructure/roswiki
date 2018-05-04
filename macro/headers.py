@@ -338,10 +338,9 @@ def distro_html(distro, distros):
             inactive_distro.endswith('_and_older')
         ):
             continue
-        # Some inactive distros have macro support for content embedding, but not selector buttons
         html += (
             '''var distro_button = document.getElementById('%s');'''
-            '''if (distro_button) {'''
+            '''if (distro_button) {''' # Not all have selector buttons (some just macro support for content embedding)
             '''  distro_button.style.background='#e6e6e6';'''
             '''  distro_button.style.color='#3e4f6e';'''
             '''}'''
