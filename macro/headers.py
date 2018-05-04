@@ -251,7 +251,7 @@ def get_badges(macro, data):
 
                 # create history entry
                 build_ = {
-                    'id' : build['job_id'],
+                    'id' : build['build_id'],
                     'uri' : base_url + '/' + build['uri'],
                     'icon' : build_icon,
                     'stamp' : build_stamp
