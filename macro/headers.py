@@ -659,11 +659,7 @@ def get_job_url(job_url, label):
         job_url = 'http://jenkins.ros.org/job/%s/' % job_url
     return '<a href="%s">%s</a>' % (job_url, label)
 
-def get_distro_selector():
-    distros_default_displayed = distro_names_buildfarm
-    distros_default_hidden = distro_names_eol
-    distros_to_support_macros_for = distro_names
-
+def distro_selector_html(distros_default_displayed, distros_default_hidden, distros_to_support_macros_for):
     # Selector for distros displayed by default
     html = '<span id="rosversion_selector" class="btn-group">\n'
     html += "\n".join([distro_html(distro, distros_to_support_macros_for) for distro in distros_default_displayed])

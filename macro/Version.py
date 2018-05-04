@@ -31,7 +31,8 @@ Example:
 
 """
 
-from headers import get_distro_selector
+from headers import distro_selector_html
+from macroutils import distro_names, distro_names_buildfarm, distro_names_eol
 
 Dependencies = []
 
@@ -47,4 +48,9 @@ def execute(macro, args):
                     'font-weight:bold; padding: 3px;">'
                     'New in %s</span>' % version)
 
-    return macro.formatter.rawHTML(get_distro_selector())
+    html = distro_selector_html(
+        distros_default_displayed=distro_names_buildfarm,
+        distros_default_hidden=distro_names_eol,
+        distros_to_support_macros_for=distro_names
+    )
+    return macro.formatter.rawHTML(html)
