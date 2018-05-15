@@ -31,7 +31,7 @@ Example:
 
 """
 
-from headers import distro_selector_html
+from headers import distro_selector_with_eol_toggle_html
 from macroutils import distro_names_buildfarm, distro_names_eol
 
 Dependencies = []
@@ -48,7 +48,7 @@ def execute(macro, args):
                     'font-weight:bold; padding: 3px;">'
                     'New in %s</span>' % version)
 
-    html = distro_selector_html(
+    html = distro_selector_with_eol_toggle_html(
         distros_displayed_by_default=distro_names_buildfarm,
         distros_hidden_by_default=distro_names_eol,
     )

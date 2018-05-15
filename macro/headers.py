@@ -658,19 +658,25 @@ def get_job_url(job_url, label):
         job_url = 'http://jenkins.ros.org/job/%s/' % job_url
     return '<a href="%s">%s</a>' % (job_url, label)
 
-def distro_selector_html(distros_displayed_by_default, distros_hidden_by_default):
+# Helper function for ensuring that distro selectors created by various macros have the same ID,
+# because the ID is referenced from javascript code.
+def distro_selector_html(distros_displayed):
+    html = '<span id="rosversion_selector" class="btn-group">\n'
+    html += "\n".join([distro_html(distro, distro_names) for distro in distros_displayed])
+    html += '\n</span>'
+    return html
+
+def distro_selector_with_eol_toggle_html(distros_displayed_by_default, distros_hidden_by_default):
     # Selector for distros displayed by default
     html = '<span id="rosversion_selector" class="btn-group">\n'
     html += "\n".join([distro_html(distro, distro_names) for distro in distros_displayed_by_default])
     html += '\n</span>'
-    if not distros_hidden_by_default:
-        return html
 
     # Checkbox that allows the distros that are hidden by default to be seen
     html += (
         '<span style="text-align:left">'
         '&nbsp;&nbsp;'
-        '<i>Show EOL distros</i>'
+        '<i>Show EOL distros:</i>'
         '&nbsp;'
         '<input type="checkbox" id="rosversions_hidden_checkbox" onchange="showHiddenVersionSelector(this.checked)">'
         '</span>'
@@ -683,7 +689,13 @@ def distro_selector_html(distros_displayed_by_default, distros_hidden_by_default
     )
 
     # Selector for distros hidden by default
-    html += '<span id="rosversion_selector_hidden" class="btn-group">\n'
+    html += (
+        '<span style="text-align:right">'
+        '<i>EOL distros:</i>'
+        '&nbsp;&nbsp;'
+        '</span>'
+        '<span id="rosversion_selector_hidden" class="btn-group">\n'
+    )
     html += "\n".join([distro_html(distro, distro_names) for distro in distros_hidden_by_default])
     html += '\n</span>'
 

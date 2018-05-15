@@ -46,15 +46,23 @@ def macro_PackageHeader(macro, arg1, arg2=None):
                 pkg_header_html = generate_package_header(macro, package_name, distro)
             headers_html.append('<div class="version %s">' % distro + pkg_header_html + '</div>')
 
-        distros_displayed_by_default = loaded_distros_buildfarm
-        distros_hidden_by_default = loaded_distros_eol
-        if not loaded_distros_buildfarm:
-            distros_displayed_by_default = loaded_distros_eol
-            distros_hidden_by_default = None
-        html = distro_selector_html(
-            distros_displayed_by_default,
-            distros_hidden_by_default,
-        )
+        html = ''
+        if loaded_distros_buildfarm:
+            html += distro_selector_with_eol_toggle_html(
+                distros_displayed_by_default=loaded_distros_buildfarm,
+                distros_hidden_by_default=loaded_distros_eol,
+            )
+        else:
+            # Only EOL distros available: don't show EOL toggle.
+            html += (
+                '<span style="text-align:left">'
+                '<i>Only released in EOL distros:</i>'
+                '&nbsp;&nbsp;'
+                '</span>'
+            )
+            html += distro_selector_html(
+                distros_displayed=loaded_distros_eol,
+            )
         html += doc_html(loaded_distros, package_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:
