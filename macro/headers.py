@@ -275,6 +275,12 @@ def _process_badge_data(data):
                                 "Missing key in test data: '%s'") % e
             badge['error'] = e
             badge['history'] = []
+        except:
+            _, value, tb = sys.exc_info()
+            e = '%s at line %s' % (value.message, tb.tb_lineno)
+            badge['tooltip'] = 'Could not process test statistics, error:\n' + e
+            badge['error'] = e
+            badge['history'] = []
 
     if data.get('doc_job', None):
         badges.append({'text' : 'Documented', 'color' : color_green, 'icon' : icon_checkm})
