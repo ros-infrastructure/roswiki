@@ -182,21 +182,7 @@ def _jenkins_stamp_to_datetime(stamp):
     return datetime.datetime.fromtimestamp(stamp).strftime('%d-%b-%Y %H:%M')
 
 
-def get_badges(macro, data):
-    p = macro.formatter.paragraph
-    html = ''
-
-    deprecated = data.get('deprecated', False)
-    if deprecated:
-        html += p(1)
-        html += (
-            '<span class="badge" style="background-color: #f0ad4e;">'
-            '<span class="glyphicon glyphicon-warning-sign" style="color: white;">'
-            '</span> '
-            'Package deprecated</span> %s' % deprecated
-        )
-        html += p(0)
-
+def _process_badge_data(data):
     badges = []
 
     if data.get('release_jobs', []):
@@ -296,8 +282,26 @@ def get_badges(macro, data):
     if not data.get('doc_job', None):
         badges.append({'text' : 'No API documentation', 'color' : color_red, 'icon' : icon_cross})
 
+    return badges
 
-    # render badges to html
+
+def _render_badges(macro, data, badges):
+    p = macro.formatter.paragraph
+    html = ''
+
+    # TODO: refactor this to be more like the other badges
+    deprecated = data.get('deprecated', False)
+    if deprecated:
+        html += p(1)
+        html += (
+            '<span class="badge" style="background-color: #f0ad4e;">'
+            '<span class="glyphicon glyphicon-warning-sign" style="color: white;">'
+            '</span> '
+            'Package deprecated</span> %s' % deprecated
+        )
+        html += p(0)
+
+    # render other badges to html
     if badges:
         html += p(1)
 
@@ -368,6 +372,12 @@ def get_badges(macro, data):
 
         html += p(0)
 
+    return html
+
+
+def get_badges(macro, data):
+    badges = _process_badge_data(data)
+    html = _render_badges(macro, data, badges)
     return html
 
 
