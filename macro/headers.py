@@ -206,12 +206,15 @@ def get_badges(macro, data):
         badge = {'text' : 'Continuous Integration', 'color' : color_green, 'icon' : icon_checkm}
         badges.append(badge)
 
-        # see if we can 'enhance' the badge by making it reflect jenkins job status
-        dev_job_data = data.get('dev_job_data', {})
-        if dev_job_data:
-            base_url = dev_job_data.get('base_url', '')
+        # See if we can 'enhance' the badge by making it reflect jenkins job status.
+        # Assume dict is ok. Any KeyError will be caught and badge contents changed
+        # to indicate an error occured.
+        try:
+            dev_job_data = data['dev_job_data']
+            base_url = dev_job_data['base_url']
             build_history = dev_job_data.get('history', [])
-            latest_build = dev_job_data.get('latest_build', {})
+
+            latest_build = dev_job_data['latest_build']
             tests_skipped = latest_build['skipped']
             tests_failed = latest_build['failed']
             tests_total = latest_build['total']
@@ -219,20 +222,22 @@ def get_badges(macro, data):
             tests_ok = tests_total - tests_failed - tests_skipped
 
             # update badge dict
-            badge['total_builds'] = dev_job_data.get('total_builds', -1)
-            badge['health'] = dev_job_data.get('job_health', 'n/a')
+            badge['total_builds'] = dev_job_data['total_builds']
+            badge['health'] = dev_job_data['job_health']
             badge['tests_ok'] = tests_ok
             badge['tests_total'] = tests_total
 
-            if build_history:
-                badge['tooltip'] = text_latest_build = ('Last build:\n'
-                    '  Total tests: %s\n'
-                    '  Succeeded: %s\n'
-                    '  Skipped: %s\n'
-                    '  Failed: %s\n'
-                    '\n'
-                    'Click to show more build history.' % (
-                        tests_total, tests_ok, tests_skipped, tests_failed))
+            badge['tooltip'] = ('Last build:\n'
+                '  Total tests: %s\n'
+                '  Succeeded: %s\n'
+                '  Skipped: %s\n'
+                '  Failed: %s\n' % (
+                    tests_total, tests_ok, tests_skipped, tests_failed))
+
+            if len(build_history) > 0:
+                badge['tooltip'] += '\nClick to show more build history.'
+            else:
+                badge['tooltip'] += '\nNo build history available for this repository.'
 
             # set colour and icon based on test results
             if tests_failed != 0:
@@ -279,6 +284,11 @@ def get_badges(macro, data):
                     build_['tests_ok'] = '?'
                     build_['tests_total'] = '?'
 
+        except KeyError as e:
+            badge['tooltip'] = ("Could not process test statistics, error:\n"
+                                "Missing key in test data: '%s'") % e
+            badge['error'] = e
+            badge['history'] = []
 
     if data.get('doc_job', None):
         badges.append({'text' : 'Documented', 'color' : color_green, 'icon' : icon_checkm})
@@ -308,42 +318,50 @@ def get_badges(macro, data):
                 html += (
                     '<div class="dropdown" style="display: inline-block; margin-bottom: 8px;">'
                     '<button class="badge dropdown-toggle" style="background-color: #%s; border: none;" data-toggle="dropdown" title="%s">'
-                    '<span class="glyphicon glyphicon-%s" style="color: white;"></span> %s: ' % (
+                    '<span class="glyphicon glyphicon-%s" style="color: white;"></span> %s' % (
                         badge["color"], badge["tooltip"], badge["icon"], badge["text"])
                 )
 
-                html += '<span>%s / %s</span>\n' % (badge["tests_ok"], badge["tests_total"])
+                # if there was any error, skip extending the badge with test stats
+                # and the dropdown
+                if 'error' in  badge:
+                    html += '</button>\n'
 
-                # add build history, if it exists
-                build_history = badge.get('history', [])
-                if build_history:
-                    html += (
-                        '<span class="caret" style="margin: 0 3px 0 5px;"></span>'
-                        '</button>'
-                        '<ul class="dropdown-menu">'
-                        '<li class="dropdown-header">Build history (last %s of %s builds):</li>'
-                            % (len(badge["history"]), badge["total_builds"])
-                    )
+                else:
+                    html += ': <span>%s / %s</span>\n' % (badge["tests_ok"], badge["tests_total"])
 
-                    for build in badge["history"]:
+                    # add build history, if it exists
+                    build_history = badge.get('history', [])
+
+                    # no history available: close button
+                    if not build_history:
+                        html += '</button>\n'
+
+                    # add dropdown ul and render each job to a li
+                    else:
                         html += (
-                            '<li style="font-size: 12px">'
-                            '<a href="%s" target="_blank">'
-                            '  <span class="glyphicon glyphicon-%s"></span>'
-                            '  <span style="font-weight: bold; padding-left: 10px;">#%s</span>'
-                            '  <span style="color: #333; padding-left: 10px;">%s</span>'
-                            '  <span style="color: #333; padding-left: 10px;">%s / %s</span>'
-                            '</a>'
-                            '</li>' % (
-                                build["uri"], build["icon"], build["id"], build["stamp"],
-                                build["tests_ok"], build["tests_total"])
+                            '<span class="caret" style="margin: 0 3px 0 5px;"></span>'
+                            '</button>'
+                            '<ul class="dropdown-menu">'
+                            '<li class="dropdown-header">Build history (last %s of %s builds):</li>'
+                                % (len(badge["history"]), badge["total_builds"])
                         )
 
-                    html += '</ul>\n'
+                        for build in badge["history"]:
+                            html += (
+                                '<li style="font-size: 12px">'
+                                '<a href="%s" target="_blank">'
+                                '  <span class="glyphicon glyphicon-%s"></span>'
+                                '  <span style="font-weight: bold; padding-left: 10px;">#%s</span>'
+                                '  <span style="color: #333; padding-left: 10px;">%s</span>'
+                                '  <span style="color: #333; padding-left: 10px;">%s / %s</span>'
+                                '</a>'
+                                '</li>' % (
+                                    build["uri"], build["icon"], build["id"], build["stamp"],
+                                    build["tests_ok"], build["tests_total"])
+                            )
 
-                # no history available
-                else:
-                    html += '</button>\n'
+                        html += '</ul>\n'
 
                 # end of dropdown div
                 html += '</div>\n'
