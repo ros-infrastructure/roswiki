@@ -69,16 +69,17 @@ def macro_StackHeader(macro, arg1, arg2=None):
                     distros_displayed=loaded_distros_buildfarm,
                 )
         else:
-            # Only EOL distros available: don't show EOL toggle.
-            html += (
-                '<span style="text-align:left">'
-                '<i>Only released in EOL distros:</i>'
-                '&nbsp;&nbsp;'
-                '</span>'
-            )
-            html += distro_selector_html(
-                distros_displayed=loaded_distros_eol,
-            )
+            if loaded_distros_eol:
+                # Only EOL distros available: don't show EOL toggle.
+                html += (
+                    '<span style="text-align:left">'
+                    '<i>Only released in EOL distros:</i>'
+                    '&nbsp;&nbsp;'
+                    '</span>'
+                )
+                html += distro_selector_html(
+                    distros_displayed=loaded_distros_eol,
+                )
         html += doc_html(loaded_distros, stack_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:
