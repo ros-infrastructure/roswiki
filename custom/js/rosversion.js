@@ -44,6 +44,16 @@ function getURLParameter(name) {
     )[1].replace(/\+/g, '%20')) || null;
 }
 
+function showHiddenVersionSelector(val)
+{
+  if (val) {
+    $("#rosversions_hidden").slideDown();
+  } else {
+    $("#rosversions_hidden").slideUp();
+  }
+  document.getElementById("rosversions_hidden_checkbox").checked=val
+}
+
 function toggleDocStatus()
 {
   if ($("#doc_status").is(":hidden")) {
@@ -59,6 +69,13 @@ $(document).ready(function() {
   if (url_distro) {
     activedistro=url_distro;
   }
+
+  // There's a distro selector that is hidden by default (e.g. for EOL distros).
+  // Show it if one of those distros is active.
+  if ($("#rosversion_selector_hidden").has("#"+activedistro).length > 0) {
+    showHiddenVersionSelector(true);
+  }
+
   // Make the $ROS_DISTRO replacement work by wrapping it in a span. This is
   // necessary vs. MoinMoin macros because macros are not expanded inside of
   // code blocks, where this replacement is most useful. Using a function for

@@ -31,18 +31,10 @@ Example:
 
 """
 
-from headers import distro_html
+from headers import distro_selector_with_eol_toggle_html
+from macroutils import distro_names_buildfarm, distro_names_eol
 
 Dependencies = []
-
-# configure the active set of distros
-from macroutils import distro_names as distros
-
-if 'boxturtle' in distros:
-    distros.remove('boxturtle')
-if 'unstable' in distros:
-    distros.remove('unstable')
-
 
 def execute(macro, args):
     if args:
@@ -56,7 +48,8 @@ def execute(macro, args):
                     'font-weight:bold; padding: 3px;">'
                     'New in %s</span>' % version)
 
-    html = '<span id="rosversion_selector" class="btn-group">\n'
-    html += "\n".join([distro_html(distro, distros) for distro in distros])
-    html += '\n</span>'
+    html = distro_selector_with_eol_toggle_html(
+        distros_displayed_by_default=distro_names_buildfarm,
+        distros_hidden_by_default=distro_names_eol,
+    )
     return macro.formatter.rawHTML(html)

@@ -2,25 +2,17 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
-from macroutils import load_stack_manifest, load_package_manifest, distro_names, CONTRIBUTE_TMPL, UtilException
-from headers import get_nav, get_description, get_package_links, generate_package_header, distro_html, get_stack_links, doc_html, get_loaded_distros
+from macroutils import load_stack_manifest, load_package_manifest, distro_names, distro_names_buildfarm, distro_names_eol, CONTRIBUTE_TMPL, UtilException
+from headers import get_nav, get_description, get_package_links, generate_package_header, distro_selector_html, get_stack_links, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
 
-if 'boxturtle' in distro_names:
-    distro_names.remove('boxturtle')
-if 'cturtle' in distro_names:
-    distro_names.remove('cturtle')
-if 'diamondback' in distro_names:
-    distro_names.remove('diamondback')
-if 'unstable' in distro_names:
-    distro_names.remove('unstable')
 
 def generate_old_stack_header(macro, stack_name, opt_distro=None):
     try:
         data = load_stack_manifest(stack_name, opt_distro)
-    except UtilException, e:
+    except UtilException as e:
         name = "name: %s, distro: %s" % (stack_name, opt_distro)
         return CONTRIBUTE_TMPL%locals()
   
@@ -54,23 +46,37 @@ def macro_StackHeader(macro, arg1, arg2=None):
 
     if not opt_distro:
         headers_html = []
-        loaded_distros = get_loaded_distros(stack_name, distro_names)
-        for distro in distro_names:
+        loaded_distros = get_loaded_distros(stack_name, distro_names_buildfarm)
+        loaded_distros_eol = [distro for distro in loaded_distros if distro in distro_names_eol]
+        loaded_distros_buildfarm = [distro for distro in loaded_distros if distro in distro_names_buildfarm]
+        for distro in loaded_distros:
             if distro in ['boxturtle', 'cturtle', 'diamondback']:
                 stack_header_html = generate_old_stack_header(macro, stack_name, distro)
             else:
                 stack_header_html = generate_package_header(macro, stack_name, distro)
             headers_html.append('<div class="version %s">' % distro + stack_header_html + '</div>')
 
-        html = '<span id="rosversion_selector" class="btn-group">\n'
-        html += "\n".join([distro_html(distro, loaded_distros) for distro in distro_names])
-        html += '\n</span>'
-        html += doc_html(distro_names, stack_name)
+        html = ''
+        if loaded_distros_buildfarm:
+            html += distro_selector_with_eol_toggle_html(
+                distros_displayed_by_default=loaded_distros_buildfarm,
+                distros_hidden_by_default=loaded_distros_eol,
+            )
+        else:
+            # Only EOL distros available: don't show EOL toggle.
+            html += (
+                '<span style="text-align:left">'
+                '<i>Only released in EOL distros:</i>'
+                '&nbsp;&nbsp;'
+                '</span>'
+            )
+            html += distro_selector_html(
+                distros_displayed=loaded_distros_eol,
+            )
+        html += doc_html(loaded_distros, stack_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:
         if opt_distro in ['boxturtle', 'cturtle', 'diamondback']:
             return generate_old_stack_header(macro, stack_name, opt_distro)
         else:
             return generate_package_header(macro, stack_name, opt_distro)
-
-  
