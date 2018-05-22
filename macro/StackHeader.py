@@ -3,7 +3,7 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_stack_manifest, load_package_manifest, distro_names, distro_names_buildfarm, distro_names_eol, CONTRIBUTE_TMPL, UtilException
-from headers import get_nav, get_description, get_package_links, generate_package_header, distro_selector_html, get_stack_links, doc_html, get_loaded_distros
+from headers import get_nav, get_description, get_package_links, generate_package_header, distro_selector_html, distro_selector_with_eol_toggle_html, get_stack_links, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
