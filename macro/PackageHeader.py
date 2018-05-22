@@ -48,10 +48,16 @@ def macro_PackageHeader(macro, arg1, arg2=None):
 
         html = ''
         if loaded_distros_buildfarm:
-            html += distro_selector_with_eol_toggle_html(
-                distros_displayed_by_default=loaded_distros_buildfarm,
-                distros_hidden_by_default=loaded_distros_eol,
-            )
+            if loaded_distros_eol:
+                html += distro_selector_with_eol_toggle_html(
+                    distros_displayed_by_default=loaded_distros_buildfarm,
+                    distros_hidden_by_default=loaded_distros_eol,
+                )
+            else:
+                # Only active distros available: don't show EOL toggle.
+                html += distro_selector_html(
+                    distros_displayed=loaded_distros_buildfarm,
+                )
         else:
             # Only EOL distros available: don't show EOL toggle.
             html += (
