@@ -39,10 +39,10 @@ Dependencies = []
 def execute(macro, args):
     if args:
         version = str(args)
-        if version.lower() == 'n-turtle':
+        if version.lower() == 'noetic':
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
-                    'Expected in N-Turtle</span>')
+                    'Expected in Noetic Ninjemys</span>')
         else:
             return ('<span style="background-color:#FFFF00; '
                     'font-weight:bold; padding: 3px;">'
