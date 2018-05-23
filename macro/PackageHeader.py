@@ -2,7 +2,7 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_package_manifest, distro_names, distro_names_buildfarm, distro_names_eol, CONTRIBUTE_TMPL, UtilException
-from headers import get_nav, get_description, get_package_links, generate_package_header, distro_selector_html, doc_html, get_loaded_distros
+from headers import get_nav, get_description, get_package_links, generate_package_header, distro_selector_html, distro_selector_with_eol_toggle_html, doc_html, get_loaded_distros
 
 generates_headings = True
 dependencies = []
@@ -48,21 +48,28 @@ def macro_PackageHeader(macro, arg1, arg2=None):
 
         html = ''
         if loaded_distros_buildfarm:
-            html += distro_selector_with_eol_toggle_html(
-                distros_displayed_by_default=loaded_distros_buildfarm,
-                distros_hidden_by_default=loaded_distros_eol,
-            )
+            if loaded_distros_eol:
+                html += distro_selector_with_eol_toggle_html(
+                    distros_displayed_by_default=loaded_distros_buildfarm,
+                    distros_hidden_by_default=loaded_distros_eol,
+                )
+            else:
+                # Only active distros available: don't show EOL toggle.
+                html += distro_selector_html(
+                    distros_displayed=loaded_distros_buildfarm,
+                )
         else:
-            # Only EOL distros available: don't show EOL toggle.
-            html += (
-                '<span style="text-align:left">'
-                '<i>Only released in EOL distros:</i>'
-                '&nbsp;&nbsp;'
-                '</span>'
-            )
-            html += distro_selector_html(
-                distros_displayed=loaded_distros_eol,
-            )
+            if loaded_distros_eol:
+                # Only EOL distros available: don't show EOL toggle.
+                html += (
+                    '<span style="text-align:left">'
+                    '<i>Only released in EOL distros:</i>'
+                    '&nbsp;&nbsp;'
+                    '</span>'
+                )
+                html += distro_selector_html(
+                    distros_displayed=loaded_distros_eol,
+                )
         html += doc_html(loaded_distros, package_name)
         return macro.formatter.rawHTML(html + "\n".join(headers_html))
     else:

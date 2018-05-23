@@ -268,12 +268,14 @@ def get_repo_name(data, package_name, opt_distro):
 
 def doc_html(distros, package_name):
     doc_html = (
+        '<div id="doc_status_link" '
+        'style="margin-bottom:10px">'
         '<span style="text-align:left">'
-        '&nbsp;&nbsp;'
         '<a href="javascript:toggleDocStatus()">'
         'Documentation Status'
         '</a>'
         '</span>'
+        '</div>'
     )
     doc_html += (
         '<div id="doc_status" '

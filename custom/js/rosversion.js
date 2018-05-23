@@ -44,6 +44,11 @@ function getURLParameter(name) {
     )[1].replace(/\+/g, '%20')) || null;
 }
 
+function getHiddenVersionCheckbox()
+{
+  return document.getElementById("rosversions_hidden_checkbox");
+}
+
 function showHiddenVersionSelector(val)
 {
   if (val) {
@@ -51,7 +56,10 @@ function showHiddenVersionSelector(val)
   } else {
     $("#rosversions_hidden").slideUp();
   }
-  document.getElementById("rosversions_hidden_checkbox").checked=val
+  var checkbox = getHiddenVersionCheckbox();
+  if (checkbox) {
+    checkbox.checked=val
+  }
 }
 
 function toggleDocStatus()
@@ -71,6 +79,12 @@ $(document).ready(function() {
   }
 
   // There's a distro selector that is hidden by default (e.g. for EOL distros).
+  // Show it if the checkbox is active already
+  // (e.g. from navigating backward/forward to a page that had it active).
+  var checkbox = getHiddenVersionCheckbox();
+  if (checkbox) {
+    showHiddenVersionSelector(checkbox.checked)
+  }
   // Show it if one of those distros is active.
   if ($("#rosversion_selector_hidden").has("#"+activedistro).length > 0) {
     showHiddenVersionSelector(true);
