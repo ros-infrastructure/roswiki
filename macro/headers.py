@@ -182,6 +182,81 @@ def _jenkins_stamp_to_datetime(stamp):
     return datetime.datetime.fromtimestamp(stamp).strftime('%d-%b-%Y %H:%M')
 
 
+def _process_dev_job_build_data(data, badge):
+    base_url = data['base_url']
+    build_history = data.get('history', [])
+
+    latest_build = data['latest_build']
+    tests_skipped = latest_build['skipped']
+    tests_failed = latest_build['failed']
+    tests_total = latest_build['total']
+    # TODO: this essentially considers skipped tests as failures
+    tests_ok = tests_total - tests_failed - tests_skipped
+
+    # update badge dict
+    badge['total_builds'] = data['total_builds']
+    badge['health'] = data['job_health']
+    badge['tests_ok'] = tests_ok
+    badge['tests_total'] = tests_total
+
+    badge['tooltip'] = ('Last build:\n'
+        '  Total tests: %s\n'
+        '  Succeeded: %s\n'
+        '  Skipped: %s\n'
+        '  Failed: %s\n' % (
+            tests_total, tests_ok, tests_skipped, tests_failed))
+
+    if len(build_history) > 0:
+        badge['tooltip'] += '\nClick to show more build history.'
+    else:
+        badge['tooltip'] += '\nNo build history available for this repository.'
+
+    # set colour and icon based on test results
+    if tests_failed != 0:
+        badge['color'] = color_red
+        badge['icon'] = icon_cross
+    elif tests_skipped != 0:
+        badge['color'] = color_grey
+        badge['icon'] = icon_minus
+
+    # add info on previous builds of the job if there are any
+    badge['history'] = []
+    for build in build_history:
+        # gather build stats
+        build_stamp = _jenkins_stamp_to_datetime(build["stamp"])
+        build_icon = _map_build_result_to_icon(build['result'])
+
+        # create history entry
+        build_ = {
+            'id' : build['build_id'],
+            'uri' : base_url + '/' + build['uri'],
+            'icon' : build_icon,
+            'stamp' : build_stamp
+        }
+        badge['history'].append(build_)
+
+        # if there is test data available (not all jobs/builds have tests),
+        # add it to the badge data
+        build_test_data = build.get('tests', {})
+        if build_test_data:
+            tests_skipped = build_test_data['skipped']
+            tests_failed = build_test_data['failed']
+            tests_total = build_test_data['total']
+
+            # TODO: this essentially considers skipped tests as failures
+            tests_ok = tests_total - tests_failed - tests_skipped
+            tests_health = round(tests_ok / max(tests_total, 1) * 100.0)
+
+            build_['health'] = tests_health
+            build_['tests_ok'] = tests_ok
+            build_['tests_total'] = tests_total
+
+        else:
+            build_['health'] = 'n/a'
+            build_['tests_ok'] = '?'
+            build_['tests_total'] = '?'
+
+
 def _process_badge_data(data):
     badges = []
 
@@ -197,78 +272,7 @@ def _process_badge_data(data):
         # to indicate an error occured.
         try:
             dev_job_data = data['dev_job_data']
-            base_url = dev_job_data['base_url']
-            build_history = dev_job_data.get('history', [])
-
-            latest_build = dev_job_data['latest_build']
-            tests_skipped = latest_build['skipped']
-            tests_failed = latest_build['failed']
-            tests_total = latest_build['total']
-            # TODO: this essentially considers skipped tests as failures
-            tests_ok = tests_total - tests_failed - tests_skipped
-
-            # update badge dict
-            badge['total_builds'] = dev_job_data['total_builds']
-            badge['health'] = dev_job_data['job_health']
-            badge['tests_ok'] = tests_ok
-            badge['tests_total'] = tests_total
-
-            badge['tooltip'] = ('Last build:\n'
-                '  Total tests: %s\n'
-                '  Succeeded: %s\n'
-                '  Skipped: %s\n'
-                '  Failed: %s\n' % (
-                    tests_total, tests_ok, tests_skipped, tests_failed))
-
-            if len(build_history) > 0:
-                badge['tooltip'] += '\nClick to show more build history.'
-            else:
-                badge['tooltip'] += '\nNo build history available for this repository.'
-
-            # set colour and icon based on test results
-            if tests_failed != 0:
-                badge['color'] = color_red
-                badge['icon'] = icon_cross
-            elif tests_skipped != 0:
-                badge['color'] = color_grey
-                badge['icon'] = icon_minus
-
-            # add info on previous builds of the job if there are any
-            badge['history'] = []
-            for build in build_history:
-                # gather build stats
-                build_stamp = _jenkins_stamp_to_datetime(build["stamp"])
-                build_icon = _map_build_result_to_icon(build['result'])
-
-                # create history entry
-                build_ = {
-                    'id' : build['build_id'],
-                    'uri' : base_url + '/' + build['uri'],
-                    'icon' : build_icon,
-                    'stamp' : build_stamp
-                }
-                badge['history'].append(build_)
-
-                # if there is test data available (not all jobs/builds have tests),
-                # add it to the badge data
-                build_test_data = build.get('tests', {})
-                if build_test_data:
-                    tests_skipped = build_test_data['skipped']
-                    tests_failed = build_test_data['failed']
-                    tests_total = build_test_data['total']
-
-                    # TODO: this essentially considers skipped tests as failures
-                    tests_ok = tests_total - tests_failed - tests_skipped
-                    tests_health = round(tests_ok / max(tests_total, 1) * 100.0)
-
-                    build_['health'] = tests_health
-                    build_['tests_ok'] = tests_ok
-                    build_['tests_total'] = tests_total
-
-                else:
-                    build_['health'] = 'n/a'
-                    build_['tests_ok'] = '?'
-                    build_['tests_total'] = '?'
+            _process_dev_job_build_data(dev_job_data, badge)
 
         except KeyError as e:
             badge['tooltip'] = ("Could not process test statistics, error:\n"
