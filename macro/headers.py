@@ -327,7 +327,8 @@ def _render_badges(macro, data, badges):
                 # base badge
                 html += (
                     '<div class="dropdown" style="display: inline-block; margin-bottom: 8px;">'
-                    '<button class="badge dropdown-toggle" style="background-color: #%s; border: none;" data-toggle="dropdown" title="%s">'
+                    '<button class="badge dropdown-toggle" style="background-color: #%s; border: none;"'
+                    ' data-toggle="dropdown" title="%s">'
                     '<span class="glyphicon glyphicon-%s" style="color: white;"></span> %s' % (
                         badge["color"], badge["tooltip"], badge["icon"], badge["text"])
                 )
