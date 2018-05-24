@@ -267,24 +267,26 @@ def _process_badge_data(data):
         badge = {'text' : 'Continuous Integration', 'color' : color_green, 'icon' : icon_checkm}
         badges.append(badge)
 
-        # See if we can 'enhance' the badge by making it reflect jenkins job status.
-        # Assume dict is ok. Any KeyError will be caught and badge contents changed
-        # to indicate an error occured.
-        try:
-            dev_job_data = data['dev_job_data']
-            _process_dev_job_build_data(dev_job_data, badge)
+        # If there is data available, see if we can 'enhance' the badge by
+        # making it reflect jenkins job status.
+        dev_job_data = data.get('dev_job_data', [])
+        if dev_job_data:
+            try:
+                # Any KeyError will be caught and badge contents changed
+                # to indicate an error occured.
+                _process_dev_job_build_data(dev_job_data, badge)
 
-        except KeyError as e:
-            badge['tooltip'] = ("Could not process test statistics, error:\n"
-                                "Missing key in test data: '%s'") % e
-            badge['error'] = e
-            badge['history'] = []
-        except:
-            _, value, tb = sys.exc_info()
-            e = '%s at line %s' % (value.message, tb.tb_lineno)
-            badge['tooltip'] = 'Could not process test statistics, error:\n' + e
-            badge['error'] = e
-            badge['history'] = []
+            except KeyError as e:
+                badge['tooltip'] = ("Could not process test statistics, error:\n"
+                                    "Missing key in test data: '%s'") % e
+                badge['error'] = e
+                badge['history'] = []
+            except:
+                _, value, tb = sys.exc_info()
+                e = '%s at line %s' % (value.message, tb.tb_lineno)
+                badge['tooltip'] = 'Could not process test statistics, error:\n' + e
+                badge['error'] = e
+                badge['history'] = []
 
     if data.get('doc_job', None):
         badges.append({'text' : 'Documented', 'color' : color_green, 'icon' : icon_checkm})
