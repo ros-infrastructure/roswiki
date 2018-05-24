@@ -270,7 +270,11 @@ def _process_badge_data(data):
         # If there is data available, see if we can 'enhance' the badge by
         # making it reflect jenkins job status.
         dev_job_data = data.get('dev_job_data', [])
-        if dev_job_data:
+        if not dev_job_data:
+            badge['tooltip'] = 'No test statistics available for this package.'
+            badge['error'] = True
+
+        else:
             try:
                 # Any KeyError will be caught and badge contents changed
                 # to indicate an error occured.
@@ -279,13 +283,13 @@ def _process_badge_data(data):
             except KeyError as e:
                 badge['tooltip'] = ("Could not process test statistics, error:\n"
                                     "Missing key in test data: '%s'") % e
-                badge['error'] = e
+                badge['error'] = True
                 badge['history'] = []
             except:
                 _, value, tb = sys.exc_info()
                 e = '%s at line %s' % (value.message, tb.tb_lineno)
                 badge['tooltip'] = 'Could not process test statistics, error:\n' + e
-                badge['error'] = e
+                badge['error'] = True
                 badge['history'] = []
 
     if data.get('doc_job', None):
