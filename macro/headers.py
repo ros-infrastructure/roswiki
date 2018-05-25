@@ -345,7 +345,7 @@ def _render_badges(macro, data, badges):
 
                 # if there was any error, skip extending the badge with test stats
                 # and the dropdown
-                if 'error' in  badge:
+                if 'error' in badge:
                     html += '</button>\n'
 
                 else:
