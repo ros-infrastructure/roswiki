@@ -48,6 +48,15 @@ def package_manifest_file(package, distro=None):
     else:
         return os.path.join(doc_path, 'api', package, "manifest.yaml")
 
+def repo_devel_job_data_file(repo_name, distro=None):
+    """
+    Generate filesystem path to results.yaml for repository
+    """
+    if distro:
+        return os.path.join(doc_path, distro, 'devel_jobs', repo_name, "results.yaml")
+    else:
+        return os.path.join(doc_path, 'devel_jobs', repo_name, "results.yaml")
+
 def get_package_versions(package):
     distros = []
     for d in distro_names_indexed:
@@ -220,6 +229,14 @@ def load_package_manifest(package_name, distro=None):
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
     return _load_manifest_file(package_manifest_file(package_name, distro), package_name, "package")
+
+def load_repo_devel_job_data(repo_name, distro=None):
+    """
+    Load results.yaml properties into dictionary for repo
+    @return: manifest properties dictionary
+    @raise UtilException: if unable to load. Text of error message is human-readable
+    """
+    return _load_manifest_file(repo_devel_job_data_file(repo_name, distro), repo_name, 'devel job data for repo')
 
 def load_repo_manifest(repo_name):
     """

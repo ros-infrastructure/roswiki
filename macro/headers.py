@@ -19,6 +19,7 @@ from macroutils import get_repo_li
 from macroutils import get_url_li
 from macroutils import get_vcs_li
 from macroutils import load_package_manifest
+from macroutils import load_repo_devel_job_data
 from macroutils import load_stack_release
 from macroutils import msg_doc_link
 from macroutils import package_changelog_html_link
@@ -159,10 +160,153 @@ def get_description(macro, data, type_):
     return desc
 
 
-def get_badges(macro, data):
+color_green = '5cb85c'
+color_red = 'b94a48'
+color_grey = '999999'
+icon_checkm = 'ok'
+icon_cross = 'remove'
+icon_minus = 'minus'
+
+
+def _map_build_result_to_icon(build_result):
+    if build_result == 'success':
+        return icon_checkm
+    if build_result in ['unstable', 'not_built']:
+        return icon_minus
+    if build_result in ['failure', 'aborted']:
+        return icon_cross
+    # TODO: use better icon for unknown build statuses
+    return icon_minus
+
+
+def _jenkins_stamp_to_datetime(stamp):
+    return datetime.datetime.fromtimestamp(stamp).strftime('%d-%b-%Y %H:%M')
+
+
+def _process_dev_job_build_data(data, badge):
+    base_url = data['base_url']
+    build_history = data.get('history', [])
+
+    latest_build = data['latest_build']
+    tests_skipped = latest_build['skipped']
+    tests_failed = latest_build['failed']
+    tests_total = latest_build['total']
+    # TODO: this essentially considers skipped tests as failures
+    tests_ok = tests_total - tests_failed - tests_skipped
+
+    # update badge dict
+    badge['total_builds'] = data['total_builds']
+    badge['health'] = data['job_health']
+    badge['tests_ok'] = tests_ok
+    badge['tests_total'] = tests_total
+
+    badge['tooltip'] = ('Last build:\n'
+        '  Total tests: %s\n'
+        '  Succeeded: %s\n'
+        '  Skipped: %s\n'
+        '  Failed: %s\n' % (
+            tests_total, tests_ok, tests_skipped, tests_failed))
+
+    if len(build_history) > 0:
+        badge['tooltip'] += '\nClick to show more build history.'
+    else:
+        badge['tooltip'] += '\nNo build history available for this repository.'
+
+    # set colour and icon based on test results
+    if tests_failed != 0:
+        badge['color'] = color_red
+        badge['icon'] = icon_cross
+    elif tests_skipped != 0:
+        badge['color'] = color_grey
+        badge['icon'] = icon_minus
+
+    # add info on previous builds of the job if there are any
+    badge['history'] = []
+    for build in build_history:
+        # gather build stats
+        build_stamp = _jenkins_stamp_to_datetime(build["stamp"])
+        build_icon = _map_build_result_to_icon(build['result'])
+
+        # create history entry
+        build_ = {
+            'id' : build['build_id'],
+            'uri' : base_url + '/' + build['uri'],
+            'icon' : build_icon,
+            'stamp' : build_stamp
+        }
+        badge['history'].append(build_)
+
+        # if there is test data available (not all jobs/builds have tests),
+        # add it to the badge data
+        build_test_data = build.get('tests', {})
+        if build_test_data:
+            tests_skipped = build_test_data['skipped']
+            tests_failed = build_test_data['failed']
+            tests_total = build_test_data['total']
+
+            # TODO: this essentially considers skipped tests as failures
+            tests_ok = tests_total - tests_failed - tests_skipped
+            tests_health = round(tests_ok / max(tests_total, 1) * 100.0)
+
+            build_['health'] = tests_health
+            build_['tests_ok'] = tests_ok
+            build_['tests_total'] = tests_total
+
+        else:
+            build_['health'] = 'n/a'
+            build_['tests_ok'] = '?'
+            build_['tests_total'] = '?'
+
+
+def _process_badge_data(data):
+    badges = []
+
+    if data.get('release_jobs', []):
+        badges.append({'text' : 'Released', 'color' : color_green, 'icon' : icon_checkm})
+
+    if data.get('devel_jobs', []):
+        badge = {'text' : 'Continuous Integration', 'color' : color_green, 'icon' : icon_checkm}
+        badges.append(badge)
+
+        # If there is data available, see if we can 'enhance' the badge by
+        # making it reflect jenkins job status.
+        dev_job_data = data.get('dev_job_data', [])
+        if not dev_job_data:
+            badge['tooltip'] = 'No test statistics available for this package.'
+            badge['error'] = True
+
+        else:
+            try:
+                # Any KeyError will be caught and badge contents changed
+                # to indicate an error occured.
+                _process_dev_job_build_data(dev_job_data, badge)
+
+            except KeyError as e:
+                badge['tooltip'] = ("Could not process test statistics, error:\n"
+                                    "Missing key in test data: '%s'") % e
+                badge['error'] = True
+                badge['history'] = []
+            except:
+                _, value, tb = sys.exc_info()
+                e = '%s at line %s' % (value.message, tb.tb_lineno)
+                badge['tooltip'] = 'Could not process test statistics, error:\n' + e
+                badge['error'] = True
+                badge['history'] = []
+
+    if data.get('doc_job', None):
+        badges.append({'text' : 'Documented', 'color' : color_green, 'icon' : icon_checkm})
+
+    if not data.get('doc_job', None):
+        badges.append({'text' : 'No API documentation', 'color' : color_red, 'icon' : icon_cross})
+
+    return badges
+
+
+def _render_badges(macro, data, badges):
     p = macro.formatter.paragraph
     html = ''
 
+    # TODO: refactor this to be more like the other badges
     deprecated = data.get('deprecated', False)
     if deprecated:
         html += p(1)
@@ -174,28 +318,84 @@ def get_badges(macro, data):
         )
         html += p(0)
 
-    badges = []
-    color = '5cb85c'
-    icon = 'ok'
-    if data.get('release_jobs', []):
-        badges.append(['Released', color, icon])
-    if data.get('devel_jobs', []):
-        badges.append(['Continuous integration', color, icon])
-    if data.get('doc_job', None):
-        badges.append(['Documented', color, icon])
-
-    if not data.get('doc_job', None):
-        badges.append(['No API documentation', 'b94a48', 'remove'])
-
+    # render other badges to html
     if badges:
         html += p(1)
-        html += '\n'.join([
-            '<span class="badge" style="background-color: #%s;">'
-            '<span class="glyphicon glyphicon-%s" style="color: white;"></span> '
-            '%s</span>' % (badge[1], badge[2], badge[0]) for badge in badges
-        ])
+
+        for badge in badges:
+            # all other badges (have only three items in dict)
+            if len(badge) == 3:
+                html += (
+                    '<div class="dropdown" style="display: inline-block; margin-bottom: 8px; margin-right: 4px;">'
+                    '<span class="badge" style="background-color: #%s;">'
+                    '<span class="glyphicon glyphicon-%s" style="color: white;"></span> %s '
+                    '</span>'
+                    '</div>' % (badge["color"], badge["icon"], badge["text"])
+                )
+
+            # the 'Continuous Integration' badge requires special handling
+            else:
+                # base badge
+                html += (
+                    '<div class="dropdown" style="display: inline-block; margin-bottom: 8px;">'
+                    '<button class="badge dropdown-toggle" style="background-color: #%s; border: none;"'
+                    ' data-toggle="dropdown" title="%s">'
+                    '<span class="glyphicon glyphicon-%s" style="color: white;"></span> %s' % (
+                        badge["color"], badge["tooltip"], badge["icon"], badge["text"])
+                )
+
+                # if there was any error, skip extending the badge with test stats
+                # and the dropdown
+                if 'error' in badge:
+                    html += '</button>\n'
+
+                else:
+                    html += ': <span>%s / %s</span>\n' % (badge["tests_ok"], badge["tests_total"])
+
+                    # add build history, if it exists
+                    build_history = badge.get('history', [])
+
+                    # no history available: close button
+                    if not build_history:
+                        html += '</button>\n'
+
+                    # add dropdown ul and render each job to a li
+                    else:
+                        html += (
+                            '<span class="caret" style="margin: 0 3px 0 5px;"></span>'
+                            '</button>'
+                            '<ul class="dropdown-menu">'
+                            '<li class="dropdown-header">Build history (last %s of %s builds):</li>'
+                                % (len(badge["history"]), badge["total_builds"])
+                        )
+
+                        for build in badge["history"]:
+                            html += (
+                                '<li style="font-size: 12px">'
+                                '<a href="%s" target="_blank">'
+                                '  <span class="glyphicon glyphicon-%s"></span>'
+                                '  <span style="font-weight: bold; padding-left: 10px;">#%s</span>'
+                                '  <span style="color: #333; padding-left: 10px;">%s</span>'
+                                '  <span style="color: #333; padding-left: 10px;">%s / %s</span>'
+                                '</a>'
+                                '</li>' % (
+                                    build["uri"], build["icon"], build["id"], build["stamp"],
+                                    build["tests_ok"], build["tests_total"])
+                            )
+
+                        html += '</ul>\n'
+
+                # end of dropdown div
+                html += '</div>\n'
+
         html += p(0)
 
+    return html
+
+
+def get_badges(macro, data):
+    badges = _process_badge_data(data)
+    html = _render_badges(macro, data, badges)
     return html
 
 
@@ -368,6 +568,16 @@ def generate_package_header(macro, package_name, opt_distro=None):
         name = "name: %s, distro: %s" % (package_name, opt_distro)
         return CONTRIBUTE_TMPL % locals()
 
+    repo_name = get_repo_name(data, package_name, opt_distro)
+
+    # try to load devel job info (but don't complain if it can't be found or loaded,
+    # as not all devel jobs have been updated (so the results yaml may not exist)
+    try:
+        devel_job_data = load_repo_devel_job_data(repo_name, opt_distro)
+        data.update(devel_job_data)
+    except:
+        pass
+
     nav = []
     # Check to see if the package is a metapackage or a stack
     package_type = data.get('package_type', 'package')
@@ -389,8 +599,6 @@ def generate_package_header(macro, package_name, opt_distro=None):
                         stack_name = metapackage
                 except UtilException:
                     continue
-
-    repo_name = get_repo_name(data, package_name, opt_distro)
 
     desc = get_description(macro, data, 'package')
     links = get_package_links(macro, package_name, data, opt_distro, repo_name=repo_name, metapackage=is_metapackage)
