@@ -234,7 +234,7 @@ def load_repo_devel_job_data(repo_name, distro=None):
     @return: manifest properties dictionary
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    return _load_manifest_file(repo_devel_job_data_file(repo_name, distro), 'SOMETHING')
+    return _load_manifest_file(repo_devel_job_data_file(repo_name, distro), repo_name, 'devel job data for repo')
 
 def load_repo_manifest(repo_name):
     """
