@@ -52,3 +52,6 @@ ionice -c2 -n7 rsync -ave "ssh -i /home/ros/.ssh/mirror_upload/mirror_upload" $e
 rm -rf $export_dir
 
 ionice -c2 -n7 rsync -ave "ssh -i /home/ros/.ssh/mirror_upload/mirror_upload" /data/docs/ ros@ftp-osl.osuosl.org:~/data/ros_docs_mirror/ --delete --bwlimit $BWLIMIT --progress
+
+# Trigger mirror propagation on OSUOSL's servers
+ssh -i /home/ros/.ssh/mirror_upload/mirror_upload ros@ftp-osl.osuosl.org ~/trigger-ros
