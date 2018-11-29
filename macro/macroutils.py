@@ -192,7 +192,7 @@ def load_stack_release(release_name, stack_name):
         if release_name in ['boxturtle', 'cturtle', 'diamondback']:
             usock = open('/var/www/www.ros.org/distros/%s.rosdistro'%release_name)
         else:
-            usock = urllib2.urlopen('http://ros-dry-releases.googlecode.com/svn/trunk/distros/%s.rosdistro'%release_name)
+            usock = urllib2.urlopen('http://svn.code.sf.net/p/ros-dry-releases/code/trunk/distros/%s.rosdistro'%release_name)
         rosdistro_str = usock.read()
         usock.close()
         release, stack_props = process_distro(stack_name, rosdistro_str)
