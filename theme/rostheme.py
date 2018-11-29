@@ -232,7 +232,7 @@ theForm.input.value=theForm.input.value
                 help_to_edit_string = self.emit_custom_html( """<div class="alert alert-info" role="alert">
   <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
   <span class="sr-only">Note:</span>
-Hi there, %s! In an effort to combat spam, we require that users be added to a whitelist to gain edit permissions. To gain edit permissions for yourself, please comment on <a href=\"https://github.com/ros-infrastructure/roswiki/issues/139\" class="alert-link">this GitHub ticket</a> with your wiki UserName, '%s', to be added to the whitelist. Thanks for your patience and support.
+Hi there, %s! In an effort to combat spam, we require that users be added to a whitelist to gain edit permissions. To gain edit permissions for yourself, please comment on <a href=\"https://github.com/ros-infrastructure/roswiki/issues/258\" class="alert-link">this GitHub ticket</a> with your wiki UserName, '%s', to be added to the whitelist. Thanks for your patience and support.
 </div>""" % (self.request.user.name, self.request.user.name))
 
         html = [
