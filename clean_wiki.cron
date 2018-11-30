@@ -1,0 +1,1 @@
+13 11 * * 6 /var/www/wiki.ros.org/cron/clean_wiki > /dev/null 2> /dev/null

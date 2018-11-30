@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Create output directory 
+
+datestr=`date +"%Y%m%d"`
+
+cleanup_dir=/var/www/wiki.ros.org/wiki_cleanup/$datestr
+
+mkdir -p $cleanup_dir/trash
+mkdir -p $cleanup_dir/deleted
+
+cd $cleanup_dir
+
+# Source the wiki env
+. /var/www/wiki.ros.org/venv/bin/activate
+
+
+# Run the moin moin detector script
+python /var/www/wiki.ros.org/venv/lib/python2.6/site-packages/MoinMoin/script/moin.py --config-dir=/var/www/wiki.ros.org/conf/ --wiki-url=wiki.ros.org/ maint cleanpage > _cleanpage_full.sh
+
+bash _cleanpage_full.sh
