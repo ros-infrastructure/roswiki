@@ -2,7 +2,7 @@ import pypandoc
 import requests
 import re
 
-GITHUB_PATTERN = re.compile(r'https?://w*\.?github.com/([^/]+)/([^/]+)/blob/([^/]+)/([^/]+.md)')
+GITHUB_PATTERN = re.compile(r'https?://w*\.?github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.*)')
 RAW_GITHUB_TEMPLATE = 'https://raw.githubusercontent.com/%s/%s/%s/%s'
 
 def macro_Markdown(macro, arg1):
@@ -13,5 +13,5 @@ def macro_Markdown(macro, arg1):
             arg1 = RAW_GITHUB_TEMPLATE % m.groups()
         r = requests.get(arg1)
         content = r.text
-    output = pypandoc.convert_text(content, 'mediawiki', 'md')
+    output = pypandoc.convert_text(content, 'html', format='md')
     return output
