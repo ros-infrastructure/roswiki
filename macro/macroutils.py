@@ -213,7 +213,7 @@ def _load_manifest_file(filename, name, type_='package'):
 
     try:
         with open(filename) as f:
-            data = yaml.load(f)
+            data = yaml.safe_load(f)
     except:
         raise UtilException("Error loading manifest data")        
 

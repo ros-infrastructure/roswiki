@@ -59,7 +59,7 @@ def macro_MsgSrvDoc(macro, arg1, arg2='true'):
   except:
     return 'Newly proposed, mistyped, or obsolete package. Could not find package "' + package_name + '" in rosdoc: ' + manifest_file
 
-  m = yaml.load(unicode(ydata, 'utf-8'))
+  m = yaml.safe_load(unicode(ydata, 'utf-8'))
   if not m or type(m) != dict:
     return "Unable to retrieve package data from '%s'. Auto-generated documentation may need to regenerate" % manifest_file
   
