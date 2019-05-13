@@ -20,6 +20,7 @@ from macroutils import get_url_li
 from macroutils import get_vcs_li
 from macroutils import load_package_manifest
 from macroutils import load_repo_devel_job_data
+from macroutils import load_repo_haros_data
 from macroutils import load_stack_release
 from macroutils import msg_doc_link
 from macroutils import package_changelog_html_link
@@ -113,6 +114,8 @@ def get_description(macro, data, type_):
 
     license = data.get('license', 'unknown')
 
+    haros_quality = 'would like to see inside data'
+
     description = data.get('description', '')
     try:
         if type(description) != unicode_:
@@ -149,6 +152,7 @@ def get_description(macro, data, type_):
             maintainers_li +
             li(1) + text("Author: " + obfuscate_email(authors)) + li(0) +
             li(1) + text("License: " + license) + li(0) +
+            li(1) + text("Quality: " + haros_quality) + li(0) +
             url_li +
             repo_li +
             bugtracker_li +
@@ -575,6 +579,14 @@ def generate_package_header(macro, package_name, opt_distro=None):
     try:
         devel_job_data = load_repo_devel_job_data(repo_name, opt_distro)
         data.update(devel_job_data)
+    except:
+        pass
+
+    # try to load HAROS info (but don't complain if it can't be found or loaded,
+    # as not all packages include HAROS (so the results yaml may not exist)
+    try:
+        haros_data = load_repo_haros_data(repo_name, opt_distro)
+        data.update(haros_data)
     except:
         pass
 
