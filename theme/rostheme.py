@@ -332,7 +332,7 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
     page_footer2 = """
 
 <div style="margin-top: 9px;" class="footer">
-Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a> | <a href="https://plus.google.com/113789706402978299308" rel="publisher">Find us on Google+</a>
+Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>
 <hr style="margin-top: 10px;">
 <div class="row">
   <div class="col-md-4 col-md-offset-4">
