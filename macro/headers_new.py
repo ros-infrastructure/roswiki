@@ -95,10 +95,6 @@ def obfuscate_email(data):
         data = re.sub('(<[^>]+)%s([^<]+>)' % re.escape(k), r'\1%s\2' % v, data)
     return data
 
-def avg(xs):
-    if not xs:
-        return None
-    return sum(xs) / float(len(xs))
 
 def get_description(macro, data, type_):
     # keys
@@ -409,53 +405,29 @@ def get_badges(macro, data):
 
 def _process_haros_data(data):
     haros = []
-    # if data.get('haros_data', []):
-    #     haros_data = data.get('haros_data', [])
-        
-    #     sloc = 0
-    #     ratios = []
-    #     cc = []
-    #     mi = []
-    #     coupling = []
-    #     dit = []
-    #     for datum in haros_data:
-    #         metric = datum["metric"]
-    #         value = datum["value"]
-    #         if metric == "sloc":
-    #             sloc += value
-    #         elif metric == "comment_ratio":
-    #             ratios.append(value)
-    #         elif metric == "cyclomatic_complexity":
-    #             cc.append(value)
-    #         elif metric == "maintainability_index":
-    #             mi.append(value)
-    #         elif metric == "class_coupling":
-    #             coupling.append(value)
-    #         elif metric == "depth_inheritance":
-    #             dit.append(value)
+    if data.get('haros_data', []):
+        haros_data = data.get('haros_data', [])
 
-    #     haros.append({'text' : 'LOC', 'value' : str(sloc)})
+        #coupling = []
+        #dit = []
+        #for datum in haros_data:
+        #    url = datum["url"]
+        #    value = datum["value"]
+        #    if metric == "sloc":
+        #        sloc += value
+        #    elif metric == "comment_ratio":
+        #        ratios.append(value)
+        #    elif metric == "cyclomatic_complexity":
+        #        cc.append(value)
+        #    elif metric == "maintainability_index":
+        #        mi.append(value)
+        #    elif metric == "class_coupling":
+        #        coupling.append(value)
+        #    elif metric == "depth_inheritance":
+        #        dit.append(value)
 
-    #     ratios = round(avg(ratios), 2) * 100
-    #     ratios = str(ratios) if not ratios is None else "No Report"
-    #     haros.append({'text' : 'Comment Ratio', 'value' : str(ratios)})
+        #haros.append({'text' : 'LOC', 'value' : str(sloc)})
 
-    #     cc = avg(cc)
-    #     cc = str(round(cc)) if not cc is None else "No Report"
-    #     haros.append({'text' : 'Cyclomatic Complexity', 'value' : str(cc)})
-
-    #     mi = avg(mi)
-    #     mi = str(round(mi)) if not mi is None else "No Report"
-    #     haros.append({'text' : 'Maintainability Index', 'value' : str(mi)})
-
-    #     coupling = avg(coupling)
-    #     coupling = str(coupling) if not coupling is None else "No Report"
-    #     haros.append({'text' : 'Class Coupling', 'value' : str(coupling)})
-
-    #     dit = avg(dit)
-    #     dit = str(dit) if not dit is None else "No Report"
-    #     haros.append({'text' : 'Depth Inheritance', 'value' : str(dit)})
-    haros.append({'text' : 'Depth Inheritance', 'value' : str(2)})
     return haros
 
 def _render_haros(macro, data, haros):
