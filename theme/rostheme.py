@@ -176,6 +176,9 @@ theForm.input.value=theForm.input.value
 }
 </script>
 
+# ROS Statuspage Embed
+<script src="https://rhybxq8cmnsd.statuspage.io/embed/script.js"></script>
+
 
 <form action="https://www.ros.org/search/index.html" id="cse">
   <div>
