@@ -18,9 +18,6 @@
 """
 
 import sys, os
-import newrelic.agent
-newrelic.agent.initialize('/var/www/wiki.ros.org/conf/newrelic.ini')
-
 
 # a) Configuration of Python's code search path
 #    If you already have set up the PYTHONPATH environment variable for the
@@ -50,4 +47,3 @@ from MoinMoin.web.serving import make_application
 # use shared='/my/path/to/htdocs' to serve static docs from that path
 application = make_application(shared=True)
 
-application = newrelic.agent.WSGIApplicationWrapper(application)
