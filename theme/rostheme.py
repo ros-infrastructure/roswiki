@@ -176,10 +176,6 @@ theForm.input.value=theForm.input.value
 }
 </script>
 
-<!-- ROS Statuspage Embed -->
-<script src="https://rhybxq8cmnsd.statuspage.io/embed/script.js"></script>
-
-
 <form action="https://www.ros.org/search/index.html" id="cse">
   <div>
     <label>Search:</label>
@@ -346,7 +342,8 @@ Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="
 
   </div></div> <!-- /#dpage-inner, /#dpage -->
 
-
+<!-- ROS Statuspage Embed -->
+<script src="https://rhybxq8cmnsd.statuspage.io/embed/script.js"></script>
 """
 
 def execute(request):
