@@ -200,7 +200,7 @@ theForm.input.value=theForm.input.value
         border="0" src="/custom/images/menu_documentation.png" width="237" height="53" alt="Documentation" /></a><img
         src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="https://index.ros.org/packages"><img border="0"
         src="/custom/images/menu_browse_software.png" width="268" height="53" alt="Browse Software" /></a><img
-        src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="http://www.ros.org/news"><img border="0"
+        src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="https://discourse.ros.org/c/general"><img border="0"
         src="/custom/images/menu_news.png" width="84" height="53" alt="News" /></a><img
         src="/custom/images/menu_spacer.png" width="69" height="53" /><a href="/ROS/Installation"><img border="0"
         src="/custom/images/menu_download.png" width="151" height="53" alt="Download" /></a><img
