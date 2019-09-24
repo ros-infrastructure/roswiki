@@ -426,7 +426,7 @@ def _render_haros(macro, data, haros):
     html = ''
 
     if haros:
-        html += "<li>" + "Availble Software Reports: "
+        html += "<li>" + "Available Software Reports: "
         html += '<a href="' + str(haros[0].get('url')) +'" target="_blank">' + str(haros[0].get('type')) + '</a>'
         html += "</li>"
     return html
