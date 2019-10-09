@@ -20,7 +20,7 @@ from macroutils import get_url_li
 from macroutils import get_vcs_li
 from macroutils import load_package_manifest
 from macroutils import load_repo_devel_job_data
-from macroutils import load_repo_haros_data
+from macroutils import get_repo_reports_data
 from macroutils import load_stack_release
 from macroutils import msg_doc_link
 from macroutils import package_changelog_html_link
@@ -33,7 +33,6 @@ try:
     unicode_ = unicode
 except NameError:
     unicode_ = str
-
 
 def get_nav(macro, stack_name, packages, distro=None):
     nav = ''
@@ -125,7 +124,7 @@ def get_description(macro, data, type_):
     except UnicodeDecodeError:
         description = ''
 
-    haros_quality = get_haros(macro, data)
+    reports_html = get_reports(macro, data)
 
     f = macro.formatter
     p, li, ul = f.paragraph, f.listitem, f.bullet_list
@@ -160,7 +159,7 @@ def get_description(macro, data, type_):
             repo_li +
             bugtracker_li +
             vcs_li +
-            haros_quality +
+            reports_html +
             ul(0) + p(0)
         )
     except UnicodeDecodeError:
@@ -406,35 +405,27 @@ def get_badges(macro, data):
     html = _render_badges(macro, data, badges)
     return html
 
-
-def _process_haros_data(data):
-    haros = []
-    if data.get('haros_data', []):
-        haros_data = data.get('haros_data', [])
- 
-        type = ""
-        url = ""
-        for datum in haros_data:
-            if "report" in datum:
-                type = datum['report'].get('type')
-                url = datum['report'].get('url')
-                haros.append({'type' : str(type), 'url' : str(url)})
-    return haros
-
-def _render_haros(macro, data, haros):
-    p = macro.formatter.paragraph
+def _render_reports(macro, reports):
+    # p = macro.formatter.paragraph
     html = ''
-
-    if haros:
+    if reports and len(reports)>0:
         html += "<li>" + "Available Software Reports: "
-        html += '<a href="' + str(haros[0].get('url')) +'" target="_blank">' + str(haros[0].get('type')) + '</a>'
+        for report in reports:
+            if len(report['urls']) == 1:
+                html += '<a href="' + report['urls'][0] +'" target="_blank">' + report['name'] + '</a> '
+            else:
+                html += report['name'] + '[<a href="' + report['urls'][0] +'" target="_blank">1</a>'
+                for i in range(1, len(report['urls'])):
+                    html += ',<a href="' + report['urls'][i] +'" target="_blank">'+str(i+1)+'</a>'
+                html += ']'
         html += "</li>"
     return html
 
 
-def get_haros(macro, data):
-    haros = _process_haros_data(data)
-    html = _render_haros(macro, data, haros)
+def get_reports(macro, data):
+    if not data.get('reports_data'):
+        return ''
+    html = _render_reports(macro, data.get('reports_data'))
     return html
 
 
@@ -617,11 +608,12 @@ def generate_package_header(macro, package_name, opt_distro=None):
     except:
         pass
 
-    # try to load HAROS info (but don't complain if it can't be found or loaded,
-    # as not all packages include HAROS (so the results yaml may not exist)
+    # try to load test result / report info
+    # (but don't complain if none can be be found,
+    # as not all packages include test result reports)
     try:
-        haros_data = load_repo_haros_data(repo_name, opt_distro)
-        data.update(haros_data)
+        reports_data = get_repo_reports_data(repo_name, opt_distro)
+        data.update(reports_data)
     except:
         pass
 

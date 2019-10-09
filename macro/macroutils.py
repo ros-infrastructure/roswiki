@@ -27,6 +27,16 @@ GET_INVOLVED = 'Please see <a href="http://wiki.ros.org/rosdistro/Tutorials/Inde
 
 CONTRIBUTE_TMPL = MISSING_DOC_TMPL + ' ' + GET_INVOLVED.replace('%', '%%')
 
+''' Directory name to report name mappings for known test result reports '''
+known_reports_name_mappings = {
+    'rosclean'      : 'ROSclean',
+    'roscreate'     : 'ROScreate',
+    'roslib'        : 'ROSlib',
+    'rosmake'       : 'ROSmake',
+    'rosunit'       : 'ROSunit',
+    'haros_report'  : 'HAROS',
+}
+
 class UtilException(Exception): pass
 
 def ahref(url, text):
@@ -57,14 +67,14 @@ def repo_devel_job_data_file(repo_name, distro=None):
     else:
         return os.path.join(doc_path, 'devel_jobs', repo_name, "results.yaml")
 
-def repo_haros_data_file(repo_name, distro=None):
+def repo_report_dir(repo_name, distro=None):
     """
-    Generate filesystem path to haros_report.yaml for repository
+    Generate filesystem path to test results/reports directory for repository
     """
     if distro:
-        return os.path.join(doc_path, distro, 'haros', repo_name, "haros_report.yaml")
+        return os.path.join(doc_path, distro, 'devel_jobs', repo_name, "test_results")
     else:
-        return os.path.join(doc_path, 'haros', repo_name, "haros_report.yaml")
+        return os.path.join(doc_path, 'devel_jobs', repo_name, "test_results")
 
 def get_package_versions(package):
     distros = []
@@ -247,13 +257,51 @@ def load_repo_devel_job_data(repo_name, distro=None):
     """
     return _load_manifest_file(repo_devel_job_data_file(repo_name, distro), repo_name, 'devel job data for repo')
 
-def load_repo_haros_data(repo_name, distro=None):
+def get_repo_reports_data(repo_name, distro=None):
     """
-    Load haros_data.yaml properties into dictionary for repo
-    @return: manifest properties dictionary
+    Search the rosdoc test restults / report directory for available reports
+    @return List of found reports, each report a dict containing "name" and "urls"
     @raise UtilException: if unable to load. Text of error message is human-readable
     """
-    return _load_manifest_file(repo_haros_data_file(repo_name, distro), repo_name, 'HAROS data for repo')
+    reportsdir = repo_report_dir(repo_name, distro)
+    if not os.path.exists(reportsdir):
+        return []
+    #
+    reportsdir_contents = os.listdir(reportsdir)
+    reports = []
+    # build the base URL for links
+    if distro:
+        reportsurl = doc_url + distro + '/devel_jobs/' + repo_name + "/test_results/"
+    else:
+        reportsurl = doc_url + 'devel_jobs/' + repo_name + "/test_results/"
+    #
+    for report_dir in reportsdir_contents:
+        report_path = os.path.join(reportsdir,report_dir)
+        if not os.path.isdir(report_path):
+            continue
+        # Beautify the name of known reports if possible
+        report_name = known_reports_name_mappings.get(report_dir, report_dir) 
+        # Find index file or report files (XML etc)
+        # in the reports folder and construct URLs to use in links.
+        report_contents = os.listdir(report_path)
+        # only consider files, not folders
+        report_contents = [e for e in report_contents if os.path.isfile(os.path.join(report_path, e))]
+        if len(report_contents)==0:
+            continue
+        # If there is an 'index' file, make a link to that,
+        # else provide links to all files in the directory.
+        if any(e[0:6]=='index.' for e in report_contents):
+            urls = [reportsurl+report_dir+'/'+e for e in report_contents if e[0:6]=='index.']
+        else:
+            urls = [reportsurl+report_dir+'/'+e for e in report_contents]
+        if len(urls)==0:
+            continue
+        # else: report is good to use
+        reports.append({
+            'name': report_name,
+            'urls': urls
+        })
+    return reports
 
 def load_repo_manifest(repo_name):
     """
