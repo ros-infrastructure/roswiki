@@ -29,11 +29,6 @@ CONTRIBUTE_TMPL = MISSING_DOC_TMPL + ' ' + GET_INVOLVED.replace('%', '%%')
 
 ''' Directory name to report name mappings for known test result reports '''
 known_reports_name_mappings = {
-    'rosclean'      : 'ROSclean',
-    'roscreate'     : 'ROScreate',
-    'roslib'        : 'ROSlib',
-    'rosmake'       : 'ROSmake',
-    'rosunit'       : 'ROSunit',
     'haros_report'  : 'HAROS',
 }
 
