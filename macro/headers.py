@@ -20,7 +20,6 @@ from macroutils import get_url_li
 from macroutils import get_vcs_li
 from macroutils import load_package_manifest
 from macroutils import load_repo_devel_job_data
-from macroutils import get_repo_reports_data
 from macroutils import load_stack_release
 from macroutils import msg_doc_link
 from macroutils import package_changelog_html_link
@@ -33,6 +32,7 @@ try:
     unicode_ = unicode
 except NameError:
     unicode_ = str
+
 
 def get_nav(macro, stack_name, packages, distro=None):
     nav = ''
@@ -94,10 +94,6 @@ def obfuscate_email(data):
         data = re.sub('(<[^>]+)%s([^<]+>)' % re.escape(k), r'\1%s\2' % v, data)
     return data
 
-def avg(xs):
-    if not xs:
-        return None
-    return sum(xs) / float(len(xs))
 
 def get_description(macro, data, type_):
     # keys
@@ -123,8 +119,6 @@ def get_description(macro, data, type_):
             description = unicode_(description, 'utf-8')
     except UnicodeDecodeError:
         description = ''
-
-    reports_html = get_reports(macro, data)
 
     f = macro.formatter
     p, li, ul = f.paragraph, f.listitem, f.bullet_list
@@ -159,7 +153,6 @@ def get_description(macro, data, type_):
             repo_li +
             bugtracker_li +
             vcs_li +
-            reports_html +
             ul(0) + p(0)
         )
     except UnicodeDecodeError:
@@ -405,29 +398,6 @@ def get_badges(macro, data):
     html = _render_badges(macro, data, badges)
     return html
 
-def _render_reports(macro, reports):
-    # p = macro.formatter.paragraph
-    html = ''
-    if reports and len(reports)>0:
-        html += "<li>" + "Available Software Reports: "
-        for report in reports:
-            if len(report['urls']) == 1:
-                html += '<a href="' + report['urls'][0] +'" target="_blank">' + report['name'] + '</a> '
-            else:
-                html += report['name'] + '[<a href="' + report['urls'][0] +'" target="_blank">1</a>'
-                for i in range(1, len(report['urls'])):
-                    html += ',<a href="' + report['urls'][i] +'" target="_blank">'+str(i+1)+'</a>'
-                html += ']'
-        html += "</li>"
-    return html
-
-
-def get_reports(macro, data):
-    if not data.get('reports_data'):
-        return ''
-    html = _render_reports(macro, data.get('reports_data'))
-    return html
-
 
 def li_if_exists(macro, page, sub_page):
     li = macro.formatter.listitem
@@ -605,15 +575,6 @@ def generate_package_header(macro, package_name, opt_distro=None):
     try:
         devel_job_data = load_repo_devel_job_data(repo_name, opt_distro)
         data.update(devel_job_data)
-    except:
-        pass
-
-    # try to load test result / report info
-    # (but don't complain if none can be be found,
-    # as not all packages include test result reports)
-    try:
-        reports_data = get_repo_reports_data(repo_name, opt_distro)
-        data.update(reports_data)
     except:
         pass
 
