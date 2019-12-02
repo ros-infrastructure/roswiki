@@ -4,9 +4,15 @@ from MoinMoin.wikiutil import get_unicode
 from macroutils import load_package_manifest, distro_names, distro_names_buildfarm, distro_names_eol, CONTRIBUTE_TMPL, UtilException
 from headers import get_nav, get_description, get_package_links, generate_package_header, distro_selector_html, distro_selector_with_eol_toggle_html, doc_html, get_loaded_distros
 
+import datetime
+from MoinMoin import config
+
 generates_headings = True
 dependencies = []
 
+# The threshold (in days) after which the header is to include
+# a warning if the wiki page has not been updated more recently.
+DEFAULT_OUTDATED_PAGE_WARNING_THRESHOLD = 365
 
 def generate_old_package_header(macro, package_name, opt_distro=None):
     if not package_name:
@@ -47,6 +53,20 @@ def macro_PackageHeader(macro, arg1, arg2=None):
             headers_html.append('<div class="version %s">' % distro + pkg_header_html + '</div>')
 
         html = ''
+
+        # If the last update to this page was more than X days ago,
+        # display a warning.
+        last_edit = datetime.datetime.strptime(macro.request.page.lastEditInfo()['time'], '%Y-%m-%d %H:%M:%S')
+        last_edit_delta = datetime.datetime.now() - last_edit
+        threshold = DEFAULT_OUTDATED_PAGE_WARNING_THRESHOLD
+        if hasattr(macro.request.cfg, 'outdated_page_warning_threshold'):
+            threshold = macro.request.cfg.outdated_page_warning_threshold
+        if last_edit_delta.days >= threshold:
+            html += '<div class="caution">'
+            html += '<p>This wiki page was last edited on ' + last_edit.strftime('%B %-d %Y')
+            html += ' (' + str(last_edit_delta.days) + ' days ago) and may be outdated.</p>'
+            html += '</div>'
+        #
         if loaded_distros_buildfarm:
             if loaded_distros_eol:
                 html += distro_selector_with_eol_toggle_html(
