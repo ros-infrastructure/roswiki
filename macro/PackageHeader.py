@@ -65,11 +65,8 @@ def macro_PackageHeader(macro, arg1, arg2=None):
             html += '<div class="caution">'
             html += '<p>This wiki page was last edited on ' + last_edit.strftime('%B %-d %Y')
             html += ' which is ' + str(last_edit_delta.days) + ' days ago.<br />'
-            html += 'Please be aware that it may not reflect the current state of development '
-            html += 'or state-of-the-art any longer and commands or screenshots shown could no '
-            html += 'longer work or be outdated.</p>'
-            html += '<p>Help the community by editing this page and correcting or improving '
-            html += 'things where necessary.</p>'
+            html += 'Please contact the author or package maintainer to ensure that '
+            html += 'the content is still up-to-date.</p>'
             html += '</div>'
         #
         if loaded_distros_buildfarm:
