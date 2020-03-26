@@ -11,9 +11,9 @@ except ImportError:
 
 NETWORK_TIMEOUT = 3
 
-distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'unstable']
-distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'unstable'] #boxturtle and cturtle not indexed
-distro_names_buildfarm = ['kinetic', 'melodic']
+distro_names = ['boxturtle', 'cturtle', 'diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'noetic', 'unstable']
+distro_names_indexed = ['diamondback', 'electric', 'fuerte', 'groovy', 'hydro', 'indigo', 'jade', 'kinetic', 'lunar', 'melodic', 'noetic', 'unstable'] #boxturtle and cturtle not indexed
+distro_names_buildfarm = ['kinetic', 'melodic', 'noetic']
 distro_names_never_on_buildfarm = ['boxturtle', 'cturtle', 'diamondback', 'unstable']
 distro_names_eol = [distro for distro in distro_names if distro not in distro_names_buildfarm and distro not in distro_names_never_on_buildfarm]
 
