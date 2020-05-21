@@ -39,14 +39,9 @@ Dependencies = []
 def execute(macro, args):
     if args:
         version = str(args)
-        if version.lower() == 'noetic':
-            return ('<span style="background-color:#FFFF00; '
-                    'font-weight:bold; padding: 3px;">'
-                    'Expected in Noetic Ninjemys</span>')
-        else:
-            return ('<span style="background-color:#FFFF00; '
-                    'font-weight:bold; padding: 3px;">'
-                    'New in %s</span>' % version)
+        return ('<span style="background-color:#FFFF00; '
+                'font-weight:bold; padding: 3px;">'
+                'New in %s</span>' % version)
 
     html = distro_selector_with_eol_toggle_html(
         distros_displayed_by_default=distro_names_buildfarm,
