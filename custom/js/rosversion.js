@@ -72,7 +72,7 @@ function toggleDocStatus()
 }
 
 $(document).ready(function() {
-  var activedistro = "melodic"; //CHANGE THIS LINE TO CHANGE THE DISTRO DISPLAYED BY DEFAULT
+  var activedistro = "noetic"; //CHANGE THIS LINE TO CHANGE THE DISTRO DISPLAYED BY DEFAULT
   var url_distro = getURLParameter('distro');
   if (url_distro) {
     activedistro=url_distro;
