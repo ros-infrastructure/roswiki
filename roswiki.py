@@ -40,7 +40,7 @@ class Config(FarmConfig):
     url_prefix_static = '/moin_static197'
 
     mail_smarthost = "smtp.osuosl.org"
-    mail_from = "Moin <moin@ros.osuosl.org>"
+    mail_from = "Moin <moin@ros1.osuosl.org>"
 
     #superuser = [u"ScottHassan",u"osladmin"]
     #acl_rights_before = u"ScottHassan:read,write,delete,revert,admin"
