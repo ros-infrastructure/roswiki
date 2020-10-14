@@ -17,7 +17,7 @@ distro_names_buildfarm = ['kinetic', 'melodic', 'noetic']
 distro_names_never_on_buildfarm = ['boxturtle', 'cturtle', 'diamondback', 'unstable']
 distro_names_eol = [distro for distro in distro_names if distro not in distro_names_buildfarm and distro not in distro_names_never_on_buildfarm]
 
-doc_url = "http://docs.ros.org/"
+doc_url = "http://docs.ros.org/en/"
 
 doc_path = '/home/rosbot/docs/'
 metrics_path = '/var/www/www.ros.org/metrics/'

@@ -8,4 +8,4 @@ def execute(macro, args):
   if len(splits) != 2:
     return "invalid message type for MsgLink(msg/type)"
   pkg, base = splits  
-  return macro.formatter.url(1, "http://docs.ros.org/api/%s/html/msg/%s.html"%(pkg, base)) + macro.formatter.text(type_)+ macro.formatter.url(0)
+  return macro.formatter.url(1, "http://docs.ros.org/en/api/%s/html/msg/%s.html"%(pkg, base)) + macro.formatter.text(type_)+ macro.formatter.url(0)
