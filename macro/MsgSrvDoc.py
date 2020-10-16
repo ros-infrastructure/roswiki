@@ -2,13 +2,13 @@ import urllib2
 from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
+from macroutils import doc_url_base
 from macroutils import package_manifest_file
 
 generates_headings = True
 
 ## This is basically a fork of PackageHeader. Apologies for the
 ## untidiness - kwc
-url_base = "http://docs.ros.org/en/api/"
 
 def _href(url, text):
   return '<a href="%(url)s">%(text)s</a>'%locals()
@@ -25,9 +25,9 @@ def srv_link(package_url, srv):
 def action_link(package_url, action):
   return _href('%(package_url)saction/%(action)s.html'%locals(), action)
 def package_link(package):
-  return url_base + package 
+  return doc_url_base + package 
 def package_html_link(package):
-  return url_base + package + "/html/"
+  return doc_url_base + package + "/html/"
 
 def macro_MsgSrvDoc(macro, arg1, arg2='true'):
   package_name = get_unicode(macro.request, arg1)

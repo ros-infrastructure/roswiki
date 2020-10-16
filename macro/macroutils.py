@@ -17,7 +17,7 @@ distro_names_buildfarm = ['kinetic', 'melodic', 'noetic']
 distro_names_never_on_buildfarm = ['boxturtle', 'cturtle', 'diamondback', 'unstable']
 distro_names_eol = [distro for distro in distro_names if distro not in distro_names_buildfarm and distro not in distro_names_never_on_buildfarm]
 
-doc_url = "http://docs.ros.org/en/"
+doc_url_base = "http://docs.ros.org/en/"
 
 doc_path = '/home/rosbot/docs/en/'
 metrics_path = '/var/www/www.ros.org/metrics/'
@@ -69,15 +69,15 @@ def package_html_link(package, distro=None):
     Generate link to auto-generated package HTML documentation
     """
     if distro:
-        return doc_url + distro + "/api/" + package + '/html/'
+        return doc_url_base + distro + "/api/" + package + '/html/'
     else:
-        return doc_url + "api/" + package  + '/html/'
+        return doc_url_base + "api/" + package  + '/html/'
     
 def package_changelog_html_link(package, distro):
     """
     Generate link to auto-generated package changelog HTML
     """
-    return doc_url + distro + "/changelogs/" + package + '/changelog.html'
+    return doc_url_base + distro + "/changelogs/" + package + '/changelog.html'
 
 def msg_doc_link(package, link_title, distro=None):
     package_url = package_html_link(package, distro)  
