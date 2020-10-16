@@ -4,7 +4,6 @@ from MoinMoin.wikiutil import get_unicode
 
 from macroutils import load_stack_manifest, UtilException
 
-url_base = "http://docs.ros.org/api/"
 generates_headings = True
 dependencies = []
 
