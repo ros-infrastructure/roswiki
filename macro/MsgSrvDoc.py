@@ -3,6 +3,7 @@ from MoinMoin.Page import Page
 from MoinMoin.wikiutil import get_unicode
 
 from macroutils import doc_url_base
+from macroutils import package_html_link
 from macroutils import package_manifest_file
 
 generates_headings = True
@@ -24,10 +25,6 @@ def srv_link(package_url, srv):
   return _href('%(package_url)ssrv/%(srv)s.html'%locals(), srv)
 def action_link(package_url, action):
   return _href('%(package_url)saction/%(action)s.html'%locals(), action)
-def package_link(package):
-  return doc_url_base + package 
-def package_html_link(package):
-  return doc_url_base + package + "/html/"
 
 def macro_MsgSrvDoc(macro, arg1, arg2='true'):
   package_name = get_unicode(macro.request, arg1)
