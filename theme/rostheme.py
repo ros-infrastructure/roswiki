@@ -153,13 +153,6 @@ jQuery(function( $ ){
             <a href="http://status.ros.org/">Service Status</a>
             |
             <a href="http://answers.ros.org/">Q&A answers.ros.org</a>
-
-<!--<a href="http://roscon.ros.org/2016/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/roscon_wiki_header.jpg" width="133" height="65" alt="ROSCon 2016" /></a>
--->
-
-<!-- <a href="https://events.osrfoundation.org/ros-kong-2014/"><img align="middle" style="padding-left: 15px;" src="http://ros.org/images/ros_kong_2014_badge.png" width="133" height="38" alt="roskong" /></a>
--->
-<!--a href="https://events.osrfoundation.org/ros-kong-2014/"><img align="middle" style="padding-left: 15px;" src="http://imgur.com/eMzUJVe.png" width="133" height="38" alt="roskong" /></a-->
           </td>
 
           <td valign="middle" align="right">
@@ -336,7 +329,7 @@ Except where otherwise noted, the ROS wiki is licensed under the <br /><a href="
 <hr style="margin-top: 10px;">
 <div class="row">
   <div class="col-md-4 col-md-offset-4">
-<a href="http://www.osrfoundation.org"><img style="margin-top: -1px;" src="/custom/images/brought_by_horiz.png"></p></a>
+<a href="https://www.openrobotics.org/"><img style="margin-top: -1px;" src="/custom/images/brought_by_horiz.png"></p></a>
   </div>
 </div>
 </div>
