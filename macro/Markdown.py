@@ -4,4 +4,5 @@ MODULES = """
 """
 
 def macro_Markdown(macro, arg1):
-    return MODULES + '<div class="markdown_macro"><zero-md src="{arg1}"></zero-md></div>'
+    return MODULES + '<div class="markdown_macro"><zero-md src="{arg1}"></zero-md></div>'.format(arg1=arg1)
+
