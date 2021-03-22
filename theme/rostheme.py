@@ -247,6 +247,8 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
 
             # Sidebar
             u'<div id="sidebar">',
+            u'<h4>ROS 2 Documentation</h4><p>The ROS Wiki is for ROS 1. Are you using ROS 2 (Dashing/Foxy/Rolling)? <a href="http://docs.ro\
+s.org/en/rolling/">Check out the ROS 2 Documentation</a></p>',
             self.wikipanel(d),
             self.pagepanel(d),
             self.userpanel(d),
