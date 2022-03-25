@@ -155,38 +155,6 @@ jQuery(function( $ ){
             <a href="http://answers.ros.org/">Q&A answers.ros.org</a>
           </td>
 
-          <td valign="middle" align="right">
-
-<script language="Javascript">
-
-function Searchy(theButton){
-
-theForm = theButton.form;
-newID = theForm.input.value;
-theForm.q.value = newID;
-theForm.input.value=theForm.input.value
-
-}
-</script>
-
-
-<form action="https://www.ros.org/search/index.html" id="cse">
-  <div>
-    <label>Search:</label>
-    <input type="hidden" name="cx" value="005596761048178735851:_ejygd2ukbe" />
-    <input type="hidden" name="cof" value="FORID:11;NB:1" />
-    <input type="hidden" name="filter" value="0" />
-    <input type="hidden" name="num" value="10" />
-
-    <input type="hidden" name="ie" value="UTF-8" />
-    <input type="text" name="input" id="input" autocomplete="on" style="width: 35%"/>
-    <input type="hidden" name="q" value="" />
-    <input type="submit" name="sa" value="Submit" onClick="Searchy(this)"/>
-
-  </div>
-</form>
-
-         </td>
       </tr>
       <tr>
         <td colspan="3" height="53" width="1024"><nobr><img src="/custom/images/menu_left.png" width="17" height="53" alt=""/><a href="/"><img
