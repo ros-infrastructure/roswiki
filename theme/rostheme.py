@@ -215,8 +215,12 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
 
             # Sidebar
             u'<div id="sidebar">',
-            u'<h4>ROS 2 Documentation</h4><p>The ROS Wiki is for ROS 1. Are you using ROS 2 (Dashing/Foxy/Rolling)? <a href="http://docs.ro\
-s.org/en/rolling/">Check out the ROS 2 Documentation</a></p>',
+            u'<h4>ROS 2 Documentation</h4><p>The ROS Wiki is for ROS 1. Are you using ROS 2 (\
+<a href="http://docs.ros.org/en/foxy/">Foxy</a>, \
+<a href="http://docs.ros.org/en/galactic/">Glactic</a>, \
+<a href="http://docs.ros.org/en/humble/">Humble</a>, \
+or <a href="http://docs.ros.org/en/rolling/">Rolling</a>)? \
+<a href="http://docs.ros.org">Check out the ROS 2 Documentation</a></p>',
             self.wikipanel(d),
             self.pagepanel(d),
             self.userpanel(d),
