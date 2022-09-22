@@ -150,6 +150,8 @@ jQuery(function( $ ){
             |
             <a href="http://discourse.ros.org/">Discussion Forum</a>
             |
+            <a href="http://index.ros.org/">Index</a>
+            |
             <a href="http://status.ros.org/">Service Status</a>
             |
             <a href="http://answers.ros.org/">Q&A answers.ros.org</a>
