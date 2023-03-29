@@ -70,15 +70,15 @@ class Theme(ThemeBase):
         return u'\n'.join(html)
 
     page_header1 = """
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EVD5Z6G6NH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EVD5Z6G6NH');
 </script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-5950817-2");
-pageTracker._trackPageview();
-} catch(err) {}</script>
 
 <script type="text/javascript">
 <!--// Initialize search form
