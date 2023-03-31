@@ -466,6 +466,23 @@ def get_repo_name(data, package_name, opt_distro):
     return repo_name
 
 
+def index_link_html(package_name):
+    index_html = (
+        '<div id="doc_status_link" '
+        'style="margin-bottom:10px">'
+        '<span style="text-align:left">'
+    )
+    index_html += '<a href="https://index.ros.org/p/%s">' % (package_name)
+    index_html += 'See %s on index.ros.org for more info including aything ROS 2 related.' % (package_name)
+    index_html += (
+        '</a>'
+        '</span>'
+        '</div>'
+    )
+    #index_html = "test"
+    return index_html
+
+
 def doc_html(distros, package_name):
     doc_html = (
         '<div id="doc_status_link" '
