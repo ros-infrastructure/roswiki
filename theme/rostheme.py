@@ -221,8 +221,8 @@ Hi there, %s! In an effort to combat spam, we require that users be added to a w
 <a href="http://docs.ros.org/en/foxy/">Foxy</a>, \
 <a href="http://docs.ros.org/en/galactic/">Glactic</a>, \
 <a href="http://docs.ros.org/en/humble/">Humble</a>, \
-or <a href="http://docs.ros.org/en/rolling/">Rolling</a>)? \
-<a href="http://docs.ros.org">Check out the ROS 2 Project Documentation</a>\
+or <a href="http://docs.ros.org/en/rolling/">Rolling</a>)? <br>\
+<a href="http://docs.ros.org">Check out the ROS 2 Project Documentation</a><br>\
 Package specific documentation can be found on <a href="https://index.ros.org">index.ros.org</a></p>',
             self.wikipanel(d),
             self.pagepanel(d),
