@@ -154,7 +154,7 @@ jQuery(function( $ ){
             |
             <a href="http://status.ros.org/">Service Status</a>
             |
-            <a href="http://answers.ros.org/">Q&A answers.ros.org</a>
+            <a href="https://robotics.stackexchange.com/questions/tagged/ros">ros @ Robotics Stack Eschange</a>
           </td>
 
       </tr>
