@@ -19,7 +19,7 @@ distro_names_eol = [distro for distro in distro_names if distro not in distro_na
 
 doc_url_base = "http://docs.ros.org/en/"
 
-doc_path = '/home/rosbot/docs/en/'
+doc_path = '/var/www/docs.ros.org/en/'
 metrics_path = '/var/www/www.ros.org/metrics/'
 
 MISSING_DOC_TMPL = 'Cannot load information on <strong>%(name)s</strong>, which means that it is not yet in our index.'
