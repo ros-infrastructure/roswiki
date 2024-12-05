@@ -473,7 +473,7 @@ def index_link_html(package_name):
         '<span style="text-align:left">'
     )
     index_html += '<a href="https://index.ros.org/p/%s">' % (package_name)
-    index_html += 'See %s on index.ros.org for more info including aything ROS 2 related.' % (package_name)
+    index_html += 'See %s on index.ros.org for more info including anything ROS 2 related.' % (package_name)
     index_html += (
         '</a>'
         '</span>'
